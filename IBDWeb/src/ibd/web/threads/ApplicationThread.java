@@ -132,7 +132,8 @@ public class ApplicationThread implements Runnable {
 		_killerThread.interrupt();
 		if (_continueRunning) {
 		    long _sleepTime = ibd.web.threads.ThreadActions.getNextMinuteRunTime(10).getTimeInMillis();
-		    debug("Thread is sleeping for " + _sleepTime + " milliseconds.");			
+		    debug("Thread is sleeping for " + _sleepTime + " milliseconds.");	
+		    ibd.web.Constants.Constants.jobRunning = false;
 			ibd.web.Constants.Constants.outputSP500 = VarSP500.currentSP500;
 			ibd.web.Constants.Constants.outputNasdaq = VarNasdaq.currentNasdaq;
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;

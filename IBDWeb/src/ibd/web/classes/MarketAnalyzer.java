@@ -465,7 +465,7 @@ public class MarketAnalyzer {
 //	String startDateString = defaultDate.format(var.startDate);//startDate is defined in the class field
 //	String endDateString = defaultDate.format(var.endDate);//endDate is defined in the class field
 
-	File outputResults = new File("C:/IBDTestRuns/" + var.fileName);
+	File outputResults = new File(var.fileName);
 	PrintWriter out = new PrintWriter(
 		new BufferedWriter(
 		new FileWriter(outputResults, true)));
@@ -571,22 +571,19 @@ public class MarketAnalyzer {
 	    float modGain = 0;//modGain is the gain over the whole period
 	    float percGain = 0;//percGain is the gain for each buy/sell combo
 	    float[] amntInv = new float[buyPrices.size()];
-	    for (int j = 0; j < buyPrices.size(); j++) {//percGain is the percent gain for each buy/sell combo
+	    for (int j = 0; j < sellPrices.size(); j++) {//percGain is the percent gain for each buy/sell combo
 //TODO
 		//		it stops here for some reason in the fundCheckCharts
 		//the problem is that sellDates doesn't pick up today's date so the buy and sell arrays are not the same size
-		//if(sellPrices.size()<=j && buyPrices.size()<=j)
-	    	float sellPrice = (sellPrices.size()>=j)?0.0f:sellPrices.get(j);
-	    	float buyPrice = (buyPrices.size()>=j)?0.0f:buyPrices.get(j);
-	    	percGain = (sellPrices.get(j) - buyPrices.get(j) / buyPrices.get(j));
+		percGain = (sellPrices.get(j) - buyPrices.get(j)) / buyPrices.get(j);
 		if (j == 0) {//if j=0 then the initial amount invested is the closing price of the first day of the period of interest
 		    amntInv[j] = percGain * pricesClose[loopDays - 1] + pricesClose[loopDays - 1];
 		} else {//else amount invested is the previous amount invested times percGain plus previous amount invested
 		    amntInv[j] = percGain * amntInv[j - 1] + amntInv[j - 1];
 		}
-				System.out.println("THIS DATA: "+"period=" + periods[i] + " " + var.list + " buyDates " + periodBuyDates.get(j) + " "
-					+ buyPrices.get(j) + "  sellDates " + periodSellDates.get(j) + " " + sellPrices.get(j)
-					+ " percGain " + percGain * 100 + " " + j);
+		System.out.println("period=" + periods[i] + " " + var.list + " buyDates " + periodBuyDates.get(j) + " "
+			+ buyPrices.get(j) + "  sellDates " + periodSellDates.get(j) + " " + sellPrices.get(j)
+			+ " percGain " + percGain * 100 + " " + j);
 	    }//put in somewhere in here the size of sellDates and buyDates to see if index is out of bounds
 	    modGain = (amntInv[amntInv.length - 1] - pricesClose[loopDays - 1]) / pricesClose[loopDays - 1] * 100;
 

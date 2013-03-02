@@ -25,8 +25,9 @@ public class ThreadActions {
 
     public static void processJobs() throws IOException {//method to process jobs
 	//ADD ANY CODE HERE THAT YOU WANT PROCESSED.....
-
+    	
 	if (!hasProcessed || isItTime(updateAnalysis)) {
+		ibd.web.Constants.Constants.jobRunning = true;
 	    VarDow.varDow();
 	    VarSP500.varSP500();
 	    VarNasdaq.varNasdaq();

@@ -13,13 +13,17 @@
 </head>
 
 <body>
+
+	<%if(ibd.web.Constants.Constants.jobRunning){ %>
+		<font size="2" color="red"><spring:message code="label.jobRunning" /></font>
+	<%} %>
 <%
 	DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.FULL, Locale.US);
 	java.util.Date today = new java.util.Date();
 	String dateOut = dateFormatter.format(today);
 %>
 		<h1><spring:message code="label.applicationTitle" />.com</h1>
-		<h2><%=dateOut%></h2>
+		<h2><%=dateOut%></h2>${model.error}
 		
 <%
 	    if (ibd.web.Constants.Constants.outputDow == null || ibd.web.Constants.Constants.outputNasdaq == null || ibd.web.Constants.Constants.outputSP500 == null) {

@@ -59,7 +59,7 @@ public class VarNasdaq {
 	var.rallyVolAVG50On = true;//followthrough day volumes must be greater than the 50 day avg volume, BV=true
 	var.rallyPriceHighOn = true;//if tru, the followthrough day must be high of the rally, BV=true
 
-	/*try {
+	try {
 	    MarketRetriever.main(var);
 	} catch (IOException ex) {
 	    Logger.getLogger(VarNasdaq.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,8 +67,8 @@ public class VarNasdaq {
 	} finally {
 	    futureNasdaq = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
 	    currentNasdaq = futureNasdaq;
-	}*/
-	futureNasdaq = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
-    currentNasdaq = futureNasdaq;
+	}
+	//futureNasdaq = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
+    //currentNasdaq = futureNasdaq;
     }
 }

@@ -59,7 +59,7 @@ public class VarSP500 {
 	var.rallyVolAVG50On = false;//followthrough day volumes must be greater than the 50 day avg volume, BV=false
 	var.rallyPriceHighOn = true;//if tru, the followthrough day must be high of the rally, BV=true
 
-	/*try {
+	try {
 	    MarketRetriever.main(var);//this gets data from yahoo.com and fills up database
 	} catch (IOException ex) {
 	    Logger.getLogger(VarSP500.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,8 +67,8 @@ public class VarSP500 {
 	} finally {
 	    futureSP500 = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
 	    currentSP500 = futureSP500;
-	}*/
-	futureSP500 = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
-    currentSP500 = futureSP500;
+	}
+	//futureSP500 = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
+    //currentSP500 = futureSP500;
     }
 }

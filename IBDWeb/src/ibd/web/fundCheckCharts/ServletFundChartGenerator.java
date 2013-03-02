@@ -54,9 +54,16 @@ public class ServletFundChartGenerator extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
 
-	String timeString = "30";//request.getParameter("time");
-	int time = Integer.valueOf(timeString);
+	String timeString = request.getParameter("time");
+	int time = 10;
+	if(timeString==null || timeString.equalsIgnoreCase(""))
+		time = 10; // by default duration of 10 years
+	else
+		time = Integer.valueOf(timeString);
 	fund = request.getParameter("fund");
+	if(fund==null || fund.equalsIgnoreCase(""))
+		fund = "nflx"; // by default nflx
+	
 	System.out.println("HERE IS THE FUND! "+fund);
 	Vector gains = GetFundData.getData(fund);
 	System.out.println("HERE ARE THE GAINS!!!!!!!!!!!!!!!!");
@@ -80,7 +87,7 @@ public class ServletFundChartGenerator extends HttpServlet {
 	    Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
 	    request.setAttribute("error",ex);
 	    request.setAttribute("fund",fund);
-	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");
+	    RequestDispatcher rd = request.getRequestDispatcher("/error");
 	    rd.forward(request, response);
 	} finally {
 	    out.close();

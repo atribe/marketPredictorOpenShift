@@ -6,9 +6,11 @@
 		    <TR>
 				<TD>
 				<form action="fundChartGenerator" method="post" target="fundChartFrame">
-					<input type="text" name="fund" size="20" />
+					<spring:message code="label.enterFunds" /><input type="text" name="fund" size="20" /><br/>
+					<spring:message code="label.enterTime" /><input type="text" name="time" size="20" /><spring:message code="label.exampleTime" /><br/>
 					<input type="submit" value=<spring:message code="label.submit" /> align="center" />
 				</form>
+				${model.error}
 				<br>
 				<!--an iframe is needed so the form stays visible even with a chart displayed.Otherwise the form would get written over-->
 				<IFRAME marginheight="10" scrolling="no" height="350" NAME="fundChartFrame"

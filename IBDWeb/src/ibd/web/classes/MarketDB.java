@@ -1,12 +1,15 @@
 package ibd.web.classes;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.DriverManager;
-import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
 
 public class MarketDB {
 
@@ -18,12 +21,23 @@ public class MarketDB {
 	Connection connection = null;
 	try {
 	    Class.forName("com.mysql.jdbc.Driver");
-//	    String dbURL = "jdbc:mysql://209.204.83.249/funds";
-	    String dbURL = "jdbc:mysql://localhost:3306/moneytree";
-//	    "jdbc:mysql://"+dbhost+"/"+dbname+"?user="+user+"&password="+pass;
+	    
+	    // ************For Open Shift Account************	    
+	    /*String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
+	    String username = "adminP73lGry";
+	    String password = "6qTkYviLpvnp";*/
+	    
+	    
+	 // ************For Local Account************	
+	    String host = "localhost";
+	    String port="3306";
+	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
 	    String username = "root";
-//	    String username = "root";
 	    String password = "root";
+	    
+	    
 	    connection = DriverManager.getConnection(dbURL, username, password);
 	    System.out.println("Connection established");
 	} catch (ClassNotFoundException e) {

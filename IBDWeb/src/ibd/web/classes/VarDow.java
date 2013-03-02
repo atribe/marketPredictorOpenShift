@@ -59,7 +59,7 @@ public class VarDow {
 	var.rallyVolAVG50On = false;//followthrough day volumes must be greater than the 50 day avg volume, BV=false
 	var.rallyPriceHighOn = true;//if tru, the followthrough day must be high of the rally, BV=true
 
-	/*try {
+	try {
 	    MarketRetriever.main(var);
 	} catch (IOException ex) {
 	    Logger.getLogger(VarDow.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,8 +67,8 @@ public class VarDow {
 	} finally {
 	    futureDow = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
 	    currentDow = futureDow;
-	}*/
-	futureDow = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
-    currentDow = futureDow;
+	}
+	//futureDow = (Output) MarketAnalyzer.checkMarkets(var);//calls checkMarkets method of the MarketAnalyzer class
+    //currentDow = futureDow;
     }
 }
