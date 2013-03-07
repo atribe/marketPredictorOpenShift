@@ -81,25 +81,25 @@ public class GetFundData {
 	    gains.add(gainsNas);
 
 	} catch (URISyntaxException ex) {
-	    Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in GetFundData.java"+ex);
 //	    request.setAttribute("error",ex);
 //	    request.setAttribute("fund",fund);
 //	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");
 //	    rd.forward(request, response);
 	} catch (MalformedURLException ex) {
-	    Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in GetFundData.java"+ex);
 //	    request.setAttribute("error",ex);
 //	    request.setAttribute("fund",fund);
 //	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");
 //	    rd.forward(request, response);
 	} catch (IOException ex) {
-	    Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in GetFundData.java"+ex);
 //	    request.setAttribute("error",ex);
 //	    request.setAttribute("fund",fund);
 //	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");
 //	    rd.forward(request, response);
 	} catch (NullPointerException ex) {
-	    Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in GetFundData.java"+ex);
 //	    request.setAttribute("error",ex);
 //	    request.setAttribute("fund",fund);
 //	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");

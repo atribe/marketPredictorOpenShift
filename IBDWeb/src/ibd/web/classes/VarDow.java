@@ -4,11 +4,13 @@
  */
 package ibd.web.classes;
 
+import ibd.web.Resource.LoadProperties;
+import ibd.web.Resource.SendEmail;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.lang.*;
 
 /**
  *
@@ -57,7 +59,7 @@ public class VarDow {
 	var.pivotTrend35On = false;//if tru, pivotTrend35 is turned on, BV=false
 	var.pivotTrend35 = -.003;//if pivotTrend35On=true price must trend down for 35 days by an average of -.1%/day before pivot day
 	var.rallyVolAVG50On = false;//followthrough day volumes must be greater than the 50 day avg volume, BV=false
-	var.rallyPriceHighOn = true;//if tru, the followthrough day must be high of the rally, BV=true
+	var.rallyPriceHighOn = true;//if true, the followthrough day must be high of the rally, BV=true
 
 	try {
 	    MarketRetriever.main(var);

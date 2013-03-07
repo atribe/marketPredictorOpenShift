@@ -23,27 +23,29 @@ public class MarketDB {
 	    Class.forName("com.mysql.jdbc.Driver");
 	    
 	    // ************For Open Shift Account************	    
-	    /*String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
-	    String username = "adminP73lGry";
-	    String password = "6qTkYviLpvnp";*/
+	    String username = "adminxDWwjBT";
+	    String password = "54NJV2bLku7w";
 	    
 	    
 	 // ************For Local Account************	
-	    String host = "localhost";
+	   /* String host = "localhost";
 	    String port="3306";
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
 	    String username = "root";
-	    String password = "root";
+	    String password = "root";*/
 	    
 	    
 	    connection = DriverManager.getConnection(dbURL, username, password);
 	    System.out.println("Connection established");
+	    ibd.web.Resource.ResourceInitializer.logger.info("Connection Established in MarketDB.java");
 	} catch (ClassNotFoundException e) {
-	    System.out.println("Database driver not found.");
+		ibd.web.Resource.ResourceInitializer.logger.info("Database Driver not found in MarketDB.java"+e);
 	} catch (SQLException e) {
-	    System.out.println("Error loading database driver: " + e.getMessage());
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception loading Database Driver in MarketDB.java"+e);
+	    //System.out.println("Error loading database driver: " + e.getMessage());
 	}
 	return connection;
     }
@@ -83,7 +85,8 @@ public class MarketDB {
 	//System.out.println(query);
 	Statement statement = connection.createStatement();
 	ResultSet rs = statement.executeQuery(query);
-	System.out.println("executeQuery successful for "+sym.toLowerCase()+ " where startDate="+startDate+" and endDate="+endDate);
+	ibd.web.Resource.ResourceInitializer.logger.info("executeQuery successful for "+sym.toLowerCase()+ " where startDate="+startDate+" and endDate="+endDate);
+	//System.out.println("executeQuery successful for "+sym.toLowerCase()+ " where startDate="+startDate+" and endDate="+endDate);
 
 	ArrayList<Date> dates1 = new ArrayList<Date>();
 	ArrayList<Float> opens1 = new ArrayList<Float>();

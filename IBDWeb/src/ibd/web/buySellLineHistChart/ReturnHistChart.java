@@ -89,7 +89,7 @@ public class ReturnHistChart {// extends ApplicationFrame {
 		}
 	    }//end of for loop
 	} catch (IndexOutOfBoundsException e) {
-	    System.err.println(e);
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in ReturnHistChart.java: "+e);
 	}
 
 	return dataset;

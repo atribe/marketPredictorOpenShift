@@ -20,7 +20,7 @@ public class NewMain {
     public static void main(String[] args) {
 	Vector gains=new Vector();
         gains=GetFundData.getData("nflx");// TODO code application logic here
-	System.out.println(gains);
+        ibd.web.Resource.ResourceInitializer.logger.info("Gains in NewMain.java"+gains);
     }
 
 }

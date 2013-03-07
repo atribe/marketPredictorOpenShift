@@ -97,7 +97,8 @@ public class MarketAnalyzer {
 	float[][] histReturns = yearlyReturns(indexData, buyDates, sellDates, var);
 
 	for (int i = 0; i < histReturns.length; i++) {
-	    System.out.println("origGain= " + histReturns[i][0] + "  modGain= " + histReturns[i][1]);
+	    //System.out.println("origGain= " + histReturns[i][0] + "  modGain= " + histReturns[i][1]);
+	    ibd.web.Resource.ResourceInitializer.logger.info("origGain= " + histReturns[i][0] + "  modGain= " + histReturns[i][1]);
 	}
 
 	String marketName = "";
@@ -114,9 +115,9 @@ public class MarketAnalyzer {
 
 	try {
 	    writeFile(results, var);
-	    System.out.println("wrote file\n");
+	    ibd.web.Resource.ResourceInitializer.logger.info("Wrote File in MarketAnalyzer.java");
 	} catch (IOException e) {
-	    System.out.println("can't write to file");
+		ibd.web.Resource.ResourceInitializer.logger.info("Can not write to File in MarketAnalyzer.java");
 	}
 
 
@@ -153,7 +154,7 @@ public class MarketAnalyzer {
 	    Data data = MarketDB.getRecord(connection, var.list, startDateNew, var.endDate);
 	    dataMap.put(var.list, data);
 	} catch (SQLException e) {
-	    System.out.println("Can't use getRecord");
+		ibd.web.Resource.ResourceInitializer.logger.info("Can not get Record in MarketAnalyzer.java"+e);
 	}
 //	}//end of for loop
 	return dataMap;
@@ -465,7 +466,7 @@ public class MarketAnalyzer {
 //	String startDateString = defaultDate.format(var.startDate);//startDate is defined in the class field
 //	String endDateString = defaultDate.format(var.endDate);//endDate is defined in the class field
 
-	File outputResults = new File(var.fileName);
+	File outputResults = new File("/var/lib/openshift/5138e23f5004466868000261/app-root/runtime/repo/"+var.fileName);
 	PrintWriter out = new PrintWriter(
 		new BufferedWriter(
 		new FileWriter(outputResults, true)));
@@ -526,6 +527,7 @@ public class MarketAnalyzer {
 		    loopDays++;//size of the new array
 		}
 	    } catch (IndexOutOfBoundsException e) {
+	    	ibd.web.Resource.ResourceInitializer.logger.info("Exception in MarketAnalyzer.java"+e);
 		break;
 	    }
 
@@ -553,7 +555,7 @@ public class MarketAnalyzer {
 //		System.out.println("joker="+joker);
 		if (sellDates.contains(joker)) {
 		    periodSellDates.add(dates[p]);
-		    System.out.println("SD "+dates[p]);
+		    ibd.web.Resource.ResourceInitializer.logger.info("In MarketAnalyzer.java SD "+dates[p]);
 		    sellPrices.add(pricesClose[p]);
 		}
 	    }
@@ -581,7 +583,8 @@ public class MarketAnalyzer {
 		} else {//else amount invested is the previous amount invested times percGain plus previous amount invested
 		    amntInv[j] = percGain * amntInv[j - 1] + amntInv[j - 1];
 		}
-		System.out.println("period=" + periods[i] + " " + var.list + " buyDates " + periodBuyDates.get(j) + " "
+		
+		ibd.web.Resource.ResourceInitializer.logger.info("In MarketAnalyzer.java period=" + periods[i] + " " + var.list + " buyDates " + periodBuyDates.get(j) + " "
 			+ buyPrices.get(j) + "  sellDates " + periodSellDates.get(j) + " " + sellPrices.get(j)
 			+ " percGain " + percGain * 100 + " " + j);
 	    }//put in somewhere in here the size of sellDates and buyDates to see if index is out of bounds
@@ -640,6 +643,7 @@ public class MarketAnalyzer {
 		}
 		g++;
 	    } catch (IndexOutOfBoundsException e) {
+	    	ibd.web.Resource.ResourceInitializer.logger.info("Exception in MarketAnalyzer.java"+e);
 		break;
 	    }
 	}

@@ -36,7 +36,7 @@ public class GetChartData {
      * @param market
      * @return
      * @throws ServletException if a servlet-specific error occurs
-     * @throws MalformedURLException
+     * @throws MalformedURLException if URL passed is not being found or contained wrong protocol header etc
      * @throws IOException if an I/O error occurs
      * @throws NullPointerException
      */
@@ -79,7 +79,7 @@ public class GetChartData {
 	    marketVec.add(SD);
 
 	} catch (Exception ex) {
-	    Logger.getLogger(GetChartData.class.getName()).log(Level.SEVERE, null, ex);
+	    ibd.web.Resource.ResourceInitializer.logger.info("Exception in GetChartData.java: "+ex);
 	}
 	return marketVec;
     }

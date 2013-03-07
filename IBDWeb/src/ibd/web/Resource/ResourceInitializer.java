@@ -1,13 +1,11 @@
 package ibd.web.Resource;
 
-import ibd.web.classes.VarDow;
-import ibd.web.classes.VarNasdaq;
-import ibd.web.classes.VarSP500;
-import ibd.web.controller.IndexController;
 import ibd.web.threads.ApplicationThread;
 
-public class ResourceInitializer {
+import org.apache.log4j.Logger;
 
+public class ResourceInitializer {
+	public static Logger logger = Logger.getLogger(ibd.web.Resource.ResourceInitializer.class);
 	/**
 	 * 
 	 */
@@ -22,7 +20,7 @@ public class ResourceInitializer {
 	}
 
 	public void initMethod() {
-		System.out.println(message);
+			new LoadProperties();
 			ApplicationThread.startThread();
 	}
 }

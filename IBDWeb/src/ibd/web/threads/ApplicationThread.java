@@ -1,5 +1,7 @@
 package ibd.web.threads;
 
+import ibd.web.Resource.LoadProperties;
+import ibd.web.Resource.SendEmail;
 import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
@@ -92,6 +94,7 @@ public class ApplicationThread implements Runnable {
     }
 
     public static int startThread() {
+    	ibd.web.Resource.ResourceInitializer.logger.info("THREAD STARTED");
 	_continueRunning = true;
 	if (_thread == null || !_thread.isAlive()) {
 	    debug("Starting the application thread from startThread() .........");
@@ -105,6 +108,7 @@ public class ApplicationThread implements Runnable {
 
     public void run() {
 	try {
+		ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT FOR 10000 MILLISECONDS");
 	    Thread.sleep(10000);
 	}catch (Exception e) {
 		e.printStackTrace();
@@ -126,17 +130,28 @@ public class ApplicationThread implements Runnable {
 	    } catch (IOException ex) {
 		Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
 	    }
-
+	    
 	    try {
 		_running = false;
 		_killerThread.interrupt();
+		ibd.web.Resource.ResourceInitializer.logger.info("FORCED INTERRUPTION OF KILLERTHREAD");
 		if (_continueRunning) {
+			ibd.web.Resource.ResourceInitializer.logger.info("INSIDE CONTINUE RUNNING");	
 		    long _sleepTime = ibd.web.threads.ThreadActions.getNextMinuteRunTime(10).getTimeInMillis();
+		    ibd.web.Resource.ResourceInitializer.logger.info("GOING TO SEND EMAIL");
 		    debug("Thread is sleeping for " + _sleepTime + " milliseconds.");	
+		    ibd.web.Resource.ResourceInitializer.logger.info("Thread is sleeping for "+_sleepTime+" milliseconds");
 		    ibd.web.Constants.Constants.jobRunning = false;
 			ibd.web.Constants.Constants.outputSP500 = VarSP500.currentSP500;
 			ibd.web.Constants.Constants.outputNasdaq = VarNasdaq.currentNasdaq;
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;
+		    try{
+		    	ibd.web.Resource.ResourceInitializer.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail);
+			new ibd.web.Resource.SendEmail().sendEmail(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail , "/var/lib/openshift/5138e23f5004466868000261/app-root/runtime/repo/IBDinfo.log");
+		    }catch(Exception e){
+		    	ibd.web.Resource.ResourceInitializer.logger.info("EXCEPTION IN SENDING EMAIL");
+		    }
+		    ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT ENDEDDDDDDDDDDDDDDDDDDD");
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds
 		}

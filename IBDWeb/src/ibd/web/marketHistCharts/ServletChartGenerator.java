@@ -59,7 +59,7 @@ public class ServletChartGenerator extends HttpServlet {
 		ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
 	    }
 	} catch (Exception e) {
-	    System.err.println(e.toString());
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in ServletChartGenerator.java"+e);
 	} finally {
 	    out.close();
 	}

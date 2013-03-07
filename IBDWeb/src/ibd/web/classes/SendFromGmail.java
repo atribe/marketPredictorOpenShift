@@ -46,7 +46,8 @@ public class SendFromGmail {
 
 	new SendFromGmail().sendSSLMessage(sendTo, emailSubjectTxt,
 		emailMsgTxt, emailFromAddress);
-	System.out.println("Sucessfully Sent mail to All Users");
+	ibd.web.Resource.ResourceInitializer.logger.info("Successfully sent email to All Users in SendFrom Gmail.java");
+//	System.out.println("Sucessfully Sent mail to All Users");
     }
 
     public void sendSSLMessage(String recipients[], String subject,

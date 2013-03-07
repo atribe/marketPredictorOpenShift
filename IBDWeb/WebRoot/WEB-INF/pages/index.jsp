@@ -7,6 +7,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@page isELIgnored="false" %>
 <html>
 <head>
 <title><spring:message code="label.applicationTitle" /></title>
@@ -17,13 +18,8 @@
 	<%if(ibd.web.Constants.Constants.jobRunning){ %>
 		<font size="2" color="red"><spring:message code="label.jobRunning" /></font>
 	<%} %>
-<%
-	DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.FULL, Locale.US);
-	java.util.Date today = new java.util.Date();
-	String dateOut = dateFormatter.format(today);
-%>
 		<h1><spring:message code="label.applicationTitle" />.com</h1>
-		<h2><%=dateOut%></h2>${model.error}
+		<h2>${dateOut}</h2>
 		
 <%
 	    if (ibd.web.Constants.Constants.outputDow == null || ibd.web.Constants.Constants.outputNasdaq == null || ibd.web.Constants.Constants.outputSP500 == null) {
@@ -42,17 +38,14 @@
 	<jsp:include page="marketData.jsp" />
 <br/>
 <% if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%>
-	<jsp:include page="historicalMarketPredictorDates.jsp" />
-<br/>
-<%} if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%>
-	<jsp:include page="historicalMarketPredictorPerformance.jsp" />
-<br/>
-<%} if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%>
-	<jsp:include page="historicalPerformance.jsp" />
-<br/>
-<%} if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%>
-	<jsp:include page="marketData.jsp" />
-<br/>
+		<jsp:include page="historicalMarketPredictorDates.jsp" />
+	<br/>
+		<jsp:include page="historicalMarketPredictorPerformance.jsp" />
+	<br/>
+		<jsp:include page="historicalPerformance.jsp" />
+	<br/>
+		<jsp:include page="marketData.jsp" />
+	<br/>
 <%}%>
 	<jsp:include page="learningCenter.jsp" />
 </body>

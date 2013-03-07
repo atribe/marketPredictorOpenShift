@@ -21,14 +21,17 @@ public class ApplicationKillerThread implements Runnable
         }
         catch(Exception e)
         {
+        	ibd.web.Resource.ResourceInitializer.logger.info("Killer Thread was killed: Exception in ApplicationKillerThread.java"+e);
             ApplicationThread.debug("Killer thread was killed");
         }
         
         if(ApplicationThread.isAlive() && ApplicationThread.getRunning())
         {
-            ApplicationThread.debug("############################# killing the application thread dut to time out ############################");
+        	ibd.web.Resource.ResourceInitializer.logger.info("############################# killing the application thread dut to time out ############################");
+            //ApplicationThread.debug("############################# killing the application thread dut to time out ############################");
             ApplicationThread.stopThread();
             ApplicationThread.debug("Killer Thread is restarting the UtsThread");
+            ibd.web.Resource.ResourceInitializer.logger.info("Killer Thread is restarting the UtsThread");
             ApplicationThread.startThread();
         }
     }

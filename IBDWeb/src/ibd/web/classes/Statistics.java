@@ -67,7 +67,7 @@ public class Statistics {
 	if (a.length > 0) {
 	    return (average / a.length);
 	} else {
-	    System.out.println("ERROR: Can't average 0 numbers.");
+		ibd.web.Resource.ResourceInitializer.logger.info("ERROR: Can not average 0 numbers in Statistics.java");
 	    return 0;
 	}
     }

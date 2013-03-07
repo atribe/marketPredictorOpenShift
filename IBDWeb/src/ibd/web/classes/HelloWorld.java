@@ -27,5 +27,6 @@ public class HelloWorld {
 	}
 	statement.close();
 	System.out.println(status);
+	ibd.web.Resource.ResourceInitializer.logger.info("Status in HelloWorld.java: "+status);
     }
 }

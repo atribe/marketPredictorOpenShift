@@ -64,7 +64,7 @@ public class ServletOutputImage extends HttpServlet {
             out.close();
         }
         catch (Exception e) {
-            System.err.println(e.toString());
+        	ibd.web.Resource.ResourceInitializer.logger.info("Exception in ServletOutputImage.java"+e);
         }
         finally {
             out.close();

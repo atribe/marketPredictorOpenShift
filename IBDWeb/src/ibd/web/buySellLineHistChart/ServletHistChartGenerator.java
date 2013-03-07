@@ -60,8 +60,7 @@ public class ServletHistChartGenerator extends HttpServlet {
 //	    rd.forward(request, response);
 
 	} catch (Exception ex) {
-	    System.err.println(ex.toString());
-	    Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
+		ibd.web.Resource.ResourceInitializer.logger.info("Exception in ServletHistChartGenerator.java: "+ex);
 	    request.setAttribute("error",ex);
 	    request.setAttribute("fund",fund);
 	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");
