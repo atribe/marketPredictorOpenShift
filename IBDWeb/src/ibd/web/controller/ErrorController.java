@@ -11,6 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/error")
 public class ErrorController {
+	/**
+	 * 
+	 * @return ModelAndView
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView getIndex() {
 		Map<String, Object> model = new HashMap<String, Object>();

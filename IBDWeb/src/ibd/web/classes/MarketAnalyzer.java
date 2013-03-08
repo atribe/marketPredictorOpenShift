@@ -466,7 +466,7 @@ public class MarketAnalyzer {
 //	String startDateString = defaultDate.format(var.startDate);//startDate is defined in the class field
 //	String endDateString = defaultDate.format(var.endDate);//endDate is defined in the class field
 
-	File outputResults = new File("/var/lib/openshift/5138e23f5004466868000261/app-root/runtime/repo/"+var.fileName);
+	File outputResults = new File("/var/lib/openshift/513a57e55973caf275000079/app-root/runtime/repo/"+var.fileName);
 	PrintWriter out = new PrintWriter(
 		new BufferedWriter(
 		new FileWriter(outputResults, true)));
@@ -597,6 +597,13 @@ public class MarketAnalyzer {
 	return gains;
     }//end of method yearlyReturns
 
+    /**
+     * @description This function is responsible for getting all the BuySellPairs
+     * @param dates All of the dates
+     * @param followThroughDates
+     * @param fiveDDayDates
+     * @return Date[][] Pairs of BuySell
+     */
     public static Date[][] getBuySellPairs(Date[] dates, ArrayList<Date> followThroughDates, ArrayList<Date> fiveDDayDates) {
 
 	//this gets rid of extraneous sell days.  It adds the first fiveDDayDate after the buyDate to the array

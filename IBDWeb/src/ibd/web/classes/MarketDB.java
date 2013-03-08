@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class MarketDB {
 
     /**
-     *
-     * @return
+     * @description Static method for creation of database connection
+     * @return A database Connection
      */
     public static Connection getConnection() {
 	Connection connection = null;
@@ -26,8 +26,8 @@ public class MarketDB {
 	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
-	    String username = "adminxDWwjBT";
-	    String password = "54NJV2bLku7w";
+	    String username = "adminxQvN8PH";
+	    String password = "WuLqQSWVvsg-";
 	    
 	    
 	 // ************For Local Account************	
@@ -55,7 +55,7 @@ public class MarketDB {
      * @param connection
      * @param sym
      * @param date 
-     * @return
+     * @return boolean true if match is found else false. Means if there is data for this <code>date</code>
      * @throws SQLException
      */
     public static synchronized boolean isMatch(Connection connection, String sym, Date date) throws SQLException {
@@ -75,7 +75,7 @@ public class MarketDB {
      * @param sym
      * @param startDate
      * @param endDate
-     * @return
+     * @return Object of Class <code>Data</code>
      * @throws SQLException
      */
     public static synchronized Data getRecord(Connection connection, String sym, Date startDate, Date endDate) throws SQLException {
@@ -120,7 +120,7 @@ public class MarketDB {
      * @param low
      * @param close
      * @param volume
-     * @return
+     * @return Integer if record is added 1 else 0 or any negative value (TO-DO)
      * @throws SQLException
      */
     public static synchronized int addRecord(Connection connection, String sym, Date[] date, float[] open,
@@ -153,7 +153,7 @@ public class MarketDB {
      * @param priceTable
      * @param volumeTable
      * @param symbol
-     * @return
+     * @return Integer if record is deleted. (TO-DO)
      * @throws SQLException
      */
     public static synchronized int deleteRecord(Connection connection,
@@ -177,7 +177,7 @@ public class MarketDB {
      * @param connection
      * @param priceTable
      * @param volumeTable
-     * @return
+     * @return Integer if all records are deleted (TO-DO)
      * @throws SQLException
      */
     public static synchronized int deleteAll(Connection connection, String priceTable, String volumeTable) throws SQLException {

@@ -1,5 +1,11 @@
 package ibd.web.classes;
 
+/**
+ * Encapsulates the price and volume arrays for each stock into one object
+ * @author Shakeel Shahzad
+ * @description This class is actually responsible for communicating with database
+ */
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -11,6 +17,15 @@ import ibd.web.classes.MarketDB;
 
 public class HelloWorld {
 
+	/**
+	 * 
+	 * @param args These arguments are not being used for now but will be used if necessary
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
     public static void main(String[] args) throws FileNotFoundException, IOException, URISyntaxException, SQLException, ClassNotFoundException {
 
 	Connection connection = MarketDB.getConnection();

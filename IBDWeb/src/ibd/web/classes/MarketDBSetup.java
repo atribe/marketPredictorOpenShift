@@ -10,6 +10,15 @@ import java.sql.Statement;
 
 public class MarketDBSetup {
 
+	/**
+	 * 
+	 * @param args
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
     public static void main(String[] args) throws FileNotFoundException, IOException, URISyntaxException, SQLException, ClassNotFoundException {
 
 	Connection connection = MarketDB.getConnection();

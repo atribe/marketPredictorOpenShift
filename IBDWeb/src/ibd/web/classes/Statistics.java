@@ -10,6 +10,11 @@ package ibd.web.classes;
  */
 public class Statistics {
 
+	/**
+	 * 
+	 * @param a
+	 * @return
+	 */
     public static double coeffVar(double[] a) {//this computes the CV average per day (not the CV of the whole population)
 	double average = average(a);
 	double total = 0;

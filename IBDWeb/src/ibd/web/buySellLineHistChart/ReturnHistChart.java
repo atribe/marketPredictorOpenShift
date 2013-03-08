@@ -51,7 +51,11 @@ public class ReturnHistChart {// extends ApplicationFrame {
 
 	Date[] BD = (Date[]) marketVec.get(2);
 	Date[] SD = (Date[]) marketVec.get(3);
-	if(SD[SD.length-1]==null){//puts todays date at end of SD if it is null
+	
+	/**
+	 * @comment puts todays date at end of SD if it is null
+	 */
+	if(SD[SD.length-1]==null){
 	    java.util.Date goob=new java.util.Date();
 	    long woob=goob.getTime();
 	    SD[SD.length-1]=new Date(woob);
@@ -63,7 +67,13 @@ public class ReturnHistChart {// extends ApplicationFrame {
 	TimeSeries buySeries = null;// = new TimeSeries("");
 	TimeSeries sellSeries = null;// = new TimeSeries("");
 	try {
+		/**
+		 * @comment loops through pricesClose
+		 */
 	    for (int i = 0; i < pricesClose.length; i++) {//loops through pricesClose
+	    	/**
+	    	 * @comment gets the loop up to first buyDate
+	    	 */
 		if (dates[i].before(BD[0])) {//gets the loop up to first buyDate
 		    continue;
 		}
@@ -75,18 +85,33 @@ public class ReturnHistChart {// extends ApplicationFrame {
 		}
 
 		//this populates the buy periods
+		/**
+		 * @comment this populates the buy periods
+		 */
 		if ((dates[i].after(BD[j]) | dates[i].equals(BD[j])) & dates[i].before(SD[j])) {
 		    buySeries.add(new Day(new java.util.Date(dates[i].getTime())), pricesClose[i]);
 
 		    //this populates the sell periods
+		    /**
+		     * @comment this populates the sell periods
+		     */
 		} else if ((dates[i].after(SD[j]) | dates[i].equals(SD[j])) & dates[i].before(BD[j + 1])) {//todo this last before needs to be changed cuz ther won't be a BD(j+1) if is is in a sell period
 		    sellSeries.add(new Day(new java.util.Date(dates[i].getTime())), pricesClose[i]);
 		} else {//hits this after sellSeries and buySeries are complete
+			/**
+			 * @comment hits this after sellSeries and buySeries are complete
+			 */
 		    dataset.addSeries(buySeries);
 		    dataset.addSeries(sellSeries);
 		    j++;
+		    /**
+		     * @comment i has to be decremented because by the time it has gone through the iteration is lost
+		     */
 		    i--;//i has to be decremented because by the time it has gone through the iteration is lost
 		}
+		/**
+		 * @comment below paranthesis will end the for loop
+		 */
 	    }//end of for loop
 	} catch (IndexOutOfBoundsException e) {
 		ibd.web.Resource.ResourceInitializer.logger.info("Exception in ReturnHistChart.java: "+e);
@@ -140,5 +165,8 @@ public class ReturnHistChart {// extends ApplicationFrame {
 	JFreeChart chart = ReturnHistChart.createChart(dataset, symbol);
 	return chart;
     }
+    /** 
+     * @comment below paranthesis will end the Class
+     */
 }//end of class
 

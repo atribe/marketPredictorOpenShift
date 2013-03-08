@@ -40,9 +40,6 @@ public class GetChartData {
      * @throws IOException if an I/O error occurs
      * @throws NullPointerException
      */
-//    @Override
-//    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-//	    throws ServletException, IOException, MalformedURLException, NullPointerException {
     public static Vector getData(String market) {
 
 //	HashMap<String, Data> marketData=new HashMap<String, Data>();

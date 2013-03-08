@@ -11,6 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/index")
 public class IndexController {
+	/**
+	 * 
+	 * @return ModelAndView
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView getIndex() {
 		DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.FULL, Locale.US);

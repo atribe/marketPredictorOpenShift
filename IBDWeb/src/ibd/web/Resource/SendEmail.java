@@ -18,6 +18,15 @@ import javax.mail.internet.MimeMultipart;
 public class SendEmail
 {
 
+	/**
+	 * 
+	 * @param emailHost
+	 * @param fromEmail
+	 * @param passKey
+	 * @param toEmail
+	 * @param filePath1 Log file to send as attachement
+	 * @return
+	 */
     public int sendEmail(String emailHost, final String fromEmail, final String passKey, String toEmail, String filePath1)
     {
     	ibd.web.Resource.ResourceInitializer.logger.info("1");

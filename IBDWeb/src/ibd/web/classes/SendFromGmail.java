@@ -50,6 +50,14 @@ public class SendFromGmail {
 //	System.out.println("Sucessfully Sent mail to All Users");
     }
 
+    /**
+     * 
+     * @param recipients
+     * @param subject
+     * @param message
+     * @param from
+     * @throws MessagingException
+     */
     public void sendSSLMessage(String recipients[], String subject,
 	    String message, String from) throws MessagingException {
 	boolean debug = true;

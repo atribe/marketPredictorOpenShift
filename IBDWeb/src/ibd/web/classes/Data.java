@@ -1,7 +1,9 @@
 /**
  * Encapsulates the price and volume arrays for each stock into one object
  * @author Hugh
- *
+ * @description These are all Class variables or fields of the object, these are available
+ * to other classes since they are public
+ * @description If they were private then there would have to be public accessors and mutators (TO-DO)
  */
 package ibd.web.classes;
 

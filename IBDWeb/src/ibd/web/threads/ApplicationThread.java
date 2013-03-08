@@ -7,6 +7,11 @@ import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -147,11 +152,12 @@ public class ApplicationThread implements Runnable {
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;
 		    try{
 		    	ibd.web.Resource.ResourceInitializer.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail);
-			new ibd.web.Resource.SendEmail().sendEmail(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail , "/var/lib/openshift/5138e23f5004466868000261/app-root/runtime/repo/IBDinfo.log");
+			new ibd.web.Resource.SendEmail().sendEmail(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail , "/var/lib/openshift/513a57e55973caf275000079/app-root/runtime/repo/IBDinfo.log");
 		    }catch(Exception e){
 		    	ibd.web.Resource.ResourceInitializer.logger.info("EXCEPTION IN SENDING EMAIL");
 		    }
 		    ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT ENDEDDDDDDDDDDDDDDDDDDD");
+		    _sleepTime = getMilliSeconds(_sleepTime);
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds
 		}
@@ -159,6 +165,29 @@ public class ApplicationThread implements Runnable {
 		Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
+    }
+    
+    private static Long getMilliSeconds(Long millis){
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss"); 
+		dateFormat.setTimeZone(TimeZone.getTimeZone("EST5EDT")); 
+		Calendar calendar = Calendar.getInstance();
+		ibd.web.Resource.ResourceInitializer.logger.info("CURRENT DATE AND TIME IS: "+new Date());
+		calendar.setTime(new Date());
+		calendar.add(Calendar.DATE, 1);
+		String time = "16:30:10";
+		String [] date = dateFormat.format(calendar.getTime()).split(" ");
+		String setDate = date[0]+" "+time;
+		ibd.web.Resource.ResourceInitializer.logger.info("JOB TO RUN ON: "+setDate);
+		try {
+			Date d = dateFormat.parse(setDate);
+			long seconds = ((d.getTime()-new Date().getTime())/1000)*1000;
+			ibd.web.Resource.ResourceInitializer.logger.info("NUMBER OF MILLISECONDS TO DELAY: "+seconds);
+			return seconds;
+		} catch (ParseException e) {
+			ibd.web.Resource.ResourceInitializer.logger.info("EXCEPTION IN GETMILLIS IS: "+e.toString());
+			ibd.web.Resource.ResourceInitializer.logger.info("DUE TO EXCEPTION: NUMBER OF MILLISECONDS TO DELAY: "+millis);
+			return millis;
+		}
     }
 
     public static void debug(String value) {
