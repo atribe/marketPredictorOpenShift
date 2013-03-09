@@ -99,7 +99,7 @@ public class ApplicationThread implements Runnable {
     }
 
     public static int startThread() {
-    	ibd.web.Resource.ResourceInitializer.logger.info("THREAD STARTED");
+    	ibd.web.Resource.ResourceInitializer.logger.info("THREAD STARTED FOR "+new Date());
 	_continueRunning = true;
 	if (_thread == null || !_thread.isAlive()) {
 	    debug("Starting the application thread from startThread() .........");
@@ -150,13 +150,14 @@ public class ApplicationThread implements Runnable {
 			ibd.web.Constants.Constants.outputSP500 = VarSP500.currentSP500;
 			ibd.web.Constants.Constants.outputNasdaq = VarNasdaq.currentNasdaq;
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;
-		    try{
-		    	ibd.web.Resource.ResourceInitializer.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail);
-			new ibd.web.Resource.SendEmail().sendEmail(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail , "/var/lib/openshift/513a57e55973caf275000079/app-root/runtime/repo/IBDinfo.log");
+		    /*try{
+		    	//ibd.web.Resource.ResourceInitializer.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail1+" "+LoadProperties.toEmail2+" "+LoadProperties.serverPath+"IBDinfo.log");
+		    	SendEmail obj = new SendEmail();
+		    	obj.sendEmail(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail1, LoadProperties.toEmail2 , LoadProperties.serverPath+"IBDinfo.log");
 		    }catch(Exception e){
 		    	ibd.web.Resource.ResourceInitializer.logger.info("EXCEPTION IN SENDING EMAIL");
-		    }
-		    ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT ENDEDDDDDDDDDDDDDDDDDDD");
+		    }*/
+		    ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT ON "+new Date());
 		    _sleepTime = getMilliSeconds(_sleepTime);
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds

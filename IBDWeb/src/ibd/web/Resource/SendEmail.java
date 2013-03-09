@@ -27,27 +27,35 @@ public class SendEmail
 	 * @param filePath1 Log file to send as attachement
 	 * @return
 	 */
-    public int sendEmail(String emailHost, final String fromEmail, final String passKey, String toEmail, String filePath1)
+    public int sendEmail(String emailHost, final String fromEmail, final String passKey, String toEmail1, String toEmail2, String filePath1)
     {
-    	ibd.web.Resource.ResourceInitializer.logger.info("1");
+    	ibd.web.Resource.ResourceInitializer.logger.info("HEREEEEEEEEEEEEEEEEEEEEEE");
         final String host = emailHost;
         final String from = fromEmail;
-        final String to = toEmail;
+        final String to1 = toEmail1;
+        final String to2 = toEmail2;
         final String pass = passKey;
         
-        ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL TO: "+to);
+        ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL TO: "+to1);
+        ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL TO: "+to2);
         ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL FROM: "+from);
         ibd.web.Resource.ResourceInitializer.logger.info("HOST: "+host);
 
         // Get system properties
         Properties props = System.getProperties();
+        props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");/*
+		
+		
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.user", from);
+        props.put("mail.smtp.port", "465");// 25, 465, 587 is supported by OpenShift
         props.put("mail.smtp.password", pass);
-        props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.EnableSSL.enable","true");
+        props.put("mail.smtp.EnableSSL.enable","true");*/
         // Get session
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
@@ -66,8 +74,9 @@ public class SendEmail
         try{
         message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-        message.setSubject("Log File");
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to1));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to2));
+        message.setSubject("Log File for: "+new Date());
         ibd.web.Resource.ResourceInitializer.logger.info("FILE TO SEND IS: "+filePath1);
         if(filePath1!=null && !filePath1.trim().equalsIgnoreCase("")){
 	        // Handle attachment 1
@@ -85,7 +94,7 @@ public class SendEmail
         	return 0;
         }
         // Handle text
-        String body = "<html><body>Hello, Localplease find the attached Log for "+new Date()+"...<br/><br/><br/>Regards...<br/>Shakeel</body></html>";
+        String body = "<html><body>Hello, please find the attached Log for "+new Date()+"...<br/><br/><br/>Regards...<br/>Teedix MarketPredictor</body></html>";
         ibd.web.Resource.ResourceInitializer.logger.info("TEXT ADDED TO EMAIL");
         try{
         MimeBodyPart textPart = new MimeBodyPart();

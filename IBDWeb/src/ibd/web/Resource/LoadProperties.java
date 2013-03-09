@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 public final class LoadProperties {
-	public static String hostName="",fromEmail="",passKey="",toEmail="";
+	public static String hostName="",fromEmail="",passKey="",toEmail1="",toEmail2="";
+	public static String serverPath="";
 	// Constructor
 	public LoadProperties(){
 		// initialize the properties file.
@@ -38,10 +39,13 @@ public final class LoadProperties {
 			ibd.web.Resource.ResourceInitializer.logger.info("Loaded Host Name: "+hostName);
 			fromEmail = file.getProperty("fromEmail");
 			ibd.web.Resource.ResourceInitializer.logger.info("Loaded from Email: "+fromEmail);
-			toEmail = file.getProperty("toEmail");
-			ibd.web.Resource.ResourceInitializer.logger.info("Loaded to Email: "+toEmail);
+			toEmail1 = file.getProperty("toEmail1");
+			ibd.web.Resource.ResourceInitializer.logger.info("Loaded to Email1: "+toEmail1);
+			toEmail2 = file.getProperty("toEmail2");
+			ibd.web.Resource.ResourceInitializer.logger.info("Loaded to Email2: "+toEmail2);
 			passKey = file.getProperty("emailPassword");
 			ibd.web.Resource.ResourceInitializer.logger.info("Loaded Password: "+"manisasocialanimal");
+			serverPath = file.getProperty("serverPath");
 			ibd.web.Resource.ResourceInitializer.logger.info("Properties Loaded.");
 			file = null;
 		} catch (IOException e) {

@@ -31,7 +31,7 @@ public class MarketDB {
 	    
 	    
 	 // ************For Local Account************	
-	   /* String host = "localhost";
+	    /*String host = "localhost";
 	    String port="3306";
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
 	    String username = "root";

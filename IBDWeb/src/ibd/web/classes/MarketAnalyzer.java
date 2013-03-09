@@ -17,6 +17,8 @@ package ibd.web.classes;
  * output to the website every day, only offer email once a week.  Have a weekly cap email on Friday
  * @author Aaron
  */
+import ibd.web.Resource.LoadProperties;
+
 import java.io.*;
 import java.lang.reflect.Array;
 import java.sql.Connection;
@@ -466,7 +468,7 @@ public class MarketAnalyzer {
 //	String startDateString = defaultDate.format(var.startDate);//startDate is defined in the class field
 //	String endDateString = defaultDate.format(var.endDate);//endDate is defined in the class field
 
-	File outputResults = new File("/var/lib/openshift/513a57e55973caf275000079/app-root/runtime/repo/"+var.fileName);
+	File outputResults = new File(LoadProperties.serverPath+var.fileName);
 	PrintWriter out = new PrintWriter(
 		new BufferedWriter(
 		new FileWriter(outputResults, true)));
