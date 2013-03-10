@@ -76,7 +76,7 @@ public class GetChartData {
 	    marketVec.add(SD);
 
 	} catch (Exception ex) {
-	    ibd.web.Resource.ResourceInitializer.logger.info("Exception in GetChartData.java: "+ex);
+	    ibd.web.Constants.Constants.logger.info("Exception in GetChartData.java: "+ex);
 	}
 	return marketVec;
     }

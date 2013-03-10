@@ -34,6 +34,6 @@ public class MarketDBSetup {
 	    status = statement.executeUpdate(query);
 	}
         statement.close();
-        ibd.web.Resource.ResourceInitializer.logger.info("Status in MarketDB Setup.java: "+status);
+        ibd.web.Constants.Constants.logger.info("Status in MarketDB Setup.java: "+status);
     }
 }

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class StartThreadServlet extends HttpServlet {
       static{
-    	  ibd.web.Resource.ResourceInitializer.logger.info("Initializing the StartThreadServlet.java");	  
+    	  ibd.web.Constants.Constants.logger.info("Initializing the StartThreadServlet.java");	  
        //System.out.println("Initializing the StartThreadServlet .............................");
        ApplicationThread th;
     }

@@ -1,7 +1,7 @@
 package ibd.web.threads;
 
 import ibd.web.Resource.LoadProperties;
-import ibd.web.Resource.SendEmail;
+import ibd.web.Resource.Communication;
 import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
@@ -99,7 +99,7 @@ public class ApplicationThread implements Runnable {
     }
 
     public static int startThread() {
-    	ibd.web.Resource.ResourceInitializer.logger.info("THREAD STARTED FOR "+new Date());
+    	ibd.web.Constants.Constants.logger.info("THREAD STARTED FOR "+new Date());
 	_continueRunning = true;
 	if (_thread == null || !_thread.isAlive()) {
 	    debug("Starting the application thread from startThread() .........");
@@ -113,7 +113,7 @@ public class ApplicationThread implements Runnable {
 
     public void run() {
 	try {
-		ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT FOR 10000 MILLISECONDS");
+		ibd.web.Constants.Constants.logger.info("THREAD SLEPT FOR 10000 MILLISECONDS");
 	    Thread.sleep(10000);
 	}catch (Exception e) {
 		e.printStackTrace();
@@ -139,25 +139,25 @@ public class ApplicationThread implements Runnable {
 	    try {
 		_running = false;
 		_killerThread.interrupt();
-		ibd.web.Resource.ResourceInitializer.logger.info("FORCED INTERRUPTION OF KILLERTHREAD");
+		ibd.web.Constants.Constants.logger.info("FORCED INTERRUPTION OF KILLERTHREAD");
 		if (_continueRunning) {
-			ibd.web.Resource.ResourceInitializer.logger.info("INSIDE CONTINUE RUNNING");	
+			ibd.web.Constants.Constants.logger.info("INSIDE CONTINUE RUNNING");	
 		    long _sleepTime = ibd.web.threads.ThreadActions.getNextMinuteRunTime(10).getTimeInMillis();
-		    ibd.web.Resource.ResourceInitializer.logger.info("GOING TO SEND EMAIL");
+		    ibd.web.Constants.Constants.logger.info("GOING TO SEND EMAIL");
 		    debug("Thread is sleeping for " + _sleepTime + " milliseconds.");	
-		    ibd.web.Resource.ResourceInitializer.logger.info("Thread is sleeping for "+_sleepTime+" milliseconds");
+		    ibd.web.Constants.Constants.logger.info("Thread is sleeping for "+_sleepTime+" milliseconds");
 		    ibd.web.Constants.Constants.jobRunning = false;
 			ibd.web.Constants.Constants.outputSP500 = VarSP500.currentSP500;
 			ibd.web.Constants.Constants.outputNasdaq = VarNasdaq.currentNasdaq;
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;
-		    /*try{
-		    	//ibd.web.Resource.ResourceInitializer.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail1+" "+LoadProperties.toEmail2+" "+LoadProperties.serverPath+"IBDinfo.log");
-		    	SendEmail obj = new SendEmail();
-		    	obj.sendEmail(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail1, LoadProperties.toEmail2 , LoadProperties.serverPath+"IBDinfo.log");
+		    try{
+		    	//ibd.web.Constants.Constants.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail1+" "+LoadProperties.toEmail2+" "+LoadProperties.serverPath+"IBDinfo.log");
+		    	Communication obj = new Communication();
+		    	obj.communicate(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail1, LoadProperties.toEmail2 , LoadProperties.serverPath+"IBDinfo.log");
 		    }catch(Exception e){
-		    	ibd.web.Resource.ResourceInitializer.logger.info("EXCEPTION IN SENDING EMAIL");
-		    }*/
-		    ibd.web.Resource.ResourceInitializer.logger.info("THREAD SLEPT ON "+new Date());
+		    	ibd.web.Constants.Constants.logger.info("EXCEPTION IN SENDING EMAIL");
+		    }
+		    ibd.web.Constants.Constants.logger.info("THREAD SLEPT ON "+new Date());
 		    _sleepTime = getMilliSeconds(_sleepTime);
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds
@@ -172,21 +172,21 @@ public class ApplicationThread implements Runnable {
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss"); 
 		dateFormat.setTimeZone(TimeZone.getTimeZone("EST5EDT")); 
 		Calendar calendar = Calendar.getInstance();
-		ibd.web.Resource.ResourceInitializer.logger.info("CURRENT DATE AND TIME IS: "+new Date());
+		ibd.web.Constants.Constants.logger.info("CURRENT DATE AND TIME IS: "+new Date());
 		calendar.setTime(new Date());
 		calendar.add(Calendar.DATE, 1);
 		String time = "16:30:10";
 		String [] date = dateFormat.format(calendar.getTime()).split(" ");
 		String setDate = date[0]+" "+time;
-		ibd.web.Resource.ResourceInitializer.logger.info("JOB TO RUN ON: "+setDate);
+		ibd.web.Constants.Constants.logger.info("JOB TO RUN ON: "+setDate);
 		try {
 			Date d = dateFormat.parse(setDate);
 			long seconds = ((d.getTime()-new Date().getTime())/1000)*1000;
-			ibd.web.Resource.ResourceInitializer.logger.info("NUMBER OF MILLISECONDS TO DELAY: "+seconds);
+			ibd.web.Constants.Constants.logger.info("NUMBER OF MILLISECONDS TO DELAY: "+seconds);
 			return seconds;
 		} catch (ParseException e) {
-			ibd.web.Resource.ResourceInitializer.logger.info("EXCEPTION IN GETMILLIS IS: "+e.toString());
-			ibd.web.Resource.ResourceInitializer.logger.info("DUE TO EXCEPTION: NUMBER OF MILLISECONDS TO DELAY: "+millis);
+			ibd.web.Constants.Constants.logger.info("EXCEPTION IN GETMILLIS IS: "+e.toString());
+			ibd.web.Constants.Constants.logger.info("DUE TO EXCEPTION: NUMBER OF MILLISECONDS TO DELAY: "+millis);
 			return millis;
 		}
     }

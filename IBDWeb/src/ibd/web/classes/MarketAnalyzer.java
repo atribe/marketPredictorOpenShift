@@ -6,7 +6,7 @@
 package ibd.web.classes;
 
 /**
- *stuff to do
+ * stuff to do
  * make sure values are the best for 1990 and later
  * run the same main method (copy this) for nasdaq and dow and maybe other indices
  * it might be good to combine indices for a single buy or sell date or maybe 2 out of 3 etc.
@@ -20,7 +20,6 @@ package ibd.web.classes;
 import ibd.web.Resource.LoadProperties;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Date;
@@ -30,7 +29,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MarketAnalyzer {
 
@@ -60,8 +58,8 @@ public class MarketAnalyzer {
 	    }
 	}
 
-	Vector BD = fiveDDayDates(indexData, var, loopDays);//calls followThroghDates method
-	ArrayList<Date> fiveDDayDates = (ArrayList<Date>) BD.get(0);//unpacks the arraylist from the vector
+	Vector BD = distributionDayDates(indexData, var, loopDays);//calls followThroghDates method
+	ArrayList<Date> distributionDayDates = (ArrayList<Date>) BD.get(0);//unpacks the arraylist from the vector
 	int dDaysToday = (Integer) BD.get(1);
 
 	Vector FT = new Vector();
@@ -70,7 +68,29 @@ public class MarketAnalyzer {
 	ArrayList<Date> followThroughDates = (ArrayList<Date>) FT.get(0);//used to return checkMarkets data
 	int rallyDaysToday = (Integer) FT.get(1);//used t0 return rallyDaysToday
 
-	Date[][] buySellPairs = getBuySellPairs(dates, followThroughDates, fiveDDayDates);
+	/**
+	 * @author Shakeel Shahzad
+	 * @description See that the system doesn't calculate buySellPairs each time it runs.
+	 * @date March 10, 2013
+	 * @findings It's calculating each time from the start to the end of the date for every INDEX
+	 */
+	// Printing out the Follow Through and Distribution Day dates to see what exactly happens behind the scenes.
+	System.out.println("**********Showing FollowThroughDates**********");
+	for(Date date: followThroughDates){
+		System.out.print(date+" ");
+	}
+	System.out.println();
+	System.out.println("**********Showing DistributionDayDates**********");
+	for(Date date: distributionDayDates){
+		System.out.print(date+" ");
+	}
+	System.out.println();
+	System.out.println("**********Showing Dates**********");
+	for(Date date: dates){
+		System.out.print(date+" ");
+	}
+	System.out.println();
+	Date[][] buySellPairs = getBuySellPairs(dates, followThroughDates, distributionDayDates);
 	Date[] buyDates = buySellPairs[0];
 	Date[] sellDates = buySellPairs[1];
 	Date[] sellDatesTrue = buySellPairs[2];
@@ -80,12 +100,13 @@ public class MarketAnalyzer {
 	if (buyDates[buyDates.length - 1].before(sellDatesTrue[sellDatesTrue.length - 1])) {
 	    buyOrSellToday = "SELL";
 	}
+	
 	//gets last buy and sell date for output
 	Date lastBuyDate = buyDates[buyDates.length - 1];
 	Date lastSellDate = sellDatesTrue[sellDatesTrue.length - 1];
 	float dDaysPerc = (float) dDaysToday / (float) var.dDayParam * 100;
 
-//this adds a dummy day to the end of sellDatesTrue so it is the same size as buyDates, adds a null day to the end if needed
+	//this adds a dummy day to the end of sellDatesTrue so it is the same size as buyDates, adds a null day to the end if needed
 	Date[] sellDatesTrue1 = new Date[1];
 	if (buyDates[buyDates.length - 1].after(sellDatesTrue[sellDatesTrue.length - 1])) {
 	    sellDatesTrue1 = Arrays.copyOf(sellDatesTrue, sellDatesTrue.length + 1);//this makes it one size bigger
@@ -100,7 +121,7 @@ public class MarketAnalyzer {
 
 	for (int i = 0; i < histReturns.length; i++) {
 	    //System.out.println("origGain= " + histReturns[i][0] + "  modGain= " + histReturns[i][1]);
-	    ibd.web.Resource.ResourceInitializer.logger.info("origGain= " + histReturns[i][0] + "  modGain= " + histReturns[i][1]);
+	    ibd.web.Constants.Constants.logger.info("origGain= " + histReturns[i][0] + "  modGain= " + histReturns[i][1]);
 	}
 
 	String marketName = "";
@@ -117,9 +138,9 @@ public class MarketAnalyzer {
 
 	try {
 	    writeFile(results, var);
-	    ibd.web.Resource.ResourceInitializer.logger.info("Wrote File in MarketAnalyzer.java");
+	    ibd.web.Constants.Constants.logger.info("Wrote File in MarketAnalyzer.java");
 	} catch (IOException e) {
-		ibd.web.Resource.ResourceInitializer.logger.info("Can not write to File in MarketAnalyzer.java");
+		ibd.web.Constants.Constants.logger.info("Can not write to File in MarketAnalyzer.java");
 	}
 
 
@@ -156,7 +177,7 @@ public class MarketAnalyzer {
 	    Data data = MarketDB.getRecord(connection, var.list, startDateNew, var.endDate);
 	    dataMap.put(var.list, data);
 	} catch (SQLException e) {
-		ibd.web.Resource.ResourceInitializer.logger.info("Can not get Record in MarketAnalyzer.java"+e);
+		ibd.web.Constants.Constants.logger.info("Can not get Record in MarketAnalyzer.java"+e);
 	}
 //	}//end of for loop
 	return dataMap;
@@ -219,24 +240,24 @@ public class MarketAnalyzer {
 			    }
 			case 1://priceClose must be greater than or equal to previous day
 			    if (var.churnPriceCloseHigherOn == true) {
-				if (pricesClose[c] >= pricesClose[c + 1]) {
-				} else {
-				    break;
-				}
+					if (pricesClose[c] >= pricesClose[c + 1]) {
+					} else {
+					    break;
+					}
 			    }
 			case 2://volume of churn day must be higher than 50 day average
 			    if (var.churnAVG50On == true) {
-				if (volumes[c] > volumeAVG50[c]) {
-				} else {
-				    break;
-				}
+					if (volumes[c] > volumeAVG50[c]) {
+					} else {
+					    break;
+					}
 			    }
 			case 3://priceTrend35 means average price gain is at least .1%/day for 35 days before the churn day
 			    if (var.churnPriceTrend35On == true) {
-				if (priceTrend35[c] > var.churnPriceTrend35) {//this value is ~.001
-				} else {
-				    break;
-				}
+					if (priceTrend35[c] > var.churnPriceTrend35) {//this value is ~.001
+					} else {
+					    break;
+					}
 			    }
 			case 4:
 			    dDayDates.add(dates[c]);
@@ -263,11 +284,11 @@ public class MarketAnalyzer {
      * @param loopDays
      * @return
      */
-    public static Vector fiveDDayDates(HashMap<String, Data> indexData, Variables var, int loopDays) {
+    public static Vector distributionDayDates(HashMap<String, Data> indexData, Variables var, int loopDays) {
 
 	Data data1 = indexData.get(var.list);
 	Date[] dates = data1.dateData;
-	ArrayList<Date> fiveDDayDates = new ArrayList<Date>();
+	ArrayList<Date> distributionDayDates = new ArrayList<Date>();
 	ArrayList<Date> dDayDates = dDayDates(indexData, var, loopDays);
 	Vector FT = getFollowThroughDates(indexData, var, loopDays);//calls followThroghDates method
 	ArrayList<Date> followThroughDates = (ArrayList<Date>) FT.get(0);//unpacks the arraylist from the vector
@@ -289,13 +310,13 @@ public class MarketAnalyzer {
 		dDaysToday = dd;
 	    }
 	    if (dd >= var.dDayParam) {
-		fiveDDayDates.add(dates[c]);
+		distributionDayDates.add(dates[c]);
 //		System.out.println("5 d days  " + dates[c] + "  " + dd);
 	    }
 
 	}//this ends the c for loop
 	Vector BDs = new Vector();
-	BDs.add(0, fiveDDayDates);
+	BDs.add(0, distributionDayDates);
 	BDs.add(1, dDaysToday);
 	BDs.add(2, FT);
 	return BDs;
@@ -377,7 +398,7 @@ public class MarketAnalyzer {
 //                                +" dates="+dates[c+k]+" pricesClose="+pricesClose[c+j]+"\n");
 			    ++k;
 			}
-//                    System.out.println("j loop c="+c+" j="+j+" k="+k+" rallyCheck="+rallyCheck+
+//                    	  System.out.println("j loop c="+c+" j="+j+" k="+k+" rallyCheck="+rallyCheck+
 //                                " rallyDay="+rallyDay+"\npricesLow="+pricesLow[c+k-1]
 //                                +" dates="+dates[c+k-1]+" pricesClose="+pricesClose[c+j]);
 		}
@@ -488,7 +509,7 @@ public class MarketAnalyzer {
      * @param buyDate
      * @param sellDate
      * @param var
-     * @return
+     * @return float[][]
      * @throws IOException
      * @throws NullPointerException
      */
@@ -529,7 +550,7 @@ public class MarketAnalyzer {
 		    loopDays++;//size of the new array
 		}
 	    } catch (IndexOutOfBoundsException e) {
-	    	ibd.web.Resource.ResourceInitializer.logger.info("Exception in MarketAnalyzer.java"+e);
+	    	ibd.web.Constants.Constants.logger.info("Exception in MarketAnalyzer.java"+e);
 		break;
 	    }
 
@@ -557,7 +578,7 @@ public class MarketAnalyzer {
 //		System.out.println("joker="+joker);
 		if (sellDates.contains(joker)) {
 		    periodSellDates.add(dates[p]);
-		    ibd.web.Resource.ResourceInitializer.logger.info("In MarketAnalyzer.java SD "+dates[p]);
+		    ibd.web.Constants.Constants.logger.info("In MarketAnalyzer.java SD "+dates[p]);
 		    sellPrices.add(pricesClose[p]);
 		}
 	    }
@@ -586,7 +607,7 @@ public class MarketAnalyzer {
 		    amntInv[j] = percGain * amntInv[j - 1] + amntInv[j - 1];
 		}
 		
-		ibd.web.Resource.ResourceInitializer.logger.info("In MarketAnalyzer.java period=" + periods[i] + " " + var.list + " buyDates " + periodBuyDates.get(j) + " "
+		ibd.web.Constants.Constants.logger.info("In MarketAnalyzer.java period=" + periods[i] + " " + var.list + " buyDates " + periodBuyDates.get(j) + " "
 			+ buyPrices.get(j) + "  sellDates " + periodSellDates.get(j) + " " + sellPrices.get(j)
 			+ " percGain " + percGain * 100 + " " + j);
 	    }//put in somewhere in here the size of sellDates and buyDates to see if index is out of bounds
@@ -603,20 +624,20 @@ public class MarketAnalyzer {
      * @description This function is responsible for getting all the BuySellPairs
      * @param dates All of the dates
      * @param followThroughDates
-     * @param fiveDDayDates
+     * @param distributionDayDates
      * @return Date[][] Pairs of BuySell
      */
-    public static Date[][] getBuySellPairs(Date[] dates, ArrayList<Date> followThroughDates, ArrayList<Date> fiveDDayDates) {
+    public static Date[][] getBuySellPairs(Date[] dates, ArrayList<Date> followThroughDates, ArrayList<Date> distributionDayDates) {
 
 	//this gets rid of extraneous sell days.  It adds the first fiveDDayDate after the buyDate to the array
 	ArrayList<Date> sellDates = new ArrayList<Date>();
 	ArrayList<Date> buyDates = new ArrayList<Date>();
 	for (int countFT = followThroughDates.size() - 1; countFT >= 0; countFT--) {
 	    boolean gotIt = false;
-	    int countFDD = fiveDDayDates.size() - 1;
+	    int countFDD = distributionDayDates.size() - 1;
 	    while (countFDD >= 0 & gotIt == false) {//this part finds the sell day
-		if (fiveDDayDates.get(countFDD).after(followThroughDates.get(countFT))) {
-		    sellDates.add(0, fiveDDayDates.get(countFDD));
+		if (distributionDayDates.get(countFDD).after(followThroughDates.get(countFT))) {
+		    sellDates.add(0, distributionDayDates.get(countFDD));
 		    gotIt = true;
 		}
 		--countFDD;
@@ -625,11 +646,16 @@ public class MarketAnalyzer {
 
 //	    this part takes out duplicate sell dates.  There are duplicate sell days because a sell day is found for each buy day
 //	    which can be the same day for many buy days
+	/**
+	 * @question Are you only removing the consecutive duplicates or all duplicates?
+	 * @problem If you are removing all duplicates then the below code will fail to achieve functionality.
+	 * @solution We can remove all duplicates from the List with just 4 efficient lines of code
+	 */
 	int g = 0;
 	while (g < sellDates.size() - 1) {
 	    if (sellDates.get(g).equals(sellDates.get(g + 1))) {
-		sellDates.remove(g);
-		g--;//g has to be decremented because remove decreases the size of the arraylist
+			sellDates.remove(g);
+			g--;//g has to be decremented because remove decreases the size of the arraylist
 	    }
 	    g++;
 	}
@@ -652,7 +678,7 @@ public class MarketAnalyzer {
 		}
 		g++;
 	    } catch (IndexOutOfBoundsException e) {
-	    	ibd.web.Resource.ResourceInitializer.logger.info("Exception in MarketAnalyzer.java"+e);
+	    	ibd.web.Constants.Constants.logger.info("Exception in MarketAnalyzer.java"+e);
 		break;
 	    }
 	}

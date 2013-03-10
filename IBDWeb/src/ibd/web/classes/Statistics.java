@@ -72,7 +72,7 @@ public class Statistics {
 	if (a.length > 0) {
 	    return (average / a.length);
 	} else {
-		ibd.web.Resource.ResourceInitializer.logger.info("ERROR: Can not average 0 numbers in Statistics.java");
+		ibd.web.Constants.Constants.logger.info("ERROR: Can not average 0 numbers in Statistics.java");
 	    return 0;
 	}
     }

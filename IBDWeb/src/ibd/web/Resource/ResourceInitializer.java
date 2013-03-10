@@ -5,7 +5,6 @@ import ibd.web.threads.ApplicationThread;
 import org.apache.log4j.Logger;
 
 public class ResourceInitializer {
-	public static Logger logger = Logger.getLogger(ibd.web.Resource.ResourceInitializer.class);
 	/**
 	 * 
 	 */
@@ -19,7 +18,7 @@ public class ResourceInitializer {
 		this.message = message;
 	}
 
-	public void initMethod() {
+	public void initMethod(){
 			new LoadProperties();
 			ApplicationThread.startThread();
 	}

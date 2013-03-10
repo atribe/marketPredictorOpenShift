@@ -64,11 +64,11 @@ public class ServletFundChartGenerator extends HttpServlet {
 	if(fund==null || fund.equalsIgnoreCase(""))
 		fund = "nflx"; // by default nflx
 	
-	ibd.web.Resource.ResourceInitializer.logger.info("Here is the FUND in ServletFundChartGenerator.java"+fund);
+	ibd.web.Constants.Constants.logger.info("Here is the FUND in ServletFundChartGenerator.java"+fund);
 //	System.out.println("HERE IS THE FUND! "+fund);
 	Vector gains = GetFundData.getData(fund);
 	//System.out.println("HERE ARE THE GAINS!!!!!!!!!!!!!!!!");
-	ibd.web.Resource.ResourceInitializer.logger.info("Here are the GAINS in ServletFundChartGenerator.java"+gains);
+	ibd.web.Constants.Constants.logger.info("Here are the GAINS in ServletFundChartGenerator.java"+gains);
 	//System.out.println(gains);
 
 	JFreeChart chart = null;
@@ -86,7 +86,7 @@ public class ServletFundChartGenerator extends HttpServlet {
 	    
 	} catch (Exception ex) {
 	    System.err.println(ex.toString());
-	    ibd.web.Resource.ResourceInitializer.logger.info("Exception in ServletFundChartGenerator.java"+ex);
+	    ibd.web.Constants.Constants.logger.info("Exception in ServletFundChartGenerator.java"+ex);
 	    //Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
 	    request.setAttribute("error",ex);
 	    request.setAttribute("fund",fund);

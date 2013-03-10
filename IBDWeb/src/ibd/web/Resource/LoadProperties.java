@@ -17,7 +17,7 @@ public final class LoadProperties {
 	// init() function
 	
 	private void init(){
-		ibd.web.Resource.ResourceInitializer.logger.info("Loading Properties from the file.");
+		ibd.web.Constants.Constants.logger.info("Loading Properties from the file.");
 		Properties file = new Properties();
 		//file.setProperty("pathOfFile", ReportGeneration.pathOfFile);
 		try {
@@ -31,25 +31,25 @@ public final class LoadProperties {
 			// Load all the properties at once in the map for later use.
 			/*File f = new File("resources.properties");
 			if(!f.exists()){
-				ibd.web.Resource.ResourceInitializer.logger.info("Can not find properties File.");
-				ibd.web.Resource.ResourceInitializer.logger.info("Exiting Now.");
+				ibd.web.Constants.Constants.logger.info("Can not find properties File.");
+				ibd.web.Constants.Constants.logger.info("Exiting Now.");
 			}
 			file.load(new FileInputStream("/resources/resources.properties"));*/
 			hostName = file.getProperty("host");
-			ibd.web.Resource.ResourceInitializer.logger.info("Loaded Host Name: "+hostName);
+			ibd.web.Constants.Constants.logger.info("Loaded Host Name: "+hostName);
 			fromEmail = file.getProperty("fromEmail");
-			ibd.web.Resource.ResourceInitializer.logger.info("Loaded from Email: "+fromEmail);
+			ibd.web.Constants.Constants.logger.info("Loaded from Email: "+fromEmail);
 			toEmail1 = file.getProperty("toEmail1");
-			ibd.web.Resource.ResourceInitializer.logger.info("Loaded to Email1: "+toEmail1);
+			ibd.web.Constants.Constants.logger.info("Loaded to Email1: "+toEmail1);
 			toEmail2 = file.getProperty("toEmail2");
-			ibd.web.Resource.ResourceInitializer.logger.info("Loaded to Email2: "+toEmail2);
+			ibd.web.Constants.Constants.logger.info("Loaded to Email2: "+toEmail2);
 			passKey = file.getProperty("emailPassword");
-			ibd.web.Resource.ResourceInitializer.logger.info("Loaded Password: "+"manisasocialanimal");
+			ibd.web.Constants.Constants.logger.info("Loaded Password: "+"manisasocialanimal");
 			serverPath = file.getProperty("serverPath");
-			ibd.web.Resource.ResourceInitializer.logger.info("Properties Loaded.");
+			ibd.web.Constants.Constants.logger.info("Properties Loaded.");
 			file = null;
 		} catch (IOException e) {
-			ibd.web.Resource.ResourceInitializer.logger.info(e.toString());
+			ibd.web.Constants.Constants.logger.info(e.toString());
 		} 
 	}
 	

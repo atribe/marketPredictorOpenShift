@@ -72,7 +72,7 @@ public class MarketRetriever {
 
 		MarketDB.addRecord(connection, var.list, dates, opens, highs, lows, closes, volumes);
 	    } catch (SQLException e) {
-	    	ibd.web.Resource.ResourceInitializer.logger.info("Can not add record for NumDays="+numDays+" in MarketRetreiver.java "+e);
+	    	ibd.web.Constants.Constants.logger.info("Can not add record for NumDays="+numDays+" in MarketRetreiver.java "+e);
 		//System.err.println("Cannot add record for numDays=" + numDays);
 		numDays -= 1;
 		loop=true;
@@ -104,9 +104,9 @@ public class MarketRetriever {
 	    } catch (NumberFormatException e) {
 		++flag;
 		//System.err.println("Proper connection getYahooMarketURL failed, trying again...");
-		ibd.web.Resource.ResourceInitializer.logger.info("Proper Connection getYahooMarketURL failed, trying again..."+e);
+		ibd.web.Constants.Constants.logger.info("Proper Connection getYahooMarketURL failed, trying again..."+e);
 	    } catch (Exception e) {//catch any other exception
-	    	ibd.web.Resource.ResourceInitializer.logger.info("Exception in MarketRetriever.java"+e);
+	    	ibd.web.Constants.Constants.logger.info("Exception in MarketRetriever.java"+e);
 		break;
 //		System.exit(1);
 
@@ -230,7 +230,7 @@ public class MarketRetriever {
 	System.out.println(a+","+b+","+c);
 	System.out.println(d+","+e+","+f);
 	String str = "http://ichart.finance.yahoo.com/table.csv?s=%5EGSPC&a="+a+"&b="+b+"&c="+c+"&d="+d+"&e="+e+"&f="+f+"&g=d&ignore=.csv";
-	ibd.web.Resource.ResourceInitializer.logger.info("Fetched data according to: "+str);
+	ibd.web.Constants.Constants.logger.info("Fetched data according to: "+str);
 	return str;
     }
 
@@ -248,7 +248,7 @@ public class MarketRetriever {
 		date = new java.sql.Date(utilDate.getTime());//convert to sql.date
 	    }
 	} catch (SQLException e) {
-		ibd.web.Resource.ResourceInitializer.logger.info("Can not perform isMatch Method in MarketRetriever.java"+e);
+		ibd.web.Constants.Constants.logger.info("Can not perform isMatch Method in MarketRetriever.java"+e);
 //	    System.err.println("cannot perform isMatch method");
 	}finally{
 		try {

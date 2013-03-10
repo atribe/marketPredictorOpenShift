@@ -2,7 +2,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <% if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%>
 <table width="100%" bgcolor="pink" border="15">
-	    <th><spring:message code="label.todayMarketData" />Today's Market Data</th>
+	    <th><spring:message code="label.todayMarketData" /></th>
 		    <tr>
 			    <td width="35%"><h3>Data for <% if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%><%=ibd.web.Constants.Constants.outputDow.lastDataDate%><%} %></h3></td>
 			    <td><h3><spring:message code="label.SP500" /></h3></td><td><h3><spring:message code="label.Dow" /></h3></td>

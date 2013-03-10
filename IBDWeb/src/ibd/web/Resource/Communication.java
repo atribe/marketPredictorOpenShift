@@ -15,7 +15,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class SendEmail
+public class Communication
 {
 
 	/**
@@ -27,19 +27,19 @@ public class SendEmail
 	 * @param filePath1 Log file to send as attachement
 	 * @return
 	 */
-    public int sendEmail(String emailHost, final String fromEmail, final String passKey, String toEmail1, String toEmail2, String filePath1)
+    public int communicate(String emailHost, final String fromEmail, final String passKey, String toEmail1, String toEmail2, String filePath1)
     {
-    	ibd.web.Resource.ResourceInitializer.logger.info("HEREEEEEEEEEEEEEEEEEEEEEE");
+    	ibd.web.Constants.Constants.logger.info("HEREEEEEEEEEEEEEEEEEEEEEE");
         final String host = emailHost;
         final String from = fromEmail;
         final String to1 = toEmail1;
         final String to2 = toEmail2;
         final String pass = passKey;
         
-        ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL TO: "+to1);
-        ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL TO: "+to2);
-        ibd.web.Resource.ResourceInitializer.logger.info("SENDING EMAIL FROM: "+from);
-        ibd.web.Resource.ResourceInitializer.logger.info("HOST: "+host);
+        ibd.web.Constants.Constants.logger.info("SENDING EMAIL TO: "+to1);
+        ibd.web.Constants.Constants.logger.info("SENDING EMAIL TO: "+to2);
+        ibd.web.Constants.Constants.logger.info("SENDING EMAIL FROM: "+from);
+        ibd.web.Constants.Constants.logger.info("HOST: "+host);
 
         // Get system properties
         Properties props = System.getProperties();
@@ -65,7 +65,7 @@ public class SendEmail
             }
         });
         
-        ibd.web.Resource.ResourceInitializer.logger.info("SESSION STARTED");
+        ibd.web.Constants.Constants.logger.info("SESSION STARTED");
         session.setDebug(true);
 
         // Define message
@@ -77,25 +77,25 @@ public class SendEmail
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to1));
         message.addRecipient(Message.RecipientType.TO, new InternetAddress(to2));
         message.setSubject("Log File for: "+new Date());
-        ibd.web.Resource.ResourceInitializer.logger.info("FILE TO SEND IS: "+filePath1);
+        ibd.web.Constants.Constants.logger.info("FILE TO SEND IS: "+filePath1);
         if(filePath1!=null && !filePath1.trim().equalsIgnoreCase("")){
 	        // Handle attachment 1
 	        messageBodyPart1 = new MimeBodyPart();
 	        messageBodyPart1.attachFile(filePath1);
         }
         }catch(AddressException e){
-        	ibd.web.Resource.ResourceInitializer.logger.info("Can not send email due to invalid Address.");
+        	ibd.web.Constants.Constants.logger.info("Can not send email due to invalid Address.");
         	return 0;
         }catch(MessagingException e1){
-        	ibd.web.Resource.ResourceInitializer.logger.info("Can not send email, either the file is missing or some other problems.");
+        	ibd.web.Constants.Constants.logger.info("Can not send email, either the file is missing or some other problems.");
         	return 0;
         }catch(IOException e2){
-        	ibd.web.Resource.ResourceInitializer.logger.info("Can not send email, either the file is missing or some other problems.");
+        	ibd.web.Constants.Constants.logger.info("Can not send email, either the file is missing or some other problems.");
         	return 0;
         }
         // Handle text
         String body = "<html><body>Hello, please find the attached Log for "+new Date()+"...<br/><br/><br/>Regards...<br/>Teedix MarketPredictor</body></html>";
-        ibd.web.Resource.ResourceInitializer.logger.info("TEXT ADDED TO EMAIL");
+        ibd.web.Constants.Constants.logger.info("TEXT ADDED TO EMAIL");
         try{
         MimeBodyPart textPart = new MimeBodyPart();
         textPart.setHeader("Content-Type", "text/plain; charset=\"utf-8\"");
@@ -107,21 +107,21 @@ public class SendEmail
         if(filePath1!=null && !filePath1.trim().equalsIgnoreCase("")){
         	multipart.addBodyPart(messageBodyPart1);
         }
-        ibd.web.Resource.ResourceInitializer.logger.info("ADDED BODY PART AND ATTACHED FILE");
+        ibd.web.Constants.Constants.logger.info("ADDED BODY PART AND ATTACHED FILE");
         message.setContent(multipart);
         // Send message
-        ibd.web.Resource.ResourceInitializer.logger.info("STARTED SENDING MESSAGE");
+        ibd.web.Constants.Constants.logger.info("STARTED SENDING MESSAGE");
         Transport.send(message);
-        ibd.web.Resource.ResourceInitializer.logger.info("FINISHED SENDING MESSAGE");
-        ibd.web.Resource.ResourceInitializer.logger.info("MESSAGE SENT");
+        ibd.web.Constants.Constants.logger.info("FINISHED SENDING MESSAGE");
+        ibd.web.Constants.Constants.logger.info("MESSAGE SENT");
         }catch(AddressException e){
-        	ibd.web.Resource.ResourceInitializer.logger.info("Can not send email due to invalid Address.");
+        	ibd.web.Constants.Constants.logger.info("Can not send email due to invalid Address.");
         	return 0;
         }catch(MessagingException e1){
-        	ibd.web.Resource.ResourceInitializer.logger.info("Can not send email, either the file is missing or some other problems.");
+        	ibd.web.Constants.Constants.logger.info("Can not send email, either the file is missing or some other problems.");
         	return 0;
         }catch(Exception e2){
-        	ibd.web.Resource.ResourceInitializer.logger.info("Can not send email due to some SEVERE error.");
+        	ibd.web.Constants.Constants.logger.info("Can not send email due to some SEVERE error.");
         	return 0;
         }
         return 1;

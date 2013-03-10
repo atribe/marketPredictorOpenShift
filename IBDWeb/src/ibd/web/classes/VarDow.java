@@ -5,7 +5,7 @@
 package ibd.web.classes;
 
 import ibd.web.Resource.LoadProperties;
-import ibd.web.Resource.SendEmail;
+import ibd.web.Resource.Communication;
 
 import java.io.IOException;
 import java.sql.Date;

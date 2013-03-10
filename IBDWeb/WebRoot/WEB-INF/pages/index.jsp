@@ -44,8 +44,6 @@
 	<br/>
 		<jsp:include page="historicalPerformance.jsp" />
 	<br/>
-		<jsp:include page="marketData.jsp" />
-	<br/>
 <%}%>
 	<jsp:include page="learningCenter.jsp" />
 </body>

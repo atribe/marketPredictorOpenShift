@@ -40,11 +40,11 @@ public class MarketDB {
 	    
 	    connection = DriverManager.getConnection(dbURL, username, password);
 	    System.out.println("Connection established");
-	    ibd.web.Resource.ResourceInitializer.logger.info("Connection Established in MarketDB.java");
+	    ibd.web.Constants.Constants.logger.info("Connection Established in MarketDB.java");
 	} catch (ClassNotFoundException e) {
-		ibd.web.Resource.ResourceInitializer.logger.info("Database Driver not found in MarketDB.java"+e);
+		ibd.web.Constants.Constants.logger.info("Database Driver not found in MarketDB.java"+e);
 	} catch (SQLException e) {
-		ibd.web.Resource.ResourceInitializer.logger.info("Exception loading Database Driver in MarketDB.java"+e);
+		ibd.web.Constants.Constants.logger.info("Exception loading Database Driver in MarketDB.java"+e);
 	    //System.out.println("Error loading database driver: " + e.getMessage());
 	}
 	return connection;
@@ -85,7 +85,7 @@ public class MarketDB {
 	//System.out.println(query);
 	Statement statement = connection.createStatement();
 	ResultSet rs = statement.executeQuery(query);
-	ibd.web.Resource.ResourceInitializer.logger.info("executeQuery successful for "+sym.toLowerCase()+ " where startDate="+startDate+" and endDate="+endDate);
+	ibd.web.Constants.Constants.logger.info("executeQuery successful for "+sym.toLowerCase()+ " where startDate="+startDate+" and endDate="+endDate);
 	//System.out.println("executeQuery successful for "+sym.toLowerCase()+ " where startDate="+startDate+" and endDate="+endDate);
 
 	ArrayList<Date> dates1 = new ArrayList<Date>();

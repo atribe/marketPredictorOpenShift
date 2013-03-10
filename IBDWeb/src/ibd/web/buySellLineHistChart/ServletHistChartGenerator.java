@@ -60,7 +60,7 @@ public class ServletHistChartGenerator extends HttpServlet {
 //	    rd.forward(request, response);
 
 	} catch (Exception ex) {
-		ibd.web.Resource.ResourceInitializer.logger.info("Exception in ServletHistChartGenerator.java: "+ex);
+		ibd.web.Constants.Constants.logger.info("Exception in ServletHistChartGenerator.java: "+ex);
 	    request.setAttribute("error",ex);
 	    request.setAttribute("fund",fund);
 	    RequestDispatcher rd = request.getRequestDispatcher("/fundDataError.jsp");
