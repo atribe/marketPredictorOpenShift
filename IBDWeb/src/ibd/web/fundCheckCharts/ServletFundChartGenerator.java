@@ -73,15 +73,16 @@ public class ServletFundChartGenerator extends HttpServlet {
 
 	JFreeChart chart = null;
 
-	OutputStream out = response.getOutputStream();
+	OutputStream out = null;
 	try {
 	    chart = ReturnFundChart.returnChart(time, gains, fund);
 
 	    if (chart != null) {
-		response.setContentType("image/png");
-		ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
-		out.flush();
-		out.close();
+			out = response.getOutputStream();
+			response.setContentType("image/png");
+			ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
+			out.flush();
+			out.close();
 	    } 
 	    
 	} catch (Exception ex) {
@@ -90,11 +91,9 @@ public class ServletFundChartGenerator extends HttpServlet {
 	    //Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
 	    request.setAttribute("error",ex);
 	    request.setAttribute("fund",fund);
-	    RequestDispatcher rd = request.getRequestDispatcher("/error");
+	    RequestDispatcher rd = request.getRequestDispatcher("/error.do");
 	    rd.forward(request, response);
-	} finally {
-	    out.close();
-	}
+	} 
     }
     
     /**

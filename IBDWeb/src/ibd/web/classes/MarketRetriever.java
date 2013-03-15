@@ -229,7 +229,10 @@ public class MarketRetriever {
 
 	System.out.println(a+","+b+","+c);
 	System.out.println(d+","+e+","+f);
-	String str = "http://ichart.finance.yahoo.com/table.csv?s=%5EGSPC&a="+a+"&b="+b+"&c="+c+"&d="+d+"&e="+e+"&f="+f+"&g=d&ignore=.csv";
+	String str = "http://ichart.finance.yahoo.com/table.csv?s="
+			+ symbol + "&d=" + d + "&e=" + e + "&f=" + f + "&g=d&a=" + a + "&b=" + b
+			+ "&c=" + c + "&ignore=.csv";
+	System.out.println(str);
 	ibd.web.Constants.Constants.logger.info("Fetched data according to: "+str);
 	return str;
     }

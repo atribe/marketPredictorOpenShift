@@ -17,8 +17,6 @@ public class ErrorController {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView getIndex() {
-		Map<String, Object> model = new HashMap<String, Object>();
-        model.put("error", "Job is running for now. Please hold!!!");
-        return new ModelAndView("index", "model", model);
+        return new ModelAndView("error");
 	}
 }

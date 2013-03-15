@@ -9,6 +9,6 @@
 <title><spring:message code="label.applicationTitle" /></title>
 </head>
 <body>
-	${model.error}<spring:message code="label.errorMessage" />
+	<font color="red"><spring:message code="label.fundErrorMessage" /></font>
 </body>
 </html>
