@@ -150,14 +150,14 @@ public class ApplicationThread implements Runnable {
 			ibd.web.Constants.Constants.outputSP500 = VarSP500.currentSP500;
 			ibd.web.Constants.Constants.outputNasdaq = VarNasdaq.currentNasdaq;
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;
-		    /*try{
+		    ibd.web.Constants.Constants.logger.info("THREAD SLEPT ON "+new Date());
+		    try{
 		    	//ibd.web.Constants.Constants.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail1+" "+LoadProperties.toEmail2+" "+LoadProperties.serverPath+"IBDinfo.log");
 		    	Communication obj = new Communication();
 		    	obj.communicate(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail1, LoadProperties.toEmail2 , LoadProperties.serverPath+"IBDinfo.log");
 		    }catch(Exception e){
 		    	ibd.web.Constants.Constants.logger.info("EXCEPTION IN SENDING EMAIL");
-		    }*/
-		    ibd.web.Constants.Constants.logger.info("THREAD SLEPT ON "+new Date());
+		    }
 		    _sleepTime = getMilliSeconds(_sleepTime);
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds
