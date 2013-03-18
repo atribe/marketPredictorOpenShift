@@ -565,11 +565,17 @@ public class MarketAnalyzer {
 //	    ArrayList<Double> buyVolChange = new ArrayList<Double>();//this calculates the % change from day before
 	    //TODO, this loops through the number of days for the 5, 10, 15, 20, 30, 40, 50 year time periods
 	    //This for is the problem, it doesn't pick up today as a sell day for fundCheckCharts
+	    float[] getFirstBuyDayPrice = new float[2];
 	    for (int p = loopDays - 1; p >= 0; --p) {
 		if (buyDates.contains(dates[p])) {
 		    periodBuyDates.add(dates[p]);
 //		    System.out.println("BD "+dates[p]);
 		    buyPrices.add(pricesClose[p]);
+		    if(getFirstBuyDayPrice[0]<=0){
+		    	getFirstBuyDayPrice[0] = pricesClose[p];
+		    }else{
+		    	getFirstBuyDayPrice[1] = pricesClose[p];
+		    }
 //		    buyPriceChange.add((pricesClose[p] - pricesClose[p + 1]) / pricesClose[p + 1] * 100);//same as comment below
 //		    buyVolChange.add(((double) volumes[p] - (double) volumes[p + 1]) / (double) volumes[p + 1] * 100);//just trust that p and p+1 is right, I checked it 8/15/2010
 //		    System.out.println(((double)volumes[p]-(double)volumes[p-1])/(double)volumes[p-1]*100);
@@ -592,7 +598,7 @@ public class MarketAnalyzer {
 
 
 	    //this part tests the validity for each time period 5, 10, 15, etc.
-	    float origGain = (pricesClose[0] - pricesClose[loopDays - 1]) / pricesClose[loopDays - 1] * 100;
+	    float origGain = (getFirstBuyDayPrice[0] - pricesClose[loopDays - 1]) / pricesClose[loopDays - 1] * 100;
 	    float modGain = 0;//modGain is the gain over the whole period
 	    float percGain = 0;//percGain is the gain for each buy/sell combo
 	    float[] amntInv = new float[buyPrices.size()];

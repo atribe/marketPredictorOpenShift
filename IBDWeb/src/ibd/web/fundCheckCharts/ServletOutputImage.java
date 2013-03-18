@@ -56,9 +56,12 @@ public class ServletOutputImage extends HttpServlet {
 
 	    String fund = request.getParameter("fund");
 
-	    out.println("<IMG ALT=\"Can't find fund "+fund+"\" SRC=\"ServletFundChartGenerator?time=5&fund="+fund+"\" BORDER=1 WIDTH=200 HEIGHT=200/>");
-	    out.println("<IMG ALT=\" \" SRC=\"ServletFundChartGenerator?time=10&fund="+fund+"\" BORDER=1 WIDTH=200 HEIGHT=200/>");
-	    out.println("<IMG ALT=\" \" SRC=\"ServletFundChartGenerator?time=15&fund="+fund+"\" BORDER=1 WIDTH=200 HEIGHT=200/>");
+	    out.println("<img alt=\"Can't find fund "+fund+"\" src=\"fundChartGenerator?time=5&fund="+fund+"\" border=1 width=200 height=200/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=10&fund="+fund+"\" border=1 width=200 height=200/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=15&fund="+fund+"\" border=1 width=200 height=200/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=20&fund="+fund+"\" border=1 width=200 height=200/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=25&fund="+fund+"\" border=1 width=200 height=200/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=30&fund="+fund+"\" border=1 width=200 height=200/>");
 
 	    out.flush();
             out.close();
@@ -69,6 +72,12 @@ public class ServletOutputImage extends HttpServlet {
         finally {
             out.close();
         }
+    }
+    
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    	doGet(request,response);
     }
 }
 

@@ -38,7 +38,7 @@
 	<jsp:include page="marketData.jsp" />
 <br/>
 <% if(ibd.web.Constants.Constants.outputDow!=null && ibd.web.Constants.Constants.outputDow.lastDataDate!=null){%>
-		<jsp:include page="historicalMarketPredictorDates.jsp" />
+		<!-- <jsp:include page="historicalMarketPredictorDates.jsp" />-->
 	<br/>
 		<jsp:include page="historicalMarketPredictorPerformance.jsp" />
 	<br/>

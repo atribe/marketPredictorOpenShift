@@ -5,9 +5,9 @@
 	    <TH><spring:message code="label.fundCheckerHeading" /></TH>
 		    <TR>
 				<TD>
-				<form action="fundChartGenerator" method="post" target="fundChartFrame">
-					<spring:message code="label.enterFunds" /><input type="text" name="fund" size="20" /><br/>
-					<spring:message code="label.enterTime" /><input type="text" name="time" size="20" /><spring:message code="label.exampleTime" /><br/>
+				<form action="outputImage" method="post" target="fundChartFrame">
+					<spring:message code="label.enterFunds" /><input type="text" name="fund" size="20" />
+					<!--<spring:message code="label.enterTime" /><input type="text" name="time" size="20" /><spring:message code="label.exampleTime" /><br/>-->
 					<input type="submit" value=<spring:message code="label.submit" /> align="center" />
 				</form>
 				<br>
