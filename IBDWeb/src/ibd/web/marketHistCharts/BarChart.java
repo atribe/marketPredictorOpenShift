@@ -11,24 +11,18 @@ import ibd.web.classes.Output;
 import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
+
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GradientPaint;
 
-import javax.swing.JPanel;
-
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LayeredBarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.SortOrder;
 
 /**

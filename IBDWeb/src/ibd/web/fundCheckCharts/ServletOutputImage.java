@@ -9,8 +9,6 @@ package ibd.web.fundCheckCharts;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Vector;
-import javax.servlet.RequestDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -56,12 +54,12 @@ public class ServletOutputImage extends HttpServlet {
 
 	    String fund = request.getParameter("fund");
 
-	    out.println("<img alt=\"Can't find fund "+fund+"\" src=\"fundChartGenerator?time=5&fund="+fund+"\" border=1 width=200 height=200/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=10&fund="+fund+"\" border=1 width=200 height=200/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=15&fund="+fund+"\" border=1 width=200 height=200/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=20&fund="+fund+"\" border=1 width=200 height=200/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=25&fund="+fund+"\" border=1 width=200 height=200/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=30&fund="+fund+"\" border=1 width=200 height=200/>");
+	    out.println("<img alt=\"Can't find fund "+fund+"\" src=\"fundChartGenerator?time=5&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=10&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=15&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=20&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=25&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=30&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
 
 	    out.flush();
             out.close();

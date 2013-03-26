@@ -4,22 +4,22 @@
  */
 package ibd.web.fundCheckCharts;
 
-import ibd.web.classes.MarketRetriever;
 import ibd.web.classes.Data;
 import ibd.web.classes.MarketAnalyzer;
+import ibd.web.classes.MarketRetriever;
 import ibd.web.classes.Output;
 import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
 import ibd.web.classes.Variables;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.servlet.ServletException;
 
 /**

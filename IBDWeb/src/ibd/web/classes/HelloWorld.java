@@ -10,21 +10,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import ibd.web.classes.MarketDB;
 
 public class HelloWorld {
 
 	/**
 	 * 
 	 * @param args These arguments are not being used for now but will be used if necessary
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException (I can't see why will it throw this exception though?)
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 * @throws SQLException
-	 * @throws ClassNotFoundException
+	 * @throws ClassNotFoundException (I can't see why will it throw this exception though?)
 	 */
     public static void main(String[] args) throws FileNotFoundException, IOException, URISyntaxException, SQLException, ClassNotFoundException {
 
@@ -41,7 +39,7 @@ public class HelloWorld {
 	    status = statement.executeUpdate(query);
 	}
 	statement.close();
-	System.out.println(status);
+	//System.out.println(status);
 	ibd.web.Constants.Constants.logger.info("Status in HelloWorld.java: "+status);
     }
 }

@@ -5,7 +5,6 @@
 package ibd.web.classes;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;

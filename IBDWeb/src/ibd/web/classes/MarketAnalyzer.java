@@ -19,10 +19,14 @@ package ibd.web.classes;
  */
 import ibd.web.Resource.LoadProperties;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -58,6 +62,7 @@ public class MarketAnalyzer {
 	    }
 	}
 
+	
 	Vector BD = distributionDayDates(indexData, var, loopDays);//calls followThroghDates method
 	ArrayList<Date> distributionDayDates = (ArrayList<Date>) BD.get(0);//unpacks the arraylist from the vector
 	int dDaysToday = (Integer) BD.get(1);
@@ -75,7 +80,7 @@ public class MarketAnalyzer {
 	 * @findings It's calculating each time from the start to the end of the date for every INDEX
 	 */
 	// Printing out the Follow Through and Distribution Day dates to see what exactly happens behind the scenes.
-	System.out.println("**********Showing FollowThroughDates**********");
+	/*System.out.println("**********Showing FollowThroughDates**********");
 	for(Date date: followThroughDates){
 		System.out.print(date+" ");
 	}
@@ -89,7 +94,7 @@ public class MarketAnalyzer {
 	for(Date date: dates){
 		System.out.print(date+" ");
 	}
-	System.out.println();
+	System.out.println();*/
 	Date[][] buySellPairs = getBuySellPairs(dates, followThroughDates, distributionDayDates);
 	Date[] buyDates = buySellPairs[0];
 	Date[] sellDates = buySellPairs[1];
@@ -174,6 +179,9 @@ public class MarketAnalyzer {
 
 //	for (int j = 0; j < var.list.length; j++) {
 	try {
+		//System.out.println("Index is: "+var.list);
+		//System.out.println("Starting Date is: "+startDateNew);
+		//System.out.println("Ending Date is: "+var.endDate);
 	    Data data = MarketDB.getRecord(connection, var.list, startDateNew, var.endDate);
 	    dataMap.put(var.list, data);
 	} catch (SQLException e) {
@@ -470,6 +478,7 @@ public class MarketAnalyzer {
 //	for (Date buyDates1 : getFollowThroughDates) {
 //	    System.out.println("getFollowThroughDates " + buyDates1);
 //	}
+	
 	Vector followThroughs = new Vector();
 	followThroughs.add(0, followThroughDates);
 	followThroughs.add(1, rallyDaysToday);
@@ -546,6 +555,7 @@ public class MarketAnalyzer {
 //	    System.out.println("\n" + cal.getTime());
 	    int loopDays = 1;//loopDays is actual number of days
 	    try {
+	    	//System.out.println(cal.getTime());
 		while (dates[loopDays].after(cal.getTime()) & loopDays <= dates.length) {
 		    loopDays++;//size of the new array
 		}
@@ -565,17 +575,11 @@ public class MarketAnalyzer {
 //	    ArrayList<Double> buyVolChange = new ArrayList<Double>();//this calculates the % change from day before
 	    //TODO, this loops through the number of days for the 5, 10, 15, 20, 30, 40, 50 year time periods
 	    //This for is the problem, it doesn't pick up today as a sell day for fundCheckCharts
-	    float[] getFirstBuyDayPrice = new float[2];
 	    for (int p = loopDays - 1; p >= 0; --p) {
 		if (buyDates.contains(dates[p])) {
 		    periodBuyDates.add(dates[p]);
 //		    System.out.println("BD "+dates[p]);
 		    buyPrices.add(pricesClose[p]);
-		    if(getFirstBuyDayPrice[0]<=0){
-		    	getFirstBuyDayPrice[0] = pricesClose[p];
-		    }else{
-		    	getFirstBuyDayPrice[1] = pricesClose[p];
-		    }
 //		    buyPriceChange.add((pricesClose[p] - pricesClose[p + 1]) / pricesClose[p + 1] * 100);//same as comment below
 //		    buyVolChange.add(((double) volumes[p] - (double) volumes[p + 1]) / (double) volumes[p + 1] * 100);//just trust that p and p+1 is right, I checked it 8/15/2010
 //		    System.out.println(((double)volumes[p]-(double)volumes[p-1])/(double)volumes[p-1]*100);
@@ -598,7 +602,8 @@ public class MarketAnalyzer {
 
 
 	    //this part tests the validity for each time period 5, 10, 15, etc.
-	    float origGain = (getFirstBuyDayPrice[0] - pricesClose[loopDays - 1]) / pricesClose[loopDays - 1] * 100;
+	    //float origGain = ((getFirstBuyDayPrice[0] - pricesClose[loopDays - 1]) / pricesClose[loopDays - 1]) * 100;
+	    float origGain = (pricesClose[0] - pricesClose[loopDays-1]) / pricesClose[loopDays-1] * 100;
 	    float modGain = 0;//modGain is the gain over the whole period
 	    float percGain = 0;//percGain is the gain for each buy/sell combo
 	    float[] amntInv = new float[buyPrices.size()];

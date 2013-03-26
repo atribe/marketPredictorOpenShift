@@ -6,7 +6,6 @@
 package ibd.web.fundCheckCharts;
 
 import java.util.Vector;
-import ibd.web.fundCheckCharts.GetFundData;
 
 /**
  *

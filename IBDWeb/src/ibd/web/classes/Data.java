@@ -69,16 +69,16 @@ public class Data {
 	    double[] pArray = new double[50];
 	    breakout1:
 	    for (int j = 0; j < 50; j++) {
-		try {
-		    vArray[j] = volumes.get(i+j);
-		    pArray[j] = pricesClose.get(i+j);
-//		    vSum50 = vSum50 + volumes.get(i + j);
-//		    pSum50 = pSum50 + pricesClose.get(i + j);
-		} catch (IndexOutOfBoundsException e) {
-//		    vSum50 = 0;
-//		    pSum50 = 0;
-		    break breakout1;
-		}
+			try {
+			    vArray[j] = volumes.get(i+j);
+			    pArray[j] = pricesClose.get(i+j);
+	//		    vSum50 = vSum50 + volumes.get(i + j);
+	//		    pSum50 = pSum50 + pricesClose.get(i + j);
+			} catch (IndexOutOfBoundsException e) {
+	//		    vSum50 = 0;
+	//		    pSum50 = 0;
+			    break breakout1;
+			}
 	    }
 	    volumeAVG50[i] = (long) Statistics.average(vArray);
 	    priceAVG50[i] = Statistics.average(pArray);
@@ -89,22 +89,23 @@ public class Data {
 	    float pDiffSum35 = 0;
 	    breakout2:
 	    for (int k = 0; k < 35; k++) {
-		try {
-		    pDiffSum35 = pDiffSum35 + (pricesClose.get(k + i) - pricesClose.get(k + i + 1)) / pricesClose.get(k + i + 1);
-		} catch (IndexOutOfBoundsException e) {
-		    pDiffSum35 = 0;
-		    break breakout2;
-		}
+			try {
+			    pDiffSum35 = pDiffSum35 + (pricesClose.get(k + i) - pricesClose.get(k + i + 1)) / pricesClose.get(k + i + 1);
+			} catch (IndexOutOfBoundsException e) {
+			    pDiffSum35 = 0;
+			    break breakout2;
+			}
 	    }
+	    //System.out.println("Difference of Sum is: "+pDiffSum35);
 	    priceTrendData35[i] = pDiffSum35 / 35;//average of percent gains from day before for 35 days, used for dday churning calculation and to determine if rally is possible
 	    }
 
-	for (int i=0;i<priceCV50.length;i++){
-	    priceCV50AVGpDay = priceCV50AVGpDay + priceCV50[i];
-	    volCV50AVGpDay = volCV50AVGpDay + (double) volumeCV50[i];
-//	    System.out.println(volumeAVG50[i]);
-	}
-	priceCV50AVGpDay = priceCV50AVGpDay/priceCV50.length;
-	volCV50AVGpDay = volCV50AVGpDay/volumeCV50.length;
+		for (int i=0;i<priceCV50.length;i++){
+		    priceCV50AVGpDay = priceCV50AVGpDay + priceCV50[i];
+		    volCV50AVGpDay = volCV50AVGpDay + (double) volumeCV50[i];
+	//	    System.out.println(volumeAVG50[i]);
+		}
+		priceCV50AVGpDay = priceCV50AVGpDay/priceCV50.length;
+		volCV50AVGpDay = volCV50AVGpDay/volumeCV50.length;
     }
 }

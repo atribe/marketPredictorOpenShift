@@ -1,8 +1,5 @@
 package ibd.web.classes;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -23,23 +20,23 @@ public class MarketDB {
 	    Class.forName("com.mysql.jdbc.Driver");
 	    
 	    // ************For Open Shift Account************	    
-	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+	    /*String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
 	    String username = "adminxQvN8PH";
-	    String password = "WuLqQSWVvsg-";
+	    String password = "WuLqQSWVvsg-";*/
 	    
 	    
 	 // ************For Local Account************	
-	    /*String host = "localhost";
+	    String host = "localhost";
 	    String port="3306";
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
 	    String username = "root";
-	    String password = "root";*/
+	    String password = "root";
 	    
 	    
 	    connection = DriverManager.getConnection(dbURL, username, password);
-	    System.out.println("Connection established");
+	    //System.out.println("Connection established");
 	    ibd.web.Constants.Constants.logger.info("Connection Established in MarketDB.java");
 	} catch (ClassNotFoundException e) {
 		ibd.web.Constants.Constants.logger.info("Database Driver not found in MarketDB.java"+e);
