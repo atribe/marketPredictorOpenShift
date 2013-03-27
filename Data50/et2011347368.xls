@@ -1,0 +1,2930 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head><title>
+	Untitled Page
+</title></head>
+<body>
+<form name="form1" method="post" action="/StockResearch/eTables/IBD50XLS.aspx?tabView=IBD50&amp;from=etables&amp;columnsort1=ibd50rank&amp;columnsorttype1=DESC&amp;columnsort2=&amp;columnsorttype2=DESC" id="form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTMxOTEyMjE5OWQYAQUJR3JpZFZpZXcxDzwrAAoBCAIBZOTi6N+g8ggsXtSggyDVaxFC/YG9" />
+</div>
+
+     <div>
+        <div>
+	<table cellspacing="0" cellpadding="0" rules="cols" border="1" id="GridView1" style="background-color:White;border-color:#999999;border-width:1px;border-style:None;border-collapse:collapse;">
+		<caption align="Left">
+			<B>eTables: IBD 50 Index View </B><br> Data as of 3/3/2011; Index as of  2/25/2011
+		</caption><tr align="left" valign="bottom" style="color:White;background-color:DarkBlue;font-size:XX-Small;font-weight:bold;">
+			<th valign="bottom" scope="col">Rank</th><th valign="bottom" scope="col">Company Name</th><th valign="bottom" scope="col">Symbol</th><th valign="bottom" scope="col">Smart Select Composite Rating</th><th valign="bottom" scope="col">EPS Rating</th><th valign="bottom" scope="col">RS Rating</th><th valign="bottom" scope="col">Ind Group Relative Strength</th><th valign="bottom" scope="col">SMR Rating</th><th valign="bottom" scope="col">Acc/Dis</th><th valign="bottom" scope="col">52 Week High</th><th valign="bottom" scope="col">Closing Price</th><th valign="bottom" scope="col">$ Change</th><th valign="bottom" scope="col">Vol % Change</th><th valign="bottom" scope="col">Vol(1000)</th><th valign="bottom" scope="col">PE</th><th valign="bottom" scope="col">Spon Rating</th><th valign="bottom" scope="col">Div Yield</th><th valign="bottom" scope="col"> % Off High </th><th valign="bottom" scope="col">Annual EPS Est % Change</th><th valign="bottom" scope="col">Last Qtr. EPS % Chg.</th><th valign="bottom" scope="col">Next Qtr. EPS % Chg.</th><th valign="bottom" scope="col">Last Qtr Sales Chg.</th><th valign="bottom" scope="col">ROE</th><th valign="bottom" scope="col">Pretax Margin</th><th valign="bottom" scope="col">Mgmt Owns %</th><th valign="bottom" scope="col">Qtr EPS Cnt > 15%</th><th valign="bottom" scope="col">Description</th><th valign="bottom" scope="col">*FootNote</th>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    1
+                    </td><td style="width:180px;">
+                    LULULEMON ATHLETICA
+                    </td><td style="width:48px;">
+                    LULU
+                    </td><td style="width:72px;">
+                    98
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:64px;">
+                    B+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    85.28
+                    </td><td style="width:54px;">
+                    75.66
+                    </td><td style="width:50px;">
+                     1.96
+                    </td><td style="width:56px;">
+                     -28
+                    </td><td style="width:64px;">
+                     1426
+                    </td><td style="width:30px;">
+                     57
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -11.3
+                    </td><td style="width:64px;">
+                    +83
+                    </td><td style="width:64px;">
+                    +80
+                    </td><td style="width:64px;">
+                    +43
+                    </td><td style="width:64px;">
+                    +56
+                    </td><td style="width:64px;">
+                    30
+                    </td><td style="width:64px;">
+                    19
+                    </td><td style="width:64px;">
+                    11
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Operates/franchises 124 athletic apparel stores in the u.s. and canada with plans to open 15 more (12%) in 2010-11.
+                    </td><td style="width:64px;">
+                    ko
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    2
+                    </td><td style="width:180px;">
+                    SKYWORKS SOLUTIONS INC
+                    </td><td style="width:48px;">
+                    SWKS
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    37.82
+                    </td><td style="width:54px;">
+                    35.41
+                    </td><td style="width:50px;">
+                     0.88
+                    </td><td style="width:56px;">
+                     -6
+                    </td><td style="width:64px;">
+                     4176
+                    </td><td style="width:30px;">
+                     25
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -6.4
+                    </td><td style="width:64px;">
+                    +39
+                    </td><td style="width:64px;">
+                    +67
+                    </td><td style="width:64px;">
+                    +63
+                    </td><td style="width:64px;">
+                    +37
+                    </td><td style="width:64px;">
+                    19
+                    </td><td style="width:64px;">
+                    23
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Manufactures analog/mixed-signal ics, amplifiers, attenuators, detectors, diodes, couplers, mixers and demodulators
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    3
+                    </td><td style="width:180px;">
+                    RIVERBED TECHNOLOGY INC
+                    </td><td style="width:48px;">
+                    RVBD
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    43.54
+                    </td><td style="width:54px;">
+                    42.92
+                    </td><td style="width:50px;">
+                     2.14
+                    </td><td style="width:56px;">
+                     -19
+                    </td><td style="width:64px;">
+                     3527
+                    </td><td style="width:30px;">
+                     73
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.4
+                    </td><td style="width:64px;">
+                    +44
+                    </td><td style="width:64px;">
+                    +81
+                    </td><td style="width:64px;">
+                    +80
+                    </td><td style="width:64px;">
+                    +47
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    26
+                    </td><td style="width:64px;">
+                    14
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides products and services that improve applications and accessibility of data over wide area networks.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    4
+                    </td><td style="width:180px;">
+                    PRICELINE.COM INC
+                    </td><td style="width:48px;">
+                    PCLN
+                    </td><td style="width:72px;">
+                    98
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    469.40
+                    </td><td style="width:54px;">
+                    464.79
+                    </td><td style="width:50px;">
+                     15.61
+                    </td><td style="width:56px;">
+                     42
+                    </td><td style="width:64px;">
+                     1545
+                    </td><td style="width:30px;">
+                     34
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.0
+                    </td><td style="width:64px;">
+                    +40
+                    </td><td style="width:64px;">
+                    +71
+                    </td><td style="width:64px;">
+                    +44
+                    </td><td style="width:64px;">
+                    +35
+                    </td><td style="width:64px;">
+                    27
+                    </td><td style="width:64px;">
+                    17
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="width:64px;">
+                    19
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides airline ticket, hotel room, car rental, vacation package and cruise services through priceline.com.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    5
+                    </td><td style="width:180px;">
+                    NETFLIX INC
+                    </td><td style="width:48px;">
+                    NFLX
+                    </td><td style="width:72px;">
+                    95
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:64px;">
+                    C
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    247.55
+                    </td><td style="width:54px;">
+                    204.23
+                    </td><td style="width:50px;">
+                     0.00
+                    </td><td style="width:56px;">
+                     -100
+                    </td><td style="width:64px;">
+                     0
+                    </td><td style="width:30px;">
+                     69
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -17.5
+                    </td><td style="width:64px;">
+                    +48
+                    </td><td style="width:64px;">
+                    +55
+                    </td><td style="width:64px;">
+                    +81
+                    </td><td style="width:64px;">
+                    +34
+                    </td><td style="width:64px;">
+                    66
+                    </td><td style="width:64px;">
+                    12
+                    </td><td style="width:64px;">
+                    22
+                    </td><td style="width:64px;">
+                    12
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides online movie rental subscription services to 16.933 mil subscribers via netflix.com.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    6
+                    </td><td style="width:180px;">
+                    BAIDU INC ADS
+                    </td><td style="width:48px;">
+                    BIDU
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:64px;">
+                    C
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    131.63
+                    </td><td style="width:54px;">
+                    121.85
+                    </td><td style="width:50px;">
+                     2.36
+                    </td><td style="width:56px;">
+                     -40
+                    </td><td style="width:64px;">
+                     4027
+                    </td><td style="width:30px;">
+                     79
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -7.4
+                    </td><td style="width:64px;">
+                    +57
+                    </td><td style="width:64px;">
+                    +174
+                    </td><td style="width:64px;">
+                    +110
+                    </td><td style="width:64px;">
+                    +101
+                    </td><td style="width:64px;">
+                    55
+                    </td><td style="width:64px;">
+                    52
+                    </td><td style="width:64px;">
+                    20
+                    </td><td style="width:64px;">
+                    20
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese provider of internet search, targeted online advertising and other internet content services.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    7
+                    </td><td style="width:180px;">
+                    SILVER WHEATON CORP
+                    </td><td style="width:48px;">
+                    SLW
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:64px;">
+                    B+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    44.00
+                    </td><td style="width:54px;">
+                    43.72
+                    </td><td style="width:50px;">
+                     0.23
+                    </td><td style="width:56px;">
+                     29
+                    </td><td style="width:64px;">
+                     16125
+                    </td><td style="width:30px;">
+                     69
+                    </td><td style="width:64px;">
+                     D
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -0.6
+                    </td><td style="width:64px;">
+                    +103
+                    </td><td style="width:64px;">
+                    +82
+                    </td><td style="width:64px;">
+                    +107
+                    </td><td style="width:64px;">
+                    +33
+                    </td><td style="width:64px;">
+                    9
+                    </td><td style="width:64px;">
+                    49
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Canadian buyer of purchase agreements for silver and gold from mining companies operating in mexico, sweden, peru
+                    </td><td style="width:64px;">
+                    -o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    8
+                    </td><td style="width:180px;">
+                    CONCHO RESOURCES INC
+                    </td><td style="width:48px;">
+                    CXO
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    95
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:64px;">
+                    A+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    110.89
+                    </td><td style="width:54px;">
+                    108.49
+                    </td><td style="width:50px;">
+                     0.19
+                    </td><td style="width:56px;">
+                     -46
+                    </td><td style="width:64px;">
+                     525
+                    </td><td style="width:30px;">
+                     40
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -2.2
+                    </td><td style="width:64px;">
+                    +41
+                    </td><td style="width:64px;">
+                    +21
+                    </td><td style="width:64px;">
+                    +36
+                    </td><td style="width:64px;">
+                    +89
+                    </td><td style="width:64px;">
+                    10
+                    </td><td style="width:64px;">
+                    41
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Engaged in the acquisition, development and exploration of oil and natural gas in southeast new mexico and west texas.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    9
+                    </td><td style="width:180px;">
+                    OPENTABLE INC
+                    </td><td style="width:48px;">
+                    OPEN
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:48px;">
+                    95
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    95.97
+                    </td><td style="width:54px;">
+                    89.11
+                    </td><td style="width:50px;">
+                     3.04
+                    </td><td style="width:56px;">
+                     25
+                    </td><td style="width:64px;">
+                     1308
+                    </td><td style="width:30px;">
+                     109
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -7.2
+                    </td><td style="width:64px;">
+                    +33
+                    </td><td style="width:64px;">
+                    +114
+                    </td><td style="width:64px;">
+                    +57
+                    </td><td style="width:64px;">
+                    +61
+                    </td><td style="width:64px;">
+                    15
+                    </td><td style="width:64px;">
+                    17
+                    </td><td style="width:64px;">
+                    32
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides a computerized reservation and table management system for restaurants.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    10
+                    </td><td style="width:180px;">
+                    CHIPOTLE MEXICAN GRILL
+                    </td><td style="width:48px;">
+                    CMG
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    89
+                    </td><td style="width:64px;">
+                    C+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B+
+                    </td><td style="width:61px;">
+                    275.00
+                    </td><td style="width:54px;">
+                    246.85
+                    </td><td style="width:50px;">
+                     4.03
+                    </td><td style="width:56px;">
+                     -26
+                    </td><td style="width:64px;">
+                     774
+                    </td><td style="width:30px;">
+                     44
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -10.2
+                    </td><td style="width:64px;">
+                    +20
+                    </td><td style="width:64px;">
+                    +48
+                    </td><td style="width:64px;">
+                    +20
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    24
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="width:64px;">
+                    8
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Operates 1,023 casual fresh mexican fast food restaurants in 36 states; planned to open 120-130 more (13%-14%) in 2010.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    11
+                    </td><td style="width:180px;">
+                    ALTERA CORP
+                    </td><td style="width:48px;">
+                    ALTR
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C-
+                    </td><td style="width:61px;">
+                    43.22
+                    </td><td style="width:54px;">
+                    44.20
+                    </td><td style="width:50px;">
+                     1.74
+                    </td><td style="width:56px;">
+                     21
+                    </td><td style="width:64px;">
+                     6586
+                    </td><td style="width:30px;">
+                     18
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    0.5
+                    </td><td style="width:48px;">
+                    2.3
+                    </td><td style="width:64px;">
+                    -1
+                    </td><td style="width:64px;">
+                    +112
+                    </td><td style="width:64px;">
+                    +30
+                    </td><td style="width:64px;">
+                    +52
+                    </td><td style="width:64px;">
+                    46
+                    </td><td style="width:64px;">
+                    44
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Manufactures complex programmable logic devices, fpgas, and application-specific ics for telecom and industrial markets.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    12
+                    </td><td style="width:180px;">
+                    ARUBA NETWORKS INC
+                    </td><td style="width:48px;">
+                    ARUN
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    31.65
+                    </td><td style="width:54px;">
+                    31.11
+                    </td><td style="width:50px;">
+                     2.80
+                    </td><td style="width:56px;">
+                     79
+                    </td><td style="width:64px;">
+                     5113
+                    </td><td style="width:30px;">
+                     71
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.7
+                    </td><td style="width:64px;">
+                    +100
+                    </td><td style="width:64px;">
+                    +133
+                    </td><td style="width:64px;">
+                    +88
+                    </td><td style="width:64px;">
+                    +50
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    12
+                    </td><td style="width:64px;">
+                    10
+                    </td><td style="width:64px;">
+                    9
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides enterprise mobility software that enables secure access to data, voice and video applications
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    13
+                    </td><td style="width:180px;">
+                    JINKOSOLAR HLDG CO ADS
+                    </td><td style="width:48px;">
+                    JKS
+                    </td><td style="width:72px;">
+                    85
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:64px;">
+                    D
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    D
+                    </td><td style="width:61px;">
+                    41.75
+                    </td><td style="width:54px;">
+                    26.28
+                    </td><td style="width:50px;">
+                     -0.84
+                    </td><td style="width:56px;">
+                     155
+                    </td><td style="width:64px;">
+                     3200
+                    </td><td style="width:30px;">
+                     5
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -37.1
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    +339
+                    </td><td style="width:64px;">
+                    +252
+                    </td><td style="width:64px;">
+                    +166
+                    </td><td style="width:64px;">
+                    20
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="width:64px;">
+                    54
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese manufacturer of silicon wafers, solar cells and solar modules in jiangxi and zhejiang provinces in china.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    14
+                    </td><td style="width:180px;">
+                    A R M HOLDINGS PLC ADS
+                    </td><td style="width:48px;">
+                    ARMH
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    92
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    31.81
+                    </td><td style="width:54px;">
+                    29.39
+                    </td><td style="width:50px;">
+                     -0.09
+                    </td><td style="width:56px;">
+                     -29
+                    </td><td style="width:64px;">
+                     4815
+                    </td><td style="width:30px;">
+                     67
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    0.4
+                    </td><td style="width:48px;">
+                    -7.6
+                    </td><td style="width:64px;">
+                    +5
+                    </td><td style="width:64px;">
+                    +56
+                    </td><td style="width:64px;">
+                    +11
+                    </td><td style="width:64px;">
+                    +29
+                    </td><td style="width:64px;">
+                    10
+                    </td><td style="width:64px;">
+                    31
+                    </td><td style="width:64px;">
+                    1
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     British designer of microprocessors/physical ip components used in mobile phones, computing devices, and digital tvs.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    15
+                    </td><td style="width:180px;">
+                    DECKERS OUTDOOR CORP
+                    </td><td style="width:48px;">
+                    DECK
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    94.70
+                    </td><td style="width:54px;">
+                    86.24
+                    </td><td style="width:50px;">
+                     1.66
+                    </td><td style="width:56px;">
+                     -1
+                    </td><td style="width:64px;">
+                     1617
+                    </td><td style="width:30px;">
+                     21
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -8.9
+                    </td><td style="width:64px;">
+                    +11
+                    </td><td style="width:64px;">
+                    +30
+                    </td><td style="width:64px;">
+                    -2
+                    </td><td style="width:64px;">
+                    +24
+                    </td><td style="width:64px;">
+                    27
+                    </td><td style="width:64px;">
+                    23
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Markets luxury sheepskin footwear and sandals for men, women and children, and operates 18 stores internationally.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    16
+                    </td><td style="width:180px;">
+                    Camelot Info Systems Ads
+                    </td><td style="width:48px;">
+                    CIS
+                    </td><td style="width:72px;">
+                    84
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    82
+                    </td><td style="width:64px;">
+                    D-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    28.18
+                    </td><td style="width:54px;">
+                    19.74
+                    </td><td style="width:50px;">
+                     -0.55
+                    </td><td style="width:56px;">
+                     14
+                    </td><td style="width:64px;">
+                     477
+                    </td><td style="width:30px;">
+                     36
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -30.0
+                    </td><td style="width:64px;">
+                    +111
+                    </td><td style="width:64px;">
+                    +53
+                    </td><td style="width:64px;">
+                    +120
+                    </td><td style="width:64px;">
+                    +57
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    26
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese provider of customer relationship management and supply chain management software for enterprises.
+                    </td><td style="width:64px;">
+                    ko
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    17
+                    </td><td style="width:180px;">
+                    NETLOGIC MICROSYSTEMS
+                    </td><td style="width:48px;">
+                    NETL
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    88
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    42.65
+                    </td><td style="width:54px;">
+                    42.35
+                    </td><td style="width:50px;">
+                     1.59
+                    </td><td style="width:56px;">
+                     -42
+                    </td><td style="width:64px;">
+                     847
+                    </td><td style="width:30px;">
+                     28
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -0.7
+                    </td><td style="width:64px;">
+                    -3
+                    </td><td style="width:64px;">
+                    +50
+                    </td><td style="width:64px;">
+                    +16
+                    </td><td style="width:64px;">
+                    +44
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    29
+                    </td><td style="width:64px;">
+                    11
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Designs multi-core, knowledge-based and ultra low-power embedded processors
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    18
+                    </td><td style="width:180px;">
+                    Novo Nordisk A/S Adr
+                    </td><td style="width:48px;">
+                    NVO
+                    </td><td style="width:72px;">
+                    98
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    88
+                    </td><td style="width:64px;">
+                    B-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    A-
+                    </td><td style="width:61px;">
+                    126.66
+                    </td><td style="width:54px;">
+                    127.89
+                    </td><td style="width:50px;">
+                     3.32
+                    </td><td style="width:56px;">
+                     129
+                    </td><td style="width:64px;">
+                     762
+                    </td><td style="width:30px;">
+                     29
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    1.0
+                    </td><td style="width:48px;">
+                    1.0
+                    </td><td style="width:64px;">
+                    +24
+                    </td><td style="width:64px;">
+                    +63
+                    </td><td style="width:64px;">
+                    --
+                    </td><td style="width:64px;">
+                    +15
+                    </td><td style="width:64px;">
+                    32
+                    </td><td style="width:64px;">
+                    27
+                    </td><td style="width:64px;">
+                    --
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Denmark-based developer of insulin analogues, human insulin and oral antidiabetic drugs for diabetes care.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    19
+                    </td><td style="width:180px;">
+                    INTERDIGITAL INC
+                    </td><td style="width:48px;">
+                    IDCC
+                    </td><td style="width:72px;">
+                    98
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:64px;">
+                    A+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    58.64
+                    </td><td style="width:54px;">
+                    47.33
+                    </td><td style="width:50px;">
+                     0.67
+                    </td><td style="width:56px;">
+                     -50
+                    </td><td style="width:64px;">
+                     593
+                    </td><td style="width:30px;">
+                     14
+                    </td><td style="width:64px;">
+                     A
+                    </td><td style="width:48px;">
+                    0.9
+                    </td><td style="width:48px;">
+                    -19.3
+                    </td><td style="width:64px;">
+                    -9
+                    </td><td style="width:64px;">
+                    +43
+                    </td><td style="width:64px;">
+                    -44
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    75
+                    </td><td style="width:64px;">
+                    51
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="width:64px;">
+                    1
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Designs wireless modems and ics used in notebook computers, pdas, mobile handsets, and wireless infrastructure.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    20
+                    </td><td style="width:180px;">
+                    Aixtron Se
+                    </td><td style="width:48px;">
+                    AIXG
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    89
+                    </td><td style="width:64px;">
+                    A+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    44.96
+                    </td><td style="width:54px;">
+                    44.50
+                    </td><td style="width:50px;">
+                     0.94
+                    </td><td style="width:56px;">
+                     -52
+                    </td><td style="width:64px;">
+                     143
+                    </td><td style="width:30px;">
+                     22
+                    </td><td style="width:64px;">
+                     A
+                    </td><td style="width:48px;">
+                    0.3
+                    </td><td style="width:48px;">
+                    -1.0
+                    </td><td style="width:64px;">
+                    -6
+                    </td><td style="width:64px;">
+                    +322
+                    </td><td style="width:64px;">
+                    -84
+                    </td><td style="width:64px;">
+                    +142
+                    </td><td style="width:64px;">
+                    14
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    10
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     German manufacturer of deposition systems based on compound, silicon, or organic semiconductor materials
+                    </td><td style="width:64px;">
+                    ko
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    21
+                    </td><td style="width:180px;">
+                    F 5 NETWORKS INC
+                    </td><td style="width:48px;">
+                    FFIV
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    75
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    145.76
+                    </td><td style="width:54px;">
+                    114.35
+                    </td><td style="width:50px;">
+                     1.15
+                    </td><td style="width:56px;">
+                     -15
+                    </td><td style="width:64px;">
+                     3044
+                    </td><td style="width:30px;">
+                     40
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -21.6
+                    </td><td style="width:64px;">
+                    +44
+                    </td><td style="width:64px;">
+                    +69
+                    </td><td style="width:64px;">
+                    +54
+                    </td><td style="width:64px;">
+                    +41
+                    </td><td style="width:64px;">
+                    23
+                    </td><td style="width:64px;">
+                    35
+                    </td><td style="width:64px;">
+                    1
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides optimization technology for delivery of networkbased applications and performance of network resources.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    22
+                    </td><td style="width:180px;">
+                    EBIX INC
+                    </td><td style="width:48px;">
+                    EBIX
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    92
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B+
+                    </td><td style="width:61px;">
+                    28.21
+                    </td><td style="width:54px;">
+                    28.71
+                    </td><td style="width:50px;">
+                     1.53
+                    </td><td style="width:56px;">
+                     158
+                    </td><td style="width:64px;">
+                     1292
+                    </td><td style="width:30px;">
+                     21
+                    </td><td style="width:64px;">
+                     A
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    1.8
+                    </td><td style="width:64px;">
+                    +51
+                    </td><td style="width:64px;">
+                    +72
+                    </td><td style="width:64px;">
+                    +43
+                    </td><td style="width:64px;">
+                    +43
+                    </td><td style="width:64px;">
+                    30
+                    </td><td style="width:64px;">
+                    41
+                    </td><td style="width:64px;">
+                    13
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides internet based it software applications and related services to insurance agents and brokers.
+                    </td><td style="width:64px;">
+                    ko
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    23
+                    </td><td style="width:180px;">
+                    SINA CORPORATION
+                    </td><td style="width:48px;">
+                    SINA
+                    </td><td style="width:72px;">
+                    85
+                    </td><td style="width:48px;">
+                    96
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:64px;">
+                    C
+                    </td><td style="width:48px;">
+                    B
+                    </td><td style="width:53px;">
+                    D-
+                    </td><td style="width:61px;">
+                    95.29
+                    </td><td style="width:54px;">
+                    79.25
+                    </td><td style="width:50px;">
+                     2.10
+                    </td><td style="width:56px;">
+                     18
+                    </td><td style="width:64px;">
+                     3189
+                    </td><td style="width:30px;">
+                     46
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -16.8
+                    </td><td style="width:64px;">
+                    +11
+                    </td><td style="width:64px;">
+                    +48
+                    </td><td style="width:64px;">
+                    +3
+                    </td><td style="width:64px;">
+                    +12
+                    </td><td style="width:64px;">
+                    8
+                    </td><td style="width:64px;">
+                    22
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese internet portal offering media content and services for china and global chinese communities.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    24
+                    </td><td style="width:180px;">
+                    CLIFFS NATURAL RESOURCES
+                    </td><td style="width:48px;">
+                    CLF
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    94
+                    </td><td style="width:48px;">
+                    92
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    101.62
+                    </td><td style="width:54px;">
+                    100.46
+                    </td><td style="width:50px;">
+                     3.58
+                    </td><td style="width:56px;">
+                     13
+                    </td><td style="width:64px;">
+                     4170
+                    </td><td style="width:30px;">
+                     14
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    0.6
+                    </td><td style="width:48px;">
+                    -1.1
+                    </td><td style="width:64px;">
+                    +79
+                    </td><td style="width:64px;">
+                    +174
+                    </td><td style="width:64px;">
+                    +90
+                    </td><td style="width:64px;">
+                    +74
+                    </td><td style="width:64px;">
+                    30
+                    </td><td style="width:64px;">
+                    28
+                    </td><td style="width:64px;">
+                    1
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Producer of iron ore pellets with 6 iron ore mines in mi, mn and eastern canada.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    25
+                    </td><td style="width:180px;">
+                    ILLUMINA INC
+                    </td><td style="width:48px;">
+                    ILMN
+                    </td><td style="width:72px;">
+                    93
+                    </td><td style="width:48px;">
+                    95
+                    </td><td style="width:48px;">
+                    86
+                    </td><td style="width:64px;">
+                    B+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    74.12
+                    </td><td style="width:54px;">
+                    68.73
+                    </td><td style="width:50px;">
+                     1.27
+                    </td><td style="width:56px;">
+                     -28
+                    </td><td style="width:64px;">
+                     1114
+                    </td><td style="width:30px;">
+                     65
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -7.3
+                    </td><td style="width:64px;">
+                    +36
+                    </td><td style="width:64px;">
+                    +38
+                    </td><td style="width:64px;">
+                    +43
+                    </td><td style="width:64px;">
+                    +45
+                    </td><td style="width:64px;">
+                    13
+                    </td><td style="width:64px;">
+                    24
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Develops integrated systems for the large scale analysis of genetic variation and biological function.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    26
+                    </td><td style="width:180px;">
+                    SOHU.COM INC
+                    </td><td style="width:48px;">
+                    SOHU
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    93
+                    </td><td style="width:48px;">
+                    87
+                    </td><td style="width:64px;">
+                    B-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    90.48
+                    </td><td style="width:54px;">
+                    79.68
+                    </td><td style="width:50px;">
+                     0.54
+                    </td><td style="width:56px;">
+                     -45
+                    </td><td style="width:64px;">
+                     607
+                    </td><td style="width:30px;">
+                     19
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -11.9
+                    </td><td style="width:64px;">
+                    +12
+                    </td><td style="width:64px;">
+                    +34
+                    </td><td style="width:64px;">
+                    +15
+                    </td><td style="width:64px;">
+                    +27
+                    </td><td style="width:64px;">
+                    33
+                    </td><td style="width:64px;">
+                    44
+                    </td><td style="width:64px;">
+                    22
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese internet portal offering media content, wireless, web search and gaming services through sohu.com
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    27
+                    </td><td style="width:180px;">
+                    INFORMATICA CORP
+                    </td><td style="width:48px;">
+                    INFA
+                    </td><td style="width:72px;">
+                    96
+                    </td><td style="width:48px;">
+                    92
+                    </td><td style="width:48px;">
+                    85
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    49.77
+                    </td><td style="width:54px;">
+                    46.54
+                    </td><td style="width:50px;">
+                     0.42
+                    </td><td style="width:56px;">
+                     -24
+                    </td><td style="width:64px;">
+                     705
+                    </td><td style="width:30px;">
+                     41
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -6.5
+                    </td><td style="width:64px;">
+                    +17
+                    </td><td style="width:64px;">
+                    +26
+                    </td><td style="width:64px;">
+                    +24
+                    </td><td style="width:64px;">
+                    +31
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    19
+                    </td><td style="width:64px;">
+                    7
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides enterprise data integration software and services for various industries
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    28
+                    </td><td style="width:180px;">
+                    APPLE INC
+                    </td><td style="width:48px;">
+                    AAPL
+                    </td><td style="width:72px;">
+                    95
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    82
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    D
+                    </td><td style="width:61px;">
+                    364.90
+                    </td><td style="width:54px;">
+                    359.56
+                    </td><td style="width:50px;">
+                     7.44
+                    </td><td style="width:56px;">
+                     5
+                    </td><td style="width:64px;">
+                     17794
+                    </td><td style="width:30px;">
+                     20
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.5
+                    </td><td style="width:64px;">
+                    +51
+                    </td><td style="width:64px;">
+                    +75
+                    </td><td style="width:64px;">
+                    +58
+                    </td><td style="width:64px;">
+                    +71
+                    </td><td style="width:64px;">
+                    35
+                    </td><td style="width:64px;">
+                    28
+                    </td><td style="width:64px;">
+                    1
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Manufactures personal computers, mobile communication devices, and portable digital music players.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    29
+                    </td><td style="width:180px;">
+                    JUNIPER NETWORKS INC
+                    </td><td style="width:48px;">
+                    JNPR
+                    </td><td style="width:72px;">
+                    95
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:48px;">
+                    88
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    B
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    44.62
+                    </td><td style="width:54px;">
+                    43.76
+                    </td><td style="width:50px;">
+                     0.55
+                    </td><td style="width:56px;">
+                     -17
+                    </td><td style="width:64px;">
+                     5335
+                    </td><td style="width:30px;">
+                     33
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.9
+                    </td><td style="width:64px;">
+                    +18
+                    </td><td style="width:64px;">
+                    +31
+                    </td><td style="width:64px;">
+                    +19
+                    </td><td style="width:64px;">
+                    +26
+                    </td><td style="width:64px;">
+                    8
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides secure network infrastructure products and services for telecom service providers and enterprises.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    30
+                    </td><td style="width:180px;">
+                    EDWARDS LIFESCIENCES CP
+                    </td><td style="width:48px;">
+                    EW
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    90
+                    </td><td style="width:48px;">
+                    92
+                    </td><td style="width:64px;">
+                    C+
+                    </td><td style="width:48px;">
+                    B
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    89.94
+                    </td><td style="width:54px;">
+                    90.87
+                    </td><td style="width:50px;">
+                     2.18
+                    </td><td style="width:56px;">
+                     11
+                    </td><td style="width:64px;">
+                     767
+                    </td><td style="width:30px;">
+                     49
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    1.0
+                    </td><td style="width:64px;">
+                    +5
+                    </td><td style="width:64px;">
+                    +31
+                    </td><td style="width:64px;">
+                    +5
+                    </td><td style="width:64px;">
+                    +13
+                    </td><td style="width:64px;">
+                    15
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Develops products to treat advanced cardiovascular disorders including heart valve and peripheral vascular disease.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    31
+                    </td><td style="width:180px;">
+                    TEMPUR PEDIC INTL INC
+                    </td><td style="width:48px;">
+                    TPX
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    90
+                    </td><td style="width:48px;">
+                    89
+                    </td><td style="width:64px;">
+                    B+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    48.64
+                    </td><td style="width:54px;">
+                    48.30
+                    </td><td style="width:50px;">
+                     1.32
+                    </td><td style="width:56px;">
+                     -39
+                    </td><td style="width:64px;">
+                     600
+                    </td><td style="width:30px;">
+                     22
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -0.7
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    +74
+                    </td><td style="width:64px;">
+                    +32
+                    </td><td style="width:64px;">
+                    +20
+                    </td><td style="width:64px;">
+                    99
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Manufactures temperature sensitive visco-elastic pressure foam mattresses, pillows, and comfort/lumbar cushions
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    32
+                    </td><td style="width:180px;">
+                    NORTHERN OIL & GAS INC
+                    </td><td style="width:48px;">
+                    NOG
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    81
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:64px;">
+                    A+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    A-
+                    </td><td style="width:61px;">
+                    32.88
+                    </td><td style="width:54px;">
+                    32.55
+                    </td><td style="width:50px;">
+                     0.45
+                    </td><td style="width:56px;">
+                     23
+                    </td><td style="width:64px;">
+                     1413
+                    </td><td style="width:30px;">
+                     93
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.0
+                    </td><td style="width:64px;">
+                    +203
+                    </td><td style="width:64px;">
+                    +333
+                    </td><td style="width:64px;">
+                    +280
+                    </td><td style="width:64px;">
+                    +74
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="width:64px;">
+                    30
+                    </td><td style="width:64px;">
+                    12
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Engaged in the exploration and production of oil and natural gas in the rocky mountain region of the u.s.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    33
+                    </td><td style="width:180px;">
+                    COGNIZANT TECH SOL CL A
+                    </td><td style="width:48px;">
+                    CTSH
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    77
+                    </td><td style="width:64px;">
+                    B-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C-
+                    </td><td style="width:61px;">
+                    77.74
+                    </td><td style="width:54px;">
+                    76.84
+                    </td><td style="width:50px;">
+                     2.27
+                    </td><td style="width:56px;">
+                     -8
+                    </td><td style="width:64px;">
+                     2050
+                    </td><td style="width:30px;">
+                     31
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.2
+                    </td><td style="width:64px;">
+                    +8
+                    </td><td style="width:64px;">
+                    +40
+                    </td><td style="width:64px;">
+                    +19
+                    </td><td style="width:64px;">
+                    +45
+                    </td><td style="width:64px;">
+                    25
+                    </td><td style="width:64px;">
+                    20
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="width:64px;">
+                    7
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides custom it consulting, technology and outsourcing services for companies.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    34
+                    </td><td style="width:180px;">
+                    OPEN TEXT CORP
+                    </td><td style="width:48px;">
+                    OTEX
+                    </td><td style="width:72px;">
+                    96
+                    </td><td style="width:48px;">
+                    98
+                    </td><td style="width:48px;">
+                    79
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B+
+                    </td><td style="width:61px;">
+                    59.48
+                    </td><td style="width:54px;">
+                    58.40
+                    </td><td style="width:50px;">
+                     1.53
+                    </td><td style="width:56px;">
+                     40
+                    </td><td style="width:64px;">
+                     514
+                    </td><td style="width:30px;">
+                     16
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.8
+                    </td><td style="width:64px;">
+                    +33
+                    </td><td style="width:64px;">
+                    +39
+                    </td><td style="width:64px;">
+                    +36
+                    </td><td style="width:64px;">
+                    +8
+                    </td><td style="width:64px;">
+                    23
+                    </td><td style="width:64px;">
+                    27
+                    </td><td style="width:64px;">
+                    --
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Develops content management software that captures, manages, stores and delivers organizational content through networks.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    35
+                    </td><td style="width:180px;">
+                    SENSATA TECHNOLOGIES HDG
+                    </td><td style="width:48px;">
+                    ST
+                    </td><td style="width:72px;">
+                    99
+                    </td><td style="width:48px;">
+                    84
+                    </td><td style="width:48px;">
+                    93
+                    </td><td style="width:64px;">
+                    A-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    A-
+                    </td><td style="width:61px;">
+                    34.45
+                    </td><td style="width:54px;">
+                    33.37
+                    </td><td style="width:50px;">
+                     -0.05
+                    </td><td style="width:56px;">
+                     -12
+                    </td><td style="width:64px;">
+                     711
+                    </td><td style="width:30px;">
+                     19
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -3.1
+                    </td><td style="width:64px;">
+                    +18
+                    </td><td style="width:64px;">
+                    +55
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    +15
+                    </td><td style="width:64px;">
+                    44
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    66
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Manufactures customized sensors and controls for current and heat protection in aircraft, cars and electric motors.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    36
+                    </td><td style="width:180px;">
+                    BORG WARNER INC
+                    </td><td style="width:48px;">
+                    BWA
+                    </td><td style="width:72px;">
+                    96
+                    </td><td style="width:48px;">
+                    81
+                    </td><td style="width:48px;">
+                    93
+                    </td><td style="width:64px;">
+                    B+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    81.07
+                    </td><td style="width:54px;">
+                    77.62
+                    </td><td style="width:50px;">
+                     1.70
+                    </td><td style="width:56px;">
+                     -24
+                    </td><td style="width:64px;">
+                     1525
+                    </td><td style="width:30px;">
+                     26
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -4.3
+                    </td><td style="width:64px;">
+                    +38
+                    </td><td style="width:64px;">
+                    +112
+                    </td><td style="width:64px;">
+                    +46
+                    </td><td style="width:64px;">
+                    +28
+                    </td><td style="width:64px;">
+                    17
+                    </td><td style="width:64px;">
+                    9
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Manufactures engine and drivetrain components for lightvehicle oems.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    37
+                    </td><td style="width:180px;">
+                    TRINA SOLAR LTD ADS
+                    </td><td style="width:48px;">
+                    TSL
+                    </td><td style="width:72px;">
+                    83
+                    </td><td style="width:48px;">
+                    99
+                    </td><td style="width:48px;">
+                    68
+                    </td><td style="width:64px;">
+                    D
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    31.89
+                    </td><td style="width:54px;">
+                    27.08
+                    </td><td style="width:50px;">
+                     -0.40
+                    </td><td style="width:56px;">
+                     17
+                    </td><td style="width:64px;">
+                     3845
+                    </td><td style="width:30px;">
+                     6
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -15.1
+                    </td><td style="width:64px;">
+                    -3
+                    </td><td style="width:64px;">
+                    +83
+                    </td><td style="width:64px;">
+                    +30
+                    </td><td style="width:64px;">
+                    +105
+                    </td><td style="width:64px;">
+                    23
+                    </td><td style="width:64px;">
+                    15
+                    </td><td style="width:64px;">
+                    7
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese co engaged in the development, manufacturing and sale of solar modules for various applications worldwide.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    38
+                    </td><td style="width:180px;">
+                    EZCORP INC CL A
+                    </td><td style="width:48px;">
+                    EZPW
+                    </td><td style="width:72px;">
+                    91
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:48px;">
+                    81
+                    </td><td style="width:64px;">
+                    B-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C-
+                    </td><td style="width:61px;">
+                    29.94
+                    </td><td style="width:54px;">
+                    29.39
+                    </td><td style="width:50px;">
+                     0.56
+                    </td><td style="width:56px;">
+                     -33
+                    </td><td style="width:64px;">
+                     251
+                    </td><td style="width:30px;">
+                     14
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.8
+                    </td><td style="width:64px;">
+                    +24
+                    </td><td style="width:64px;">
+                    +33
+                    </td><td style="width:64px;">
+                    +19
+                    </td><td style="width:64px;">
+                    +18
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="width:64px;">
+                    24
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides credit services to individuals by offering collateralized and short-term non-collateralized loans.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    39
+                    </td><td style="width:180px;">
+                    ORACLE CORP
+                    </td><td style="width:48px;">
+                    ORCL
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    95
+                    </td><td style="width:48px;">
+                    80
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    33.71
+                    </td><td style="width:54px;">
+                    33.03
+                    </td><td style="width:50px;">
+                     0.91
+                    </td><td style="width:56px;">
+                     2
+                    </td><td style="width:64px;">
+                     23996
+                    </td><td style="width:30px;">
+                     17
+                    </td><td style="width:64px;">
+                     D
+                    </td><td style="width:48px;">
+                    0.6
+                    </td><td style="width:48px;">
+                    -2.0
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    +31
+                    </td><td style="width:64px;">
+                    +29
+                    </td><td style="width:64px;">
+                    +47
+                    </td><td style="width:64px;">
+                    30
+                    </td><td style="width:64px;">
+                    43
+                    </td><td style="width:64px;">
+                    24
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Develops database, middleware and business application software and hardware systems for enterprises.
+                    </td><td style="width:64px;">
+                    ko
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    40
+                    </td><td style="width:180px;">
+                    TRACTOR SUPPLY CO
+                    </td><td style="width:48px;">
+                    TSCO
+                    </td><td style="width:72px;">
+                    89
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:48px;">
+                    88
+                    </td><td style="width:64px;">
+                    C
+                    </td><td style="width:48px;">
+                    B
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    53.95
+                    </td><td style="width:54px;">
+                    53.09
+                    </td><td style="width:50px;">
+                     1.22
+                    </td><td style="width:56px;">
+                     -37
+                    </td><td style="width:64px;">
+                     408
+                    </td><td style="width:30px;">
+                     23
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    0.5
+                    </td><td style="width:48px;">
+                    -1.6
+                    </td><td style="width:64px;">
+                    +16
+                    </td><td style="width:64px;">
+                    +29
+                    </td><td style="width:64px;">
+                    +8
+                    </td><td style="width:64px;">
+                    +20
+                    </td><td style="width:64px;">
+                    20
+                    </td><td style="width:64px;">
+                    7
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="width:64px;">
+                    8
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Operates 930 farming equipment stores in 44 states with plans to open 70-80 more (8%-9%) in 2010.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    41
+                    </td><td style="width:180px;">
+                    TRAVELZOO INC
+                    </td><td style="width:48px;">
+                    TZOO
+                    </td><td style="width:72px;">
+                    91
+                    </td><td style="width:48px;">
+                    81
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    53.21
+                    </td><td style="width:54px;">
+                    43.50
+                    </td><td style="width:50px;">
+                     2.40
+                    </td><td style="width:56px;">
+                     23
+                    </td><td style="width:64px;">
+                     435
+                    </td><td style="width:30px;">
+                     55
+                    </td><td style="width:64px;">
+                     A
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -18.3
+                    </td><td style="width:64px;">
+                    +38
+                    </td><td style="width:64px;">
+                    +156
+                    </td><td style="width:64px;">
+                    +73
+                    </td><td style="width:64px;">
+                    +20
+                    </td><td style="width:64px;">
+                    20
+                    </td><td style="width:64px;">
+                    15
+                    </td><td style="width:64px;">
+                    67
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides online travel offers from airlines, hotels, cruise lines, and vacation packagers via travelzoo.com.
+                    </td><td style="width:64px;">
+                    
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    42
+                    </td><td style="width:180px;">
+                    PERRIGO CO
+                    </td><td style="width:48px;">
+                    PRGO
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:48px;">
+                    80
+                    </td><td style="width:64px;">
+                    C+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    77.96
+                    </td><td style="width:54px;">
+                    77.45
+                    </td><td style="width:50px;">
+                     1.22
+                    </td><td style="width:56px;">
+                     -37
+                    </td><td style="width:64px;">
+                     520
+                    </td><td style="width:30px;">
+                     23
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    0.4
+                    </td><td style="width:48px;">
+                    -0.7
+                    </td><td style="width:64px;">
+                    +33
+                    </td><td style="width:64px;">
+                    +44
+                    </td><td style="width:64px;">
+                    +26
+                    </td><td style="width:64px;">
+                    +23
+                    </td><td style="width:64px;">
+                    27
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    11
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Develops over-the-counter and generic pharmaceuticals, diagnostic and nutritional products and active pharmaceuticals.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    43
+                    </td><td style="width:180px;">
+                    XILINX INC
+                    </td><td style="width:48px;">
+                    XLNX
+                    </td><td style="width:72px;">
+                    98
+                    </td><td style="width:48px;">
+                    95
+                    </td><td style="width:48px;">
+                    79
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B+
+                    </td><td style="width:61px;">
+                    34.90
+                    </td><td style="width:54px;">
+                    35.11
+                    </td><td style="width:50px;">
+                     0.57
+                    </td><td style="width:56px;">
+                     46
+                    </td><td style="width:64px;">
+                     6675
+                    </td><td style="width:30px;">
+                     15
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    1.8
+                    </td><td style="width:48px;">
+                    0.6
+                    </td><td style="width:64px;">
+                    +74
+                    </td><td style="width:64px;">
+                    +45
+                    </td><td style="width:64px;">
+                    +11
+                    </td><td style="width:64px;">
+                    +10
+                    </td><td style="width:64px;">
+                    18
+                    </td><td style="width:64px;">
+                    25
+                    </td><td style="width:64px;">
+                    1
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Designs field programmable gate arrays and complex programmable logic devices
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    44
+                    </td><td style="width:180px;">
+                    STERICYCLE INC
+                    </td><td style="width:48px;">
+                    SRCL
+                    </td><td style="width:72px;">
+                    96
+                    </td><td style="width:48px;">
+                    92
+                    </td><td style="width:48px;">
+                    79
+                    </td><td style="width:64px;">
+                    C+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    A-
+                    </td><td style="width:61px;">
+                    87.91
+                    </td><td style="width:54px;">
+                    86.97
+                    </td><td style="width:50px;">
+                     1.43
+                    </td><td style="width:56px;">
+                     -5
+                    </td><td style="width:64px;">
+                     486
+                    </td><td style="width:30px;">
+                     34
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -1.1
+                    </td><td style="width:64px;">
+                    +11
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    +16
+                    </td><td style="width:64px;">
+                    +26
+                    </td><td style="width:64px;">
+                    24
+                    </td><td style="width:64px;">
+                    24
+                    </td><td style="width:64px;">
+                    8
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Provides regulated waste management and related services to hospitals, blood banks and pharmaceutical companies
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    45
+                    </td><td style="width:180px;">
+                    BRUKER CORP
+                    </td><td style="width:48px;">
+                    BRKR
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    91
+                    </td><td style="width:48px;">
+                    85
+                    </td><td style="width:64px;">
+                    A+
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    19.68
+                    </td><td style="width:54px;">
+                    19.57
+                    </td><td style="width:50px;">
+                     0.30
+                    </td><td style="width:56px;">
+                     4
+                    </td><td style="width:64px;">
+                     586
+                    </td><td style="width:30px;">
+                     28
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -0.6
+                    </td><td style="width:64px;">
+                    +26
+                    </td><td style="width:64px;">
+                    +13
+                    </td><td style="width:64px;">
+                    +50
+                    </td><td style="width:64px;">
+                    +14
+                    </td><td style="width:64px;">
+                    22
+                    </td><td style="width:64px;">
+                    11
+                    </td><td style="width:64px;">
+                    47
+                    </td><td style="width:64px;">
+                    0
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Develops life science and materials research systems based on x-ray, mass spectrometry and spectroscopy technologies.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    46
+                    </td><td style="width:180px;">
+                    CHECK POINT SFTWARE TECH
+                    </td><td style="width:48px;">
+                    CHKP
+                    </td><td style="width:72px;">
+                    97
+                    </td><td style="width:48px;">
+                    90
+                    </td><td style="width:48px;">
+                    82
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    A-
+                    </td><td style="width:61px;">
+                    51.61
+                    </td><td style="width:54px;">
+                    50.44
+                    </td><td style="width:50px;">
+                     1.55
+                    </td><td style="width:56px;">
+                     -52
+                    </td><td style="width:64px;">
+                     1147
+                    </td><td style="width:30px;">
+                     20
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -2.3
+                    </td><td style="width:64px;">
+                    +10
+                    </td><td style="width:64px;">
+                    +20
+                    </td><td style="width:64px;">
+                    +13
+                    </td><td style="width:64px;">
+                    +17
+                    </td><td style="width:64px;">
+                    21
+                    </td><td style="width:64px;">
+                    59
+                    </td><td style="width:64px;">
+                    23
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Israeli provider of internet security software, hardware and services for enterprises and consumers.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    47
+                    </td><td style="width:180px;">
+                    AVAGO TECHNOLOGIES LTD
+                    </td><td style="width:48px;">
+                    AVGO
+                    </td><td style="width:72px;">
+                    98
+                    </td><td style="width:48px;">
+                    80
+                    </td><td style="width:48px;">
+                    87
+                    </td><td style="width:64px;">
+                    A
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B-
+                    </td><td style="width:61px;">
+                    34.60
+                    </td><td style="width:54px;">
+                    33.00
+                    </td><td style="width:50px;">
+                     0.54
+                    </td><td style="width:56px;">
+                     51
+                    </td><td style="width:64px;">
+                     3284
+                    </td><td style="width:30px;">
+                     14
+                    </td><td style="width:64px;">
+                     C
+                    </td><td style="width:48px;">
+                    0.2
+                    </td><td style="width:48px;">
+                    -4.6
+                    </td><td style="width:64px;">
+                    +23
+                    </td><td style="width:64px;">
+                    +81
+                    </td><td style="width:64px;">
+                    +30
+                    </td><td style="width:64px;">
+                    +21
+                    </td><td style="width:64px;">
+                    41
+                    </td><td style="width:64px;">
+                    26
+                    </td><td style="width:64px;">
+                    31
+                    </td><td style="width:64px;">
+                    6
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Singaporean designer of analog ics for telecom, industrial, automotive, and computing markets.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    48
+                    </td><td style="width:180px;">
+                    ARROW ELECTRONICS INC
+                    </td><td style="width:48px;">
+                    ARW
+                    </td><td style="width:72px;">
+                    91
+                    </td><td style="width:48px;">
+                    88
+                    </td><td style="width:48px;">
+                    83
+                    </td><td style="width:64px;">
+                    A-
+                    </td><td style="width:48px;">
+                    B
+                    </td><td style="width:53px;">
+                    C
+                    </td><td style="width:61px;">
+                    42.90
+                    </td><td style="width:54px;">
+                    39.56
+                    </td><td style="width:50px;">
+                     0.61
+                    </td><td style="width:56px;">
+                     13
+                    </td><td style="width:64px;">
+                     1051
+                    </td><td style="width:30px;">
+                     10
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -7.8
+                    </td><td style="width:64px;">
+                    +17
+                    </td><td style="width:64px;">
+                    +102
+                    </td><td style="width:64px;">
+                    +46
+                    </td><td style="width:64px;">
+                    +25
+                    </td><td style="width:64px;">
+                    16
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="width:64px;">
+                    3
+                    </td><td style="width:64px;">
+                    4
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Distributes electronic components and enterprise computing systems to industrial and commercial markets.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:#EEEEEE;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    49
+                    </td><td style="width:180px;">
+                    ICONIX BRAND GROUP INC
+                    </td><td style="width:48px;">
+                    ICON
+                    </td><td style="width:72px;">
+                    89
+                    </td><td style="width:48px;">
+                    87
+                    </td><td style="width:48px;">
+                    81
+                    </td><td style="width:64px;">
+                    B
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    C+
+                    </td><td style="width:61px;">
+                    23.15
+                    </td><td style="width:54px;">
+                    22.00
+                    </td><td style="width:50px;">
+                     0.40
+                    </td><td style="width:56px;">
+                     -33
+                    </td><td style="width:64px;">
+                     462
+                    </td><td style="width:30px;">
+                     17
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -5.0
+                    </td><td style="width:64px;">
+                    +19
+                    </td><td style="width:64px;">
+                    +11
+                    </td><td style="width:64px;">
+                    +24
+                    </td><td style="width:64px;">
+                    +34
+                    </td><td style="width:64px;">
+                    10
+                    </td><td style="width:64px;">
+                    49
+                    </td><td style="width:64px;">
+                    5
+                    </td><td style="width:64px;">
+                    0
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Markets apparel, accessories, footwear, beauty/fragrance products and home accessories for young men and women
+                    </td><td style="width:64px;">
+                    
+                    </td>
+		</tr><tr align="left" style="color:Black;background-color:Gainsboro;border-style:Solid;font-size:XX-Small;">
+			<td style="width:48px;">
+                    50
+                    </td><td style="width:180px;">
+                    NETEASE.COM INC ADR
+                    </td><td style="width:48px;">
+                    NTES
+                    </td><td style="width:72px;">
+                    94
+                    </td><td style="width:48px;">
+                    97
+                    </td><td style="width:48px;">
+                    74
+                    </td><td style="width:64px;">
+                    B-
+                    </td><td style="width:48px;">
+                    A
+                    </td><td style="width:53px;">
+                    B
+                    </td><td style="width:61px;">
+                    48.70
+                    </td><td style="width:54px;">
+                    47.20
+                    </td><td style="width:50px;">
+                     1.56
+                    </td><td style="width:56px;">
+                     84
+                    </td><td style="width:64px;">
+                     1520
+                    </td><td style="width:30px;">
+                     18
+                    </td><td style="width:64px;">
+                     B
+                    </td><td style="width:48px;">
+                    --
+                    </td><td style="width:48px;">
+                    -3.1
+                    </td><td style="width:64px;">
+                    +28
+                    </td><td style="width:64px;">
+                    +30
+                    </td><td style="width:64px;">
+                    +39
+                    </td><td style="width:64px;">
+                    +35
+                    </td><td style="width:64px;">
+                    29
+                    </td><td style="width:64px;">
+                    57
+                    </td><td style="width:64px;">
+                    --
+                    </td><td style="width:64px;">
+                    2
+                    </td><td style="font-size:XX-Small;width:300px;">
+                     Chinese provider of an interactive online gaming community, internet portal and wireless value-added services.
+                    </td><td style="width:64px;">
+                    o
+                    </td>
+		</tr><tr style="color:Black;background-color:White;border-style:Groove;">
+			<td colspan="28"><br/>k = earnings due within four weeks<br/>o = options on stocks<br/><hr/><b>About IBD&reg;eTables</b><br></br>IBD eTables is an electronic version of the stock tables and proprietary stock indices from the Investor's Business Daily newspaper.<br>It provides easy search and sort tools to research our database for stocks of interest. <br></p><p><b>Terms and Conditions</b><br> Information contained herein is not and should not be construed as an offer, solicitation, or recommendation to buy or sell securities.<br>The information has been obtained from sources we believe to be reliable; however no guarantee is made or implied with respect to its accuracy or completeness.<br>The information and content are subject to change without notice. You may use IBD eTables solely for personal, non-commercial use. Removal or alteration of any trademark,<br>copyright or other notices will result in legal action taken to protect our rights. You may not distribute IBD eTables to others, whether or not for payment or other consideration,<br>and you may not modify, copy, frame, reproduce, sell, publish, transmit, display or otherwise use or revise any portion of IBD eTables.<br/>For information regarding use of IBD eTables for any purpose, please see our:<br><br><a href='http://www.investors.com/terms'>Terms of Use Agreement</a>.<br></br></p><p>&copy;&nbsp;2011 Investor's Business Daily, Inc. All rights reserved.<br></br>--------------------------------------------------------------------------------<br>For questions or comments, please visit &nbsp;<a href='http://www.AskIBD.com'>www.AskIBD.com</a><p>&nbsp;</p></td>
+		</tr>
+	</table>
+</div>
+</div>
+</form>
+</body>
+</html>
