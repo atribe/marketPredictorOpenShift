@@ -102,9 +102,9 @@ public class ParseExcel {
 		  Statement stmt = null;
 		  int check = 0;
 		  try{
-			  con = MarketDB.getConnection();
+			  con = MarketDB.getConnectionIBD50();
 			  stmt = con.createStatement();
-			  stmt.executeQuery(createTable);
+			  stmt.executeUpdate(createTable);
 			  for(int i=0;i<queries.size();i++){
 				  check = i;
 				  stmt.executeUpdate(queries.get(i));

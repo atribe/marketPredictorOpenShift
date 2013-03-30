@@ -1,8 +1,10 @@
 package ibd.web.Resource;
 
+import ibd.web.IBD50.IBD50WeeklyJob;
 import ibd.web.threads.ApplicationThread;
 
-import org.apache.log4j.Logger;
+import java.util.Calendar;
+import java.util.Timer;
 
 public class ResourceInitializer {
 	/**
@@ -20,6 +22,21 @@ public class ResourceInitializer {
 
 	public void initMethod(){
 			new LoadProperties();
+			Timer timer  = new Timer();
+		    Calendar date = Calendar.getInstance();
+		    date.set(
+		      Calendar.DAY_OF_WEEK,
+		      Calendar.SATURDAY
+		    );
+		    date.set(Calendar.HOUR, 6);
+		    date.set(Calendar.MINUTE, 0);
+		    date.set(Calendar.SECOND, 0);
+		    date.set(Calendar.MILLISECOND, 0);
+		    timer.schedule(
+		      new IBD50WeeklyJob(),
+		      date.getTime(),
+		      1000 * 60 * 60 * 24 * 7
+		    );
 			ApplicationThread.startThread();
 	}
 }
