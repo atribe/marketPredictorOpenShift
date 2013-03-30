@@ -22,12 +22,13 @@ public class ShowData50 {
 	public ModelAndView getIndex() {
 		String[] date = (new Date().toString()).split(" ");
 		String currentDate = returnMonth(date[1])+"/"+date[2]+"/"+date[5];
+		ibd.web.Constants.Constants.logger.info("Showing Data from March 25, 2013 to Today.");
 		List<Data50> data50List = new IBD50DataRetriever().getData50("3/25/2013", currentDate);
 		return new ModelAndView("data50","data50List",data50List);
  
 	}
 	
-	public Integer returnMonth(String month){
+	private Integer returnMonth(String month){
 		if(month.contains("Jan")){
 			return 1;
 		}else if(month.contains("Feb")){

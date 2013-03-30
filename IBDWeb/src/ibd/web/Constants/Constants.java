@@ -13,4 +13,5 @@ public class Constants {
 	public static Boolean jobRunning = false;
 	public static Date jobSchedule = null;
 	public static Logger logger = Logger.getLogger(ibd.web.Constants.Constants.class);
+	public static String fileName = "";
 }

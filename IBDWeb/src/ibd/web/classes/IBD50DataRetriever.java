@@ -17,6 +17,7 @@ public class IBD50DataRetriever {
 		ResultSet resultSet = null;
 		try{
 			String query = "SELECT * FROM `^data50` WHERE dataAsOf >= ? AND dataAsOf < ? ORDER BY rank ASC";
+			ibd.web.Constants.Constants.logger.info("In IBD50DataRetriever: "+query);
 			connection = MarketDB.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, from);
