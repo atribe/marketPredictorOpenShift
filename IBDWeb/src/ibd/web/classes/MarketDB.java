@@ -67,7 +67,7 @@ public class MarketDB {
     	    
     	    String host = "localhost";
     	    String port="3306";
-    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeIBD50";
+    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeibd50";
     	    String username = "root";
     	    String password = "root";
     	    

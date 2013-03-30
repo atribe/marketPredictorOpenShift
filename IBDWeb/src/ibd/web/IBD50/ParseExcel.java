@@ -27,15 +27,13 @@ public class ParseExcel {
 		  		
 		  
 		  System.out.println(createTable);*/
-		String date = new Date().toString();
-		String[] array = date.split(" ");
-		String createTable = "CREATE TABLE `^"+array[5]+"-"+array[2]+"-"+array[1]+"` (rank INTEGER, companyName VARCHAR(100), symbol VARCHAR(10), smartSelectCompositeRating VARCHAR(20), epsRating VARCHAR(20), rsRating VARCHAR(20), indGroupRelativeStrength VARCHAR(10), smrRating VARCHAR(10), accDis VARCHAR(10), weekHigh52 VARCHAR(10), closingPrice VARCHAR(10), dollarChange VARCHAR(10), volChange VARCHAR(10), volume VARCHAR(50), pe VARCHAR(10), sponRating VARCHAR(10), divYield VARCHAR(10), offHigh VARCHAR(10), annualEpsEstChange VARCHAR(10), lastQtrEpsChange VARCHAR(10),nextQtrEpsChange VARCHAR(10), lastQtrSalesChange VARCHAR(10), roe VARCHAR(10), pretaxMargin VARCHAR(10), managementOwns VARCHAR(10), qtrEpsCountGreaterThan15 VARCHAR(10), description VARCHAR(1000), footNote VARCHAR(10), dataAsOf VARCHAR(100), indexAsOf VARCHAR(100), PRIMARY KEY (rank, dataAsOf, indexAsOf))";
-			int x = 0;
+		String[] array = null;
+			//int x = 0;
 			//while(x<filesNames.length){
 				//System.out.println("File: "+(x+1)+" out of "+filesNames.length);
 		  BufferedReader br = new BufferedReader(new FileReader(args));
 		  String line;
-		  int queryCounter = 0;
+		  //int queryCounter = 0;
 		  Boolean flag = false;
 		  int counter = 0;
 		  List<String> queries = new ArrayList<String>();
@@ -57,6 +55,7 @@ public class ParseExcel {
 				  indexOf = indexOf.trim();
 				  if(dataOf.contains(";")){
 					  dataOf = dataOf.substring(0,dataOf.length()-1);
+					  array = dataOf.split("/");
 				  }
 				  if(indexOf.contains(";")){
 						indexOf = indexOf.substring(0,indexOf.length()-1);
@@ -86,7 +85,7 @@ public class ParseExcel {
 						  counter++;
 					  }else{
 						  counter = 0;
-						  queryCounter++;
+						  //queryCounter++;
 						  queryy = "INSERT INTO `^data50` VALUES (";
 						  queryy += Integer.parseInt(valuesss)+",'";
 						  counter++;
@@ -96,7 +95,9 @@ public class ParseExcel {
 			  }
 		  }
 		  br.close();
-		  x++;
+
+			String createTable = "CREATE TABLE `^"+array[2]+"-"+array[1]+"-"+array[0]+"` (rank INTEGER, companyName VARCHAR(100), symbol VARCHAR(10), smartSelectCompositeRating VARCHAR(20), epsRating VARCHAR(20), rsRating VARCHAR(20), indGroupRelativeStrength VARCHAR(10), smrRating VARCHAR(10), accDis VARCHAR(10), weekHigh52 VARCHAR(10), closingPrice VARCHAR(10), dollarChange VARCHAR(10), volChange VARCHAR(10), volume VARCHAR(50), pe VARCHAR(10), sponRating VARCHAR(10), divYield VARCHAR(10), offHigh VARCHAR(10), annualEpsEstChange VARCHAR(10), lastQtrEpsChange VARCHAR(10),nextQtrEpsChange VARCHAR(10), lastQtrSalesChange VARCHAR(10), roe VARCHAR(10), pretaxMargin VARCHAR(10), managementOwns VARCHAR(10), qtrEpsCountGreaterThan15 VARCHAR(10), description VARCHAR(1000), footNote VARCHAR(10), dataAsOf VARCHAR(100), indexAsOf VARCHAR(100), PRIMARY KEY (rank, dataAsOf, indexAsOf))";
+		  //x++;
 		  // Database Enteries.
 		  Connection con = null;
 		  Statement stmt = null;

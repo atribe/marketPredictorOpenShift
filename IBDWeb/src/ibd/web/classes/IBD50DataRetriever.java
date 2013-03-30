@@ -3,9 +3,14 @@ package ibd.web.classes;
 import ibd.web.beans.Data50;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class IBD50DataRetriever {
@@ -16,7 +21,8 @@ public class IBD50DataRetriever {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try{
-			String query = "SELECT * FROM `^data50` WHERE dataAsOf >= ? AND dataAsOf < ? ORDER BY rank ASC";
+			String tableName = getTableName();
+			String query = "SELECT * FROM `^"+tableName+"` WHERE dataAsOf >= ? AND dataAsOf < ? ORDER BY rank ASC";
 			ibd.web.Constants.Constants.logger.info("In IBD50DataRetriever: "+query);
 			connection = MarketDB.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -68,5 +74,59 @@ public class IBD50DataRetriever {
 			}
 		}
 		return ibd50List;
+	}
+	
+	private String getTableName(){
+		Connection c = MarketDB.getConnectionIBD50();
+		List<String> tableNames = new ArrayList<String>();
+		DatabaseMetaData md = null;
+		try {
+			md = c.getMetaData();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    ResultSet rs = null;
+		try {
+			rs = md.getTables(null, null, "%", null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    try {
+			while (rs.next()) {
+			  System.out.println(rs.getString(3));
+			  String name = rs.getString(3);
+			  name = name.substring(1);
+			  tableNames.add(name);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			if(rs!=null)
+				rs.close();
+			if(c!=null)
+				c.close();
+		}
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM");
+		Date largestDate = null;
+		try{
+		largestDate = df.parse(tableNames.get(0));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		for(int i=0;i<tableNames.size();i++){
+			try {
+				Date date1 = df.parse(tableNames.get(i));
+				if(largestDate.before(date1)){
+					largestDate = date1;
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(largestDate);
+	    
 	}
 }
