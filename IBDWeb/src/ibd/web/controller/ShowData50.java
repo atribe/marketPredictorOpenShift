@@ -20,10 +20,8 @@ public class ShowData50 {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView getIndex() {
-		String[] date = (new Date().toString()).split(" ");
-		String currentDate = returnMonth(date[1])+"/"+date[2]+"/"+date[5];
-		ibd.web.Constants.Constants.logger.info("Showing Data from March 25, 2013 to Today.");
-		List<Data50> data50List = new IBD50DataRetriever().getData50("3/25/2013", currentDate);
+		ibd.web.Constants.Constants.logger.info("Showing Data for IBD50.");
+		List<Data50> data50List = new IBD50DataRetriever().getData50();
 		return new ModelAndView("data50","data50List",data50List);
  
 	}

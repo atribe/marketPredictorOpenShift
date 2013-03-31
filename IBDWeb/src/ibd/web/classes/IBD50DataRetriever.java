@@ -15,19 +15,17 @@ import java.util.List;
 
 public class IBD50DataRetriever {
 	
-	public List<Data50> getData50(String from, String to){
+	public List<Data50> getData50(){
 		List<Data50> ibd50List = new ArrayList<Data50>();
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try{
 			String tableName = getTableName();
-			String query = "SELECT * FROM `^"+tableName+"` WHERE dataAsOf >= ? AND dataAsOf < ? ORDER BY rank ASC";
+			String query = "SELECT * FROM `^"+tableName+"` ORDER BY rank ASC";
 			ibd.web.Constants.Constants.logger.info("In IBD50DataRetriever: "+query);
-			connection = MarketDB.getConnection();
+			connection = MarketDB.getConnectionIBD50();
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, from);
-			preparedStatement.setString(2, to);
 			resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				Data50 obj = new Data50();
@@ -105,9 +103,19 @@ public class IBD50DataRetriever {
 			e.printStackTrace();
 		}finally{
 			if(rs!=null)
-				rs.close();
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			if(c!=null)
-				c.close();
+				try {
+					c.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM");
 		Date largestDate = null;
@@ -126,7 +134,34 @@ public class IBD50DataRetriever {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(largestDate);
-	    
+		String [] arr = (largestDate.toString()).split(" ");
+	    return (arr[5]+"-"+arr[2]+"-"+returnMonth(arr[1]));
+	}
+	private Integer returnMonth(String month){
+		if(month.contains("Jan")){
+			return 1;
+		}else if(month.contains("Feb")){
+			return 2;
+		}else if(month.contains("Mar")){
+			return 3;
+		}else if(month.contains("Apr")){
+			return 4;
+		}else if(month.contains("May")){
+			return 5;
+		}else if(month.contains("Jun")){
+			return 6;
+		}else if(month.contains("Jul")){
+			return 7;
+		}else if(month.contains("Aug")){
+			return 8;
+		}else if(month.contains("Sep")){
+			return 9;
+		}else if(month.contains("Oct")){
+			return 10;
+		}else if(month.contains("Nov")){
+			return 11;
+		}else{
+			return 12;
+		}
 	}
 }

@@ -20,19 +20,19 @@ public class MarketDB {
 	    Class.forName("com.mysql.jdbc.Driver");
 	    
 	    // ************For Open Shift Account************	    
-	    /*String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
 	    String username = "adminxQvN8PH";
-	    String password = "WuLqQSWVvsg-";*/
+	    String password = "WuLqQSWVvsg-";
 	    
 	    
 	 // ************For Local Account************	
-	    String host = "localhost";
+	    /*String host = "localhost";
 	    String port="3306";
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
 	    String username = "root";
-	    String password = "root";
+	    String password = "root";*/
 	    
 	    
 	    connection = DriverManager.getConnection(dbURL, username, password);
@@ -56,20 +56,20 @@ public class MarketDB {
     	    // ************For Open Shift Account************	    
     	    
     	    
-    	    /*String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+    	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
     	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedixIBD50";
+    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedixibd50";
     	    String username = "adminxQvN8PH";
-    	    String password = "WuLqQSWVvsg-";*/
+    	    String password = "WuLqQSWVvsg-";
     	    
     	    
     	 // ************For Local Account************
     	    
-    	    String host = "localhost";
+    	    /*String host = "localhost";
     	    String port="3306";
     	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeibd50";
     	    String username = "root";
-    	    String password = "root";
+    	    String password = "root";*/
     	    
     	    
     	    connection = DriverManager.getConnection(dbURL, username, password);

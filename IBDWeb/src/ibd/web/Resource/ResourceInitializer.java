@@ -22,11 +22,12 @@ public class ResourceInitializer {
 
 	public void initMethod(){
 			new LoadProperties();
+			ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Putting Weekly Timer for IBD50");
 			Timer timer  = new Timer();
 		    Calendar date = Calendar.getInstance();
 		    date.set(
 		      Calendar.DAY_OF_WEEK,
-		      Calendar.SATURDAY
+		      Calendar.SUNDAY
 		    );
 		    date.set(Calendar.HOUR, 6);
 		    date.set(Calendar.MINUTE, 0);

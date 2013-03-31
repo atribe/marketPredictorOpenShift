@@ -101,6 +101,7 @@ public class DownloadAuthenticatedFile {
 		      String[] arr = fileName.split(" ");
 		      File file = new File(path, "Data50"+arr[1]+arr[2]+arr[5]+".xls");
 		      ibd.web.Constants.Constants.fileName = "Data50"+arr[1]+arr[2]+arr[5]+".xls";
+		      ibd.web.Constants.Constants.logger.info("Inside DownloadAuthenticatedFile: Downloading: "+ibd.web.Constants.Constants.fileName);
 		      FileOutputStream fos = new FileOutputStream(file);
 	
 		      byte[] buffer = new byte[1024];
