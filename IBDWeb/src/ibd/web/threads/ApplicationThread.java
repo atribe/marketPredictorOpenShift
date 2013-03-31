@@ -1,5 +1,6 @@
 package ibd.web.threads;
 
+import ibd.web.IBD50.IBD50WeeklyJob;
 import ibd.web.Resource.LoadProperties;
 import ibd.web.Resource.Communication;
 import ibd.web.classes.VarDow;
@@ -12,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -151,13 +153,13 @@ public class ApplicationThread implements Runnable {
 			ibd.web.Constants.Constants.outputNasdaq = VarNasdaq.currentNasdaq;
 			ibd.web.Constants.Constants.outputDow = VarDow.currentDow;
 		    ibd.web.Constants.Constants.logger.info("THREAD SLEPT ON "+new Date());
-		    /*try{
+		    try{
 		    	//ibd.web.Constants.Constants.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail1+" "+LoadProperties.toEmail2+" "+LoadProperties.serverPath+"IBDinfo.log");
 		    	Communication obj = new Communication();
 		    	obj.communicate(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail1, LoadProperties.toEmail2 , LoadProperties.serverPath+"IBDinfo.log");
 		    }catch(Exception e){
 		    	ibd.web.Constants.Constants.logger.info("EXCEPTION IN SENDING EMAIL");
-		    }*/
+		    }
 		    _sleepTime = getMilliSeconds(_sleepTime);
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds
@@ -189,6 +191,25 @@ public class ApplicationThread implements Runnable {
 			ibd.web.Constants.Constants.logger.info("DUE TO EXCEPTION: NUMBER OF MILLISECONDS TO DELAY: "+millis);
 			return millis;
 		}
+    }
+    
+    private static void getWeeklyThreadSeconds(Long millis){
+    	Timer timer  = new Timer();
+        Calendar date = Calendar.getInstance();
+        date.set(
+          Calendar.DAY_OF_WEEK,
+          Calendar.SATURDAY
+        );
+        date.set(Calendar.HOUR, 10);
+        date.set(Calendar.MINUTE, 33);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        // Schedule to run every Sunday in midnight
+        timer.schedule(
+          new IBD50WeeklyJob(),
+          date.getTime(),
+          1000 * 60 * 60 * 24 * 7
+        );
     }
 
     public static void debug(String value) {

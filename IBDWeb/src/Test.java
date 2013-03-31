@@ -12,6 +12,8 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args){
+		//System.out.println(new Date().toString());
+		String[] array = (new Date().toString()).split(" ");
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss"); 
 			dateFormat.setTimeZone(TimeZone.getTimeZone("EST5EDT")); 
 			Calendar calendar = Calendar.getInstance();

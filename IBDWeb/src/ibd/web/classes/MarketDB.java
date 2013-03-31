@@ -20,19 +20,19 @@ public class MarketDB {
 	    Class.forName("com.mysql.jdbc.Driver");
 	    
 	    // ************For Open Shift Account************	    
-	    /*String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
 	    String username = "adminxQvN8PH";
-	    String password = "WuLqQSWVvsg-";*/
+	    String password = "WuLqQSWVvsg-";
 	    
 	    
 	 // ************For Local Account************	
-	    String host = "localhost";
+	    /*String host = "localhost";
 	    String port="3306";
 	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
 	    String username = "root";
-	    String password = "root";
+	    String password = "root";*/
 	    
 	    
 	    connection = DriverManager.getConnection(dbURL, username, password);
@@ -46,6 +46,79 @@ public class MarketDB {
 	}
 	return connection;
     }
+    
+    
+    public static Connection getConnectionIBD50() {
+    	Connection connection = null;
+    	try {
+    	    Class.forName("com.mysql.jdbc.Driver");
+    	    
+    	    // ************For Open Shift Account************	    
+    	    
+    	    
+    	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+    	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedixibd50";
+    	    String username = "adminxQvN8PH";
+    	    String password = "WuLqQSWVvsg-";
+    	    
+    	    
+    	 // ************For Local Account************
+    	    
+    	    /*String host = "localhost";
+    	    String port="3306";
+    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeibd50";
+    	    String username = "root";
+    	    String password = "root";*/
+    	    
+    	    
+    	    connection = DriverManager.getConnection(dbURL, username, password);
+    	    //System.out.println("Connection established");
+    	    ibd.web.Constants.Constants.logger.info("Connection Established in MarketDB.java");
+    	} catch (ClassNotFoundException e) {
+    		ibd.web.Constants.Constants.logger.info("Database Driver not found in MarketDB.java"+e);
+    	} catch (SQLException e) {
+    		ibd.web.Constants.Constants.logger.info("Exception loading Database Driver in MarketDB.java"+e);
+    	    //System.out.println("Error loading database driver: " + e.getMessage());
+    	}
+    	return connection;
+        }
+    
+    public static Connection getConnectionIBD50PricesVolumes() {
+    	Connection connection = null;
+    	try {
+    	    Class.forName("com.mysql.jdbc.Driver");
+    	    
+    	    // ************For Open Shift Account************	    
+    	    
+    	    
+    	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+    	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedixibd50pricesvolumes";
+    	    String username = "adminxQvN8PH";
+    	    String password = "WuLqQSWVvsg-";
+    	    
+    	    
+    	 // ************For Local Account************
+    	    
+    	    /*String host = "localhost";
+    	    String port="3306";
+    	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeibd50pricesvolumes";
+    	    String username = "root";
+    	    String password = "root";*/
+    	    
+    	    
+    	    connection = DriverManager.getConnection(dbURL, username, password);
+    	    //System.out.println("Connection established");
+    	    ibd.web.Constants.Constants.logger.info("Connection Established in MarketDB.java");
+    	} catch (ClassNotFoundException e) {
+    		ibd.web.Constants.Constants.logger.info("Database Driver not found in MarketDB.java"+e);
+    	} catch (SQLException e) {
+    		ibd.web.Constants.Constants.logger.info("Exception loading Database Driver in MarketDB.java"+e);
+    	    //System.out.println("Error loading database driver: " + e.getMessage());
+    	}
+    	return connection;
+        }
 
     /**
      *
