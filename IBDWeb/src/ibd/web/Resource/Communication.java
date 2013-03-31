@@ -94,7 +94,12 @@ public class Communication
         	return 0;
         }
         // Handle text
-        String body = "<html><body>Hello, please find the attached Log for "+new Date()+"...<br/><br/><br/>Regards...<br/>Teedix MarketPredictor</body></html>";
+        String body = "";
+        if(ibd.web.Constants.Constants.isParseExcel){
+        	body = "<html><body>Hello, please find the attached Log for "+new Date()+"...<br/>This file is generated when application completed downloading and parsing/saving in database for IBD50 List...<br/><br/>Regards...<br/>Teedix MarketPredictor</body></html>";
+        }else{
+        	body = "<html><body>Hello, please find the attached Log for "+new Date()+"...<br/><br/><br/>Regards...<br/>Teedix MarketPredictor</body></html>";
+        }
         ibd.web.Constants.Constants.logger.info("TEXT ADDED TO EMAIL");
         try{
         MimeBodyPart textPart = new MimeBodyPart();

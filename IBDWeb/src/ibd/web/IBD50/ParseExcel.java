@@ -159,10 +159,12 @@ public class ParseExcel {
 		  
 		  try{
 		    	//ibd.web.Constants.Constants.logger.info(LoadProperties.hostName+" "+LoadProperties.fromEmail+" "+LoadProperties.passKey+" "+LoadProperties.toEmail1+" "+LoadProperties.toEmail2+" "+LoadProperties.serverPath+"IBDinfo.log");
-		    	Communication obj = new Communication();
+			  	ibd.web.Constants.Constants.isParseExcel = true;
+			  	Communication obj = new Communication();
 		    	ibd.web.Constants.Constants.logger.info("INSIDE ParseExcel.java: Execute Downloading of File and Parsing/saving in database");
 		    	obj.communicate(LoadProperties.hostName, LoadProperties.fromEmail, LoadProperties.passKey, LoadProperties.toEmail1, LoadProperties.toEmail2 , LoadProperties.serverPath+"IBDinfo.log");
-		    }catch(Exception e){
+		    	ibd.web.Constants.Constants.isParseExcel = false;
+		  }catch(Exception e){
 		    	ibd.web.Constants.Constants.logger.info("EXCEPTION IN SENDING EMAIL");
 		    }
 		  

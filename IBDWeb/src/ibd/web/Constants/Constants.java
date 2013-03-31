@@ -14,4 +14,5 @@ public class Constants {
 	public static Date jobSchedule = null;
 	public static Logger logger = Logger.getLogger(ibd.web.Constants.Constants.class);
 	public static String fileName = "";
+	public static Boolean isParseExcel = false;
 }
