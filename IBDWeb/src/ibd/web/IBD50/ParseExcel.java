@@ -65,7 +65,13 @@ public class ParseExcel {
 				  }
 				  if(dataFlag){
 					  array = dataOf.split("/");
-					  tableName = array[2]+"-"+array[1]+"-"+array[0];
+					  if(array[0].trim().length()==1){
+						  array[0]="0"+array[0];
+					  }
+					  if(array[1].trim().length()==1){
+						  array[1]="0"+array[1];
+					  }
+					  tableName = array[2]+"-"+array[0]+"-"+array[1];
 					  System.out.println(tableName);//System.exit(-1);
 					  dataFlag = false;
 				  }

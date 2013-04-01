@@ -117,7 +117,7 @@ public class IBD50DataRetriever {
 					e.printStackTrace();
 				}
 		}
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-dd-MM");
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date largestDate = null;
 		try{
 		largestDate = df.parse(tableNames.get(0));
@@ -135,8 +135,17 @@ public class IBD50DataRetriever {
 			}
 		}
 		String [] arr = (largestDate.toString()).split(" ");
-	    return (arr[5]+"-"+arr[2]+"-"+returnMonth(arr[1]));
+		String month = Integer.toString(returnMonth(arr[1]));
+		if(month.trim().length()==1){
+			month = "0"+month;
+		}
+		if(arr[2].trim().length()==1){
+			arr[2] = "0"+arr[2];
+		}
+	    return (arr[5]+"-"+month+"-"+arr[2]);
 	}
+	
+	
 	private Integer returnMonth(String month){
 		if(month.contains("Jan")){
 			return 1;

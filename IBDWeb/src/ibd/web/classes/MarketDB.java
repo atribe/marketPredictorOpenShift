@@ -22,7 +22,7 @@ public class MarketDB {
 	    // ************For Open Shift Account************	    
 	    String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedix";
+	    String dbURL = "jdbc:mysql://"+host+":"+port+"/teedixindices";
 	    String username = "adminxQvN8PH";
 	    String password = "WuLqQSWVvsg-";
 	    
@@ -30,7 +30,7 @@ public class MarketDB {
 	 // ************For Local Account************	
 	    /*String host = "localhost";
 	    String port="3306";
-	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytree";
+	    String dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeindices";
 	    String username = "root";
 	    String password = "root";*/
 	    
