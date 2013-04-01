@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ public class ParseExcel {
 		  String dataOf = "";
 		  String indexOf = "";
 		  //String[] queries = new String[50];
+		  ibd.web.Constants.Constants.teedixIbd50PricesVolumes = null;
+		  ibd.web.Constants.Constants.teedixIbd50PricesVolumes = new ArrayList<String>();
 		  while ((line = br.readLine()) != null) {
 		     // process the line.
 			  String valuesss = line.trim();
@@ -88,14 +92,16 @@ public class ParseExcel {
 						  queryy = "INSERT INTO `^"+tableName+"` VALUES ("; 
 					  }
 					  if(counter < 28){
-						  if(counter == 27){
-								
+						  if(counter == 27){								
 							  queryy += valuesss+"','"+dataOf+"','"+indexOf+"');";
 							  queries.add(queryy);
 						  }else{
 							  if(counter == 0){
 								  queryy += Integer.parseInt(valuesss)+",'"; 
 							  }else{
+								  if(2 == counter){
+									  ibd.web.Constants.Constants.teedixIbd50PricesVolumes.add(valuesss);
+								  }
 								  queryy += valuesss+"','";
 							  }
 							  //System.out.println("Counter: "+line);
@@ -147,7 +153,6 @@ public class ParseExcel {
 				  try {
 					stmt.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			  }
@@ -155,7 +160,6 @@ public class ParseExcel {
 				  try {
 					con.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			  }
@@ -174,7 +178,121 @@ public class ParseExcel {
 		    	ibd.web.Constants.Constants.logger.info("EXCEPTION IN SENDING EMAIL");
 		    }
 		  
+		  /**
+		   * @author Shakeel Shahzad
+		   * @description Now create Tables for teedixibd50pricesvolumes Database, but before creation, 
+		   * drop all the already existing Tables.
+		   */
+		  
+		  dropTeedixIBD50PricesVolumesTables();
+		  createTeedixIBD50PricesVolumesTables();
+		  
 		 }
+	
+	/**
+	 * @author Shakeel Shahzad
+	 * @description This function deletes all of the existing tables in teedixibd50pricesvolumes Database.
+	 */
+	private static void dropTeedixIBD50PricesVolumesTables(){
+		  List<String> tableNames = getAllTableNames();
+		  Connection con = null;
+		  Statement stmt = null;
+		  try{
+			  con = MarketDB.getConnectionIBD50PricesVolumes();
+			  stmt = con.createStatement();
+			  String query = "";
+			  int counter = 0;
+			  while(counter < ibd.web.Constants.Constants.teedixIbd50PricesVolumes.size()){
+				  query = "DROP TABLE `^"+tableNames.get(counter)+"`";
+				  stmt.executeUpdate(query);
+				  counter++;
+			  }
+		  }catch(Exception e){
+			  e.printStackTrace();
+		  }finally{
+			  try{
+				  stmt.close();
+				  con.close();
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	}
+	
+	/**
+	 * @author Shakeel Shahzad
+	 * @description This function returns List of all the existing tables in teedixibd50pricesvolumes Database.
+	 * @return List<String> of all the tables Names in teedixibd50pricesvolumes Database.
+	 */
+	private static List<String> getAllTableNames(){
+		List<String> tableNames = new ArrayList<String>();
+		Connection con = MarketDB.getConnectionIBD50PricesVolumes();
+		DatabaseMetaData md = null;
+		try {
+			md = con.getMetaData();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    ResultSet rs = null;
+		try {
+			rs = md.getTables(null, null, "%", null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    try {
+			while (rs.next()) {
+			  //System.out.println(rs.getString(3));
+			  String name = rs.getString(3);
+			  name = name.substring(1);
+			  tableNames.add(name);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs!=null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			if(con!=null)
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+		return tableNames;
+	}
+	
+	/**
+	 * @author Shakeel Shahzad
+	 * @description This function creates the tables against each stock in teedixibd50pricesvolumes Database.
+	 */
+	private static void createTeedixIBD50PricesVolumesTables(){
+		  Connection con = null;
+		  Statement stmt = null;
+		  try{
+			  con = MarketDB.getConnectionIBD50PricesVolumes();
+			  stmt = con.createStatement();
+			  String query = "";
+			  int counter = 0;
+			  while(counter < ibd.web.Constants.Constants.teedixIbd50PricesVolumes.size()){
+				  query = "CREATE TABLE `^"+ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter)+"` (Date date, Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
+				  stmt.executeUpdate(query);
+				  counter++;
+			  }
+		  }catch(Exception e){
+			  e.printStackTrace();
+		  }finally{
+			  try{
+				  stmt.close();
+				  con.close();
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+	}
 	
 	
 	public static String[] getAllFiles(String path){
