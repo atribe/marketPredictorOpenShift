@@ -193,7 +193,7 @@ public class ParseExcel {
 	 * @author Shakeel Shahzad
 	 * @description This function deletes all of the existing tables in teedixibd50pricesvolumes Database.
 	 */
-	private static void dropTeedixIBD50PricesVolumesTables(){
+	public static void dropTeedixIBD50PricesVolumesTables(){
 		  List<String> tableNames = getAllTableNames();
 		  Connection con = null;
 		  Statement stmt = null;
@@ -269,7 +269,7 @@ public class ParseExcel {
 	 * @author Shakeel Shahzad
 	 * @description This function creates the tables against each stock in teedixibd50pricesvolumes Database.
 	 */
-	private static void createTeedixIBD50PricesVolumesTables(){
+	public static void createTeedixIBD50PricesVolumesTables(){
 		  Connection con = null;
 		  Statement stmt = null;
 		  try{

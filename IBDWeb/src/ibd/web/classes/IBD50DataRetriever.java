@@ -7,6 +7,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class IBD50DataRetriever {
 		return ibd50List;
 	}
 	
-	private String getTableName(){
+	public String getTableName(){
 		Connection c = MarketDB.getConnectionIBD50();
 		List<String> tableNames = new ArrayList<String>();
 		DatabaseMetaData md = null;
@@ -143,6 +144,35 @@ public class IBD50DataRetriever {
 			arr[2] = "0"+arr[2];
 		}
 	    return (arr[5]+"-"+month+"-"+arr[2]);
+	}
+	
+
+	
+	public List<String> getDataFrom(String tableName){
+		List<String> data = new ArrayList<String>();
+		Connection con = null;
+		  Statement stmt = null;
+		  ResultSet rs = null;
+		  try{
+			  con = MarketDB.getConnectionIBD50PricesVolumes();
+			  stmt = con.createStatement();
+			  String query = "SELECT symbol FROM `^"+tableName.toLowerCase()+"`";
+			  rs = stmt.executeQuery(query);
+			  while(rs.next()){
+				  data.add(rs.getString(1));
+			  }
+		  }catch(Exception e){
+			  e.printStackTrace();
+		  }finally{
+			  try{
+				  stmt.close();
+				  con.close();
+				  rs.close();
+			  }catch(Exception e){
+				  e.printStackTrace();
+			  }
+		  }
+		return data;
 	}
 	
 	

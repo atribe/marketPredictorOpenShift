@@ -20,5 +20,5 @@ public class Constants {
 	 * @author Shakeel Shahzad
 	 * @description Will save weekly stocks symbols and create the tables in teedixibd50pricesvolumes database.
 	 */
-	public static List<String> teedixIbd50PricesVolumes;
+	public static List<String> teedixIbd50PricesVolumes = null;
 }
