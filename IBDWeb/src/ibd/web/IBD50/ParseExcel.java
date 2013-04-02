@@ -36,7 +36,7 @@ public class ParseExcel {
 			String createTable = "";
 		  
 			//while(x<filesNames.length){
-				createTable = "CREATE TABLE `^"+tableName+"` (rank INTEGER, companyName VARCHAR(100), symbol VARCHAR(10), smartSelectCompositeRating VARCHAR(20), epsRating VARCHAR(20), rsRating VARCHAR(20), indGroupRelativeStrength VARCHAR(10), smrRating VARCHAR(10), accDis VARCHAR(10), weekHigh52 VARCHAR(10), closingPrice VARCHAR(10), dollarChange VARCHAR(10), volChange VARCHAR(10), volume VARCHAR(50), pe VARCHAR(10), sponRating VARCHAR(10), divYield VARCHAR(10), offHigh VARCHAR(10), annualEpsEstChange VARCHAR(10), lastQtrEpsChange VARCHAR(10),nextQtrEpsChange VARCHAR(10), lastQtrSalesChange VARCHAR(10), roe VARCHAR(10), pretaxMargin VARCHAR(10), managementOwns VARCHAR(10), qtrEpsCountGreaterThan15 VARCHAR(10), description VARCHAR(1000), footNote VARCHAR(10), dataAsOf VARCHAR(100), indexAsOf VARCHAR(100), PRIMARY KEY (rank, dataAsOf, indexAsOf))";
+				createTable = "CREATE TABLE `^"+tableName.toLowerCase()+"` (rank INTEGER, companyName VARCHAR(100), symbol VARCHAR(10), smartSelectCompositeRating VARCHAR(20), epsRating VARCHAR(20), rsRating VARCHAR(20), indGroupRelativeStrength VARCHAR(10), smrRating VARCHAR(10), accDis VARCHAR(10), weekHigh52 VARCHAR(10), closingPrice VARCHAR(10), dollarChange VARCHAR(10), volChange VARCHAR(10), volume VARCHAR(50), pe VARCHAR(10), sponRating VARCHAR(10), divYield VARCHAR(10), offHigh VARCHAR(10), annualEpsEstChange VARCHAR(10), lastQtrEpsChange VARCHAR(10),nextQtrEpsChange VARCHAR(10), lastQtrSalesChange VARCHAR(10), roe VARCHAR(10), pretaxMargin VARCHAR(10), managementOwns VARCHAR(10), qtrEpsCountGreaterThan15 VARCHAR(10), description VARCHAR(1000), footNote VARCHAR(10), dataAsOf VARCHAR(100), indexAsOf VARCHAR(100), PRIMARY KEY (rank, dataAsOf, indexAsOf))";
 				//System.out.println("File: "+(x+1)+" out of "+filesNames.length);
 				
 		  BufferedReader br = new BufferedReader(new FileReader(args));
@@ -89,7 +89,7 @@ public class ParseExcel {
 			  if(flag){
 				  if(!valuesss.contains("<")){
 					  if(counter == 0){
-						  queryy = "INSERT INTO `^"+tableName+"` VALUES ("; 
+						  queryy = "INSERT INTO `^"+tableName.toLowerCase()+"` VALUES ("; 
 					  }
 					  if(counter < 28){
 						  if(counter == 27){								
@@ -110,7 +110,7 @@ public class ParseExcel {
 					  }else{
 						  counter = 0;
 						  //queryCounter++;
-						  queryy = "INSERT INTO `^"+tableName+"` VALUES (";
+						  queryy = "INSERT INTO `^"+tableName.toLowerCase()+"` VALUES (";
 						  queryy += Integer.parseInt(valuesss)+",'";
 						  counter++;
 						  //System.out.println("Nex Counter"+line);
@@ -128,14 +128,14 @@ public class ParseExcel {
 			  con = MarketDB.getConnectionIBD50();
 			  stmt = con.createStatement();
 			  //System.out.println(createTable);
-			  createTable = createTable.replaceAll("temporary", tableName);
+			  createTable = createTable.replaceAll("temporary", tableName.toLowerCase());
 			  ibd.web.Constants.Constants.logger.info("Inside ParseExcel: Create Table Query: "+createTable);
 			  stmt.executeUpdate(createTable);
 			  ibd.web.Constants.Constants.logger.info("Inside ParseExcel: Following Batch of Queries are Executing");
 			  for(int i=0;i<queries.size();i++){
 				  check = i;
 				  String query = queries.get(i);
-				  query = query.replaceAll("temporary",tableName);
+				  query = query.replaceAll("temporary",tableName.toLowerCase());
 				  ibd.web.Constants.Constants.logger.info(query);
 				  stmt.executeUpdate(query);
 			  }
@@ -204,7 +204,7 @@ public class ParseExcel {
 			  String query = "";
 			  int counter = 0;
 			  while(counter < tableNames.size()){
-				  query = "DROP TABLE `^"+tableNames.get(counter)+"`";
+				  query = "DROP TABLE `^"+tableNames.get(counter).toLowerCase()+"`";
 				  stmt.executeUpdate(query);
 				  counter++;
 			  }
@@ -281,7 +281,7 @@ public class ParseExcel {
 			  String query = "";
 			  int counter = 0;
 			  while(counter < ibd.web.Constants.Constants.teedixIbd50PricesVolumes.size()){
-				  query = "CREATE TABLE `^"+ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter)+"` (Date VARCHAR(100), Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
+				  query = "CREATE TABLE `^"+ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter).toLowerCase()+"` (Date VARCHAR(100), Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
 				  stmt.executeUpdate(query);
 				  counter++;
 			  }

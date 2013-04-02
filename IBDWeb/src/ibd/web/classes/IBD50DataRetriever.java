@@ -23,7 +23,7 @@ public class IBD50DataRetriever {
 		ResultSet resultSet = null;
 		try{
 			String tableName = getTableName();
-			String query = "SELECT * FROM `^"+tableName+"` ORDER BY rank ASC";
+			String query = "SELECT * FROM `^"+tableName.toLowerCase()+"` ORDER BY rank ASC";
 			ibd.web.Constants.Constants.logger.info("In IBD50DataRetriever: "+query);
 			connection = MarketDB.getConnectionIBD50();
 			preparedStatement = connection.prepareStatement(query);
