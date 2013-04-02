@@ -18,7 +18,7 @@ public class IBD50WeeklyJob extends TimerTask{
 			ParseExcel.main(LoadProperties.serverPath+ibd.web.Constants.Constants.fileName);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

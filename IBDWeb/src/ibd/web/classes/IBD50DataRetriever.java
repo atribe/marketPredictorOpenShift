@@ -63,19 +63,20 @@ public class IBD50DataRetriever {
 				ibd50List.add(obj);
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}finally{
 			try{
 				connection.close();
 				preparedStatement.close();
 			}catch(Exception ex){
-				ex.printStackTrace();
+				//ex.printStackTrace();
 			}
 		}
 		return ibd50List;
 	}
 	
 	public String getTableName(){
+		ibd.web.Constants.Constants.logger.info("Inside IBD50DataRetriever: Getting the Newest Table Name");
 		Connection c = MarketDB.getConnectionIBD50();
 		List<String> tableNames = new ArrayList<String>();
 		DatabaseMetaData md = null;
@@ -83,39 +84,39 @@ public class IBD50DataRetriever {
 			md = c.getMetaData();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	    ResultSet rs = null;
 		try {
 			rs = md.getTables(null, null, "%", null);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	    try {
 			while (rs.next()) {
-			  System.out.println(rs.getString(3));
+			  //System.out.println(rs.getString(3));
 			  String name = rs.getString(3);
 			  name = name.substring(1);
 			  tableNames.add(name);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}finally{
 			if(rs!=null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			if(c!=null)
 				try {
 					c.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 		}
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -123,7 +124,7 @@ public class IBD50DataRetriever {
 		try{
 		largestDate = df.parse(tableNames.get(0));
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		for(int i=0;i<tableNames.size();i++){
 			try {
@@ -132,7 +133,7 @@ public class IBD50DataRetriever {
 					largestDate = date1;
 				}
 			} catch (ParseException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		String [] arr = (largestDate.toString()).split(" ");
@@ -143,18 +144,20 @@ public class IBD50DataRetriever {
 		if(arr[2].trim().length()==1){
 			arr[2] = "0"+arr[2];
 		}
+		ibd.web.Constants.Constants.logger.info("Inside IBD50Retriever: Newest Table is: "+arr[5]+"-"+month+"-"+arr[2]);
 	    return (arr[5]+"-"+month+"-"+arr[2]);
 	}
 	
 
 	
 	public List<String> getDataFrom(String tableName){
+		ibd.web.Constants.Constants.logger.info("Inside IBD50Retriever: Getting Data from: "+tableName);
 		List<String> data = new ArrayList<String>();
 		Connection con = null;
 		  Statement stmt = null;
 		  ResultSet rs = null;
 		  try{
-			  con = MarketDB.getConnectionIBD50PricesVolumes();
+			  con = MarketDB.getConnectionIBD50();
 			  stmt = con.createStatement();
 			  String query = "SELECT symbol FROM `^"+tableName.toLowerCase()+"`";
 			  rs = stmt.executeQuery(query);
@@ -162,14 +165,15 @@ public class IBD50DataRetriever {
 				  data.add(rs.getString(1));
 			  }
 		  }catch(Exception e){
-			  e.printStackTrace();
+			  //e.printStackTrace();
+			  ibd.web.Constants.Constants.logger.info("Exception Inside IBD50Retriever: "+e.toString());
 		  }finally{
 			  try{
 				  stmt.close();
 				  con.close();
 				  rs.close();
 			  }catch(Exception e){
-				  e.printStackTrace();
+				  //e.printStackTrace();
 			  }
 		  }
 		return data;

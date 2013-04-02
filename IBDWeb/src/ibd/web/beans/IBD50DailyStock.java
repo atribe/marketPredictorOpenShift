@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class IBD50DailyStock {
 	private String name;
-	private Date date;
+	private String date;
 	private Float Open;
 	private Float High;
 	private Float Low;
@@ -17,10 +17,10 @@ public class IBD50DailyStock {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public Float getOpen() {

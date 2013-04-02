@@ -56,6 +56,7 @@ public class IBD50DailyJob {
 		 * @description Now prepare the Yahoo URL
 		 */
 		final String url = getYahooURL(symbol,date);
+		//System.out.println("YAHOO URL: "+url);
 		/**
 		 * @author Shakeel Shahzad
 		 * @description Now parse this URL and save it in Database.
@@ -132,22 +133,22 @@ public class IBD50DailyJob {
 					volumeStr += line.charAt(lineIndex);//same for volumes(they are immediately after prices)
 					++lineIndex;
 				    }
-				    Date date = java.sql.Date.valueOf(dateStr);
 				    ibd50DailyStock.setName(symbol);
-				    ibd50DailyStock.setDate(date);
+				    ibd50DailyStock.setDate(dateStr);
+				    //System.out.println("SET DATESTRING: "+dateStr);
 				    ibd50DailyStock.setOpen(Float.parseFloat(priceOpenStr));
 				    ibd50DailyStock.setClose(Float.parseFloat(priceCloseStr));
 				    ibd50DailyStock.setHigh(Float.parseFloat(priceHighStr));
 				    ibd50DailyStock.setLow(Float.parseFloat(priceLowStr));
 				    ibd50DailyStock.setVolume(Float.parseFloat(volumeStr));
+					/**
+					 * @author Shakeel Shahzad
+					 * @description Save the Stock for this Symbol
+					 */
+					saveIBD50DailyStock(ibd50DailyStock);
 				}
-				/**
-				 * @author Shakeel Shahzad
-				 * @description Save the Stock for this Symbol
-				 */
-				saveIBD50DailyStock(ibd50DailyStock);
 			}catch(Exception e){
-				e.printStackTrace();
+				//e.printStackTrace();
 				counter++;
 			}
 		}
@@ -164,16 +165,18 @@ public class IBD50DailyJob {
 		  try{
 			  con = MarketDB.getConnectionIBD50PricesVolumes();
 			  stmt = con.createStatement();
-			  String query = "INSERT INTO `^"+ibd50DailyStock.getName().toLowerCase()+"` VALUES("+ibd50DailyStock.getDate()+","+ibd50DailyStock.getOpen()+","+ibd50DailyStock.getHigh()+","+ibd50DailyStock.getLow()+","+ibd50DailyStock.getClose()+","+ibd50DailyStock.getVolume()+")";
-			  stmt.executeQuery(query);
+			  //System.out.println("SAVE DATESTR: "+ibd50DailyStock.getDate());
+			  String query = "INSERT INTO `^"+ibd50DailyStock.getName().toLowerCase()+"` VALUES('"+ibd50DailyStock.getDate()+"',"+ibd50DailyStock.getOpen()+","+ibd50DailyStock.getHigh()+","+ibd50DailyStock.getLow()+","+ibd50DailyStock.getClose()+","+ibd50DailyStock.getVolume()+")";
+			  System.out.println(query);
+			  stmt.executeUpdate(query);
 		  }catch(Exception e){
-			  e.printStackTrace();
+			  //e.printStackTrace();
 		  }finally{
 			  try{
 				  stmt.close();
 				  con.close();
 			  }catch(Exception e){
-				  e.printStackTrace();
+				  //e.printStackTrace();
 			  }
 		  }
 	}
@@ -209,16 +212,12 @@ public class IBD50DailyJob {
 		cal.add( Calendar.DAY_OF_YEAR, -365);
 		Date date = cal.getTime();
 		String[] array = ((cal.getTime()).toString()).split(" ");
-		System.out.println(date);System.exit(-1);
+		//System.out.println(date);//System.exit(-1);
 		array[1] = Integer.toString(returnMonth(array[1]));
 		if(1 == array[1].trim().length()){
 			array[1] = "0"+array[1];
 		}
 		return (array[5]+"-"+array[1]+"-"+array[2]);
-	}
-	
-	public static void main(String[] args){
-		parseAndSave("http://ichart.finance.yahoo.com/table.csv?s=RGR&a=3&b=02&c=2012&g=d&d=3&e=02&f=Tue&ignore=.csv","RGR");
 	}
 	
 	/**

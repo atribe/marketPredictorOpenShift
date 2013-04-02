@@ -127,7 +127,7 @@ public class ParseExcel {
 		  try{
 			  con = MarketDB.getConnectionIBD50();
 			  stmt = con.createStatement();
-			  System.out.println(createTable);
+			  //System.out.println(createTable);
 			  createTable = createTable.replaceAll("temporary", tableName);
 			  ibd.web.Constants.Constants.logger.info("Inside ParseExcel: Create Table Query: "+createTable);
 			  stmt.executeUpdate(createTable);
@@ -144,7 +144,7 @@ public class ParseExcel {
 			  stmt.close();
 			  con.close();
 		  }catch(Exception e){
-			  System.out.println(queries.get(check));
+			  System.out.println("EXCEPTION: "+queries.get(check));
 			  ibd.web.Constants.Constants.logger.info("Inside ParseExcel: EXCEPTION: "+queries.get(check));
 			  //System.exit(-1);
 			  //e.printStackTrace();
@@ -153,14 +153,14 @@ public class ParseExcel {
 				  try {
 					stmt.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			  }
 			  if(con!=null){
 				  try {
 					con.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			  }
 		  }
@@ -194,6 +194,7 @@ public class ParseExcel {
 	 * @description This function deletes all of the existing tables in teedixibd50pricesvolumes Database.
 	 */
 	public static void dropTeedixIBD50PricesVolumesTables(){
+		ibd.web.Constants.Constants.logger.info("Inside ParseExcel: Starting to drop all the Tables.");
 		  List<String> tableNames = getAllTableNames();
 		  Connection con = null;
 		  Statement stmt = null;
@@ -202,19 +203,20 @@ public class ParseExcel {
 			  stmt = con.createStatement();
 			  String query = "";
 			  int counter = 0;
-			  while(counter < ibd.web.Constants.Constants.teedixIbd50PricesVolumes.size()){
+			  while(counter < tableNames.size()){
 				  query = "DROP TABLE `^"+tableNames.get(counter)+"`";
 				  stmt.executeUpdate(query);
 				  counter++;
 			  }
 		  }catch(Exception e){
-			  e.printStackTrace();
+			  //e.printStackTrace();
+			  ibd.web.Constants.Constants.logger.info("Exception Inside ParseExcel:"+e.toString());
 		  }finally{
 			  try{
 				  stmt.close();
 				  con.close();
 			  }catch(Exception e){
-				  e.printStackTrace();
+				  //e.printStackTrace();
 			  }
 		  }
 	}
@@ -231,13 +233,13 @@ public class ParseExcel {
 		try {
 			md = con.getMetaData();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	    ResultSet rs = null;
 		try {
 			rs = md.getTables(null, null, "%", null);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	    try {
 			while (rs.next()) {
@@ -247,19 +249,19 @@ public class ParseExcel {
 			  tableNames.add(name);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}finally{
 			if(rs!=null)
 				try {
 					rs.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			if(con!=null)
 				try {
 					con.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 		}
 		return tableNames;
@@ -273,23 +275,25 @@ public class ParseExcel {
 		  Connection con = null;
 		  Statement stmt = null;
 		  try{
+			  ibd.web.Constants.Constants.logger.info("Inside ParseExcel: Creating Tables");
 			  con = MarketDB.getConnectionIBD50PricesVolumes();
 			  stmt = con.createStatement();
 			  String query = "";
 			  int counter = 0;
 			  while(counter < ibd.web.Constants.Constants.teedixIbd50PricesVolumes.size()){
-				  query = "CREATE TABLE `^"+ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter)+"` (Date date, Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
+				  query = "CREATE TABLE `^"+ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter)+"` (Date VARCHAR(100), Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
 				  stmt.executeUpdate(query);
 				  counter++;
 			  }
 		  }catch(Exception e){
-			  e.printStackTrace();
+			  //e.printStackTrace();
+			  ibd.web.Constants.Constants.logger.info("Exception Inside ParseExcel: Query");
 		  }finally{
 			  try{
 				  stmt.close();
 				  con.close();
 			  }catch(Exception e){
-				  e.printStackTrace();
+				  //e.printStackTrace();
 			  }
 		  }
 	}

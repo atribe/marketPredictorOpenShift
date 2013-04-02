@@ -1,5 +1,6 @@
 package ibd.web.threads;
 
+import ibd.web.IBD50.IBD50DailyJob;
 import ibd.web.IBD50.IBD50WeeklyJob;
 import ibd.web.Resource.LoadProperties;
 import ibd.web.Resource.Communication;
@@ -118,7 +119,7 @@ public class ApplicationThread implements Runnable {
 		ibd.web.Constants.Constants.logger.info("THREAD SLEPT FOR 10000 MILLISECONDS");
 	    Thread.sleep(10000);
 	}catch (Exception e) {
-		e.printStackTrace();
+		//e.printStackTrace();
 	}
 	while (_continueRunning) {
 	    _running = true;
@@ -134,6 +135,7 @@ public class ApplicationThread implements Runnable {
 	    }
 	    try {
 		ibd.web.threads.ThreadActions.processJobs();
+		IBD50DailyJob.processIBD50DailyJob();
 	    } catch (IOException ex) {
 		Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
 	    }
@@ -191,25 +193,6 @@ public class ApplicationThread implements Runnable {
 			ibd.web.Constants.Constants.logger.info("DUE TO EXCEPTION: NUMBER OF MILLISECONDS TO DELAY: "+millis);
 			return millis;
 		}
-    }
-    
-    private static void getWeeklyThreadSeconds(Long millis){
-    	Timer timer  = new Timer();
-        Calendar date = Calendar.getInstance();
-        date.set(
-          Calendar.DAY_OF_WEEK,
-          Calendar.SATURDAY
-        );
-        date.set(Calendar.HOUR, 10);
-        date.set(Calendar.MINUTE, 33);
-        date.set(Calendar.SECOND, 0);
-        date.set(Calendar.MILLISECOND, 0);
-        // Schedule to run every Sunday in midnight
-        timer.schedule(
-          new IBD50WeeklyJob(),
-          date.getTime(),
-          1000 * 60 * 60 * 24 * 7
-        );
     }
 
     public static void debug(String value) {

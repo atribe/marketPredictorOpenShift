@@ -235,7 +235,7 @@ public class MarketRetriever {
 	String str = "http://ichart.finance.yahoo.com/table.csv?s="
 			+ symbol.toUpperCase() + "&a=" + a + "&b=" + b + "&c=" + c + "&g=d&d=" + d + "&e=" + e
 			+ "&f=" + f + "&ignore=.csv";
-	System.out.println(str);
+	//System.out.println(str);
 	ibd.web.Constants.Constants.logger.info("Fetched data according to: "+str);
 	return str;
     }
@@ -261,7 +261,7 @@ public class MarketRetriever {
 			connection.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	return numDays;
