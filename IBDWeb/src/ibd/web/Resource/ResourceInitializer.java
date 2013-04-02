@@ -12,7 +12,7 @@ public class ResourceInitializer {
 	 * 
 	 */
 	private String message;
-	
+	private static boolean _isThisRunning = false;
 	public String getMessage() {
 		return message;
 	}
@@ -22,6 +22,8 @@ public class ResourceInitializer {
 	}
 
 	public void initMethod(){
+		if(!_isThisRunning){
+			_isThisRunning = true;
 			new LoadProperties();
 			ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Putting Weekly Timer for IBD50");
 			Timer timer  = new Timer();
@@ -39,6 +41,7 @@ public class ResourceInitializer {
 		      date.getTime(),
 		      1000 * 60 * 60 * 24 * 7
 		    );
+		}
 		    /**
 		     * @author Shakeel Shahzad
 		     * @description This is important to execute this on server start-up so when our application
@@ -48,6 +51,7 @@ public class ResourceInitializer {
 		    /*ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Going to start ServerStartupIBD50Job");
 		    ServerStartupIBD50Job.serverStartupIBD50Job();
 		    ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Ended ServerStartupIBD50Job");*/
-			ApplicationThread.startThread();
+		    if(!ApplicationThread._isRunning)
+		    	ApplicationThread.startThread();
 	}
 }

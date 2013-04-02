@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 public class ApplicationThread implements Runnable {
 
+	public static boolean _isRunning = false;
     public static boolean _continueRunning = true;
     private static boolean _running = false;
     private static boolean _debug = true;
@@ -103,6 +104,7 @@ public class ApplicationThread implements Runnable {
 
     public static int startThread() {
     	ibd.web.Constants.Constants.logger.info("THREAD STARTED FOR "+new Date());
+    _isRunning = true;
 	_continueRunning = true;
 	if (_thread == null || !_thread.isAlive()) {
 	    debug("Starting the application thread from startThread() .........");

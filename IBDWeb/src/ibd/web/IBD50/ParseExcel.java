@@ -204,7 +204,7 @@ public class ParseExcel {
 			  String query = "";
 			  int counter = 0;
 			  while(counter < tableNames.size()){
-				  query = "DROP TABLE `^"+tableNames.get(counter).toLowerCase()+"`";
+				  query = "DROP TABLE `^"+(tableNames.get(counter)).toLowerCase()+"`";
 				  stmt.executeUpdate(query);
 				  counter++;
 			  }
@@ -274,20 +274,20 @@ public class ParseExcel {
 	public static void createTeedixIBD50PricesVolumesTables(){
 		  Connection con = null;
 		  Statement stmt = null;
+		  String query = "";
 		  try{
 			  ibd.web.Constants.Constants.logger.info("Inside ParseExcel: Creating Tables");
 			  con = MarketDB.getConnectionIBD50PricesVolumes();
 			  stmt = con.createStatement();
-			  String query = "";
 			  int counter = 0;
 			  while(counter < ibd.web.Constants.Constants.teedixIbd50PricesVolumes.size()){
-				  query = "CREATE TABLE `^"+ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter).toLowerCase()+"` (Date VARCHAR(100), Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
+				  query = "CREATE TABLE `^"+(ibd.web.Constants.Constants.teedixIbd50PricesVolumes.get(counter)).toLowerCase()+"` (Date VARCHAR(100), Open float, High float, Low float, Close float, Volume BIGINT, PRIMARY KEY (Date))";
 				  stmt.executeUpdate(query);
 				  counter++;
 			  }
 		  }catch(Exception e){
 			  //e.printStackTrace();
-			  ibd.web.Constants.Constants.logger.info("Exception Inside ParseExcel: Query");
+			  ibd.web.Constants.Constants.logger.info("Exception Inside ParseExcel: Query "+query);
 		  }finally{
 			  try{
 				  stmt.close();
