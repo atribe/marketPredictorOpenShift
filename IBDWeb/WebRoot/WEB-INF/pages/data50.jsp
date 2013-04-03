@@ -142,7 +142,7 @@
 <spring:message code="label.dataDate" />     <b>   ${model.showDate}</b>
 <br/><br/>
 <div class="styled-select">
-	<select id="allDates" name="allDates" onchange="datesForm.submit();">
+	<spring:message code="label.archivedData" /><select id="allDates" name="allDates" onchange="datesForm.submit();">
 		<c:forEach var="singleDate" items="${model.allDates}">
 			<option value='<c:out value="${singleDate}" />'><c:out value="${singleDate}" /></option>
 		</c:forEach>
