@@ -43,7 +43,9 @@
 	    }
 %>
 <br/>
+<%if(!ibd.web.Constants.Constants.jobRunning){ %>
 	<a href="showData50.do"><spring:message code="label.seeData50" /></a>
+<%} %>
 	<jsp:include page="fundChecker.jsp" />  
 <br/> 
 	<jsp:include page="marketData.jsp" />

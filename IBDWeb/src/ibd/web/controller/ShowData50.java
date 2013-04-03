@@ -3,8 +3,13 @@ package ibd.web.controller;
 import ibd.web.beans.Data50;
 import ibd.web.classes.IBD50DataRetriever;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +23,37 @@ public class ShowData50 {
 	 * 
 	 * @return ModelAndView
 	 */
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getIndex() {
-		ibd.web.Constants.Constants.logger.info("Showing Data for IBD50.");
-		List<Data50> data50List = new IBD50DataRetriever().getData50();
-		return new ModelAndView("data50","data50List",data50List);
+	@RequestMapping(method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView getIndex(HttpServletRequest request, HttpServletResponse response) {
+		if(!ibd.web.Constants.Constants.jobRunning){
+			ibd.web.Constants.Constants.logger.info("Showing Data for IBD50.");
+			String selectedDate=(String)request.getParameter("allDates");
+			System.out.println(selectedDate);
+			Map<String, Object> model = new HashMap<String, Object>();
+			List<Data50> data50List = null;
+			String currentDate = "";
+			if(null != selectedDate && !selectedDate.equalsIgnoreCase("")){
+				currentDate = selectedDate;
+				data50List = new IBD50DataRetriever().getData50(selectedDate);
+			}else{
+				currentDate = new IBD50DataRetriever().getTableName();
+				data50List = new IBD50DataRetriever().getData50();
+			}
+	        model.put("data50List", data50List);
+	        model.put("showDate", currentDate);
+	        List<String> allTables = new IBD50DataRetriever().getAllTables();
+	        List<String> allDates = new ArrayList<String>();
+	        	allDates.add(currentDate);
+	        for(String tableName: allTables){
+	        	if(!currentDate.equalsIgnoreCase(tableName)){
+	        		allDates.add(tableName);
+	        	}
+	        }
+	        model.put("allDates", allDates);
+			return new ModelAndView("data50","model",model);
+		}else{
+			return new ModelAndView("error","model",null);
+		}
  
 	}
 	

@@ -109,11 +109,49 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 		background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
 	}
+	
+	
+	/*
+	For Combo Box
+	*/
+	.styled-select select {
+	   background: transparent;
+	   width: 268px;
+	   padding: 5px;
+	   font-size: 16px;
+	   line-height: 1;
+	   border: 0;
+	   border-radius: 0;
+	   height: 34px;
+	   -webkit-appearance: none;
+	   }
+	   .styled-select {
+		   width: 240px;
+		   height: 34px;
+		   overflow: hidden;
+		   background: url(images/down_arrow_select.png) no-repeat right #ddd;
+		   border: 1px solid #ccc;
+		}
 	</style>
 	
 </head>
 
 <body>
+
+<form id="datesForm" name="datesForm" method="post" action="showData50.do">
+<spring:message code="label.dataDate" />     <b>   ${model.showDate}</b>
+<br/><br/>
+<div class="styled-select">
+	<select id="allDates" name="allDates" onchange="datesForm.submit();">
+		<c:forEach var="singleDate" items="${model.allDates}">
+			<option value='<c:out value="${singleDate}" />'><c:out value="${singleDate}" /></option>
+		</c:forEach>
+	</select>
+</div>
+<br/>
+<a href="index.do">GO BACK!!!</a>
+<br/>
+</form>
 	<table cellspacing='0'>
 	<thead>
 	     <tr>
@@ -149,7 +187,7 @@
 	    </tr> 
 	</thead>
 	    <% int counter = 1;%>
-	    <c:forEach var="data50" items="${data50List}">
+	    <c:forEach var="data50" items="${model.data50List}">
 	    <tbody>
 	        <tr <% if(counter%2==0){ %>class="even"<%} %>>
 	        	<td><%=counter %></td><%counter++; %>

@@ -75,8 +75,68 @@ public class IBD50DataRetriever {
 		return ibd50List;
 	}
 	
-	public String getTableName(){
-		ibd.web.Constants.Constants.logger.info("Inside IBD50DataRetriever: Getting the Newest Table Name");
+	public List<Data50> getData50(String selectedDate){
+		List<Data50> ibd50List = new ArrayList<Data50>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try{
+			String tableName = selectedDate;
+			String query = "SELECT * FROM `^"+tableName.toLowerCase()+"` ORDER BY rank ASC";
+			ibd.web.Constants.Constants.logger.info("In IBD50DataRetriever: "+query);
+			connection = MarketDB.getConnectionIBD50();
+			preparedStatement = connection.prepareStatement(query);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				Data50 obj = new Data50();
+				obj.setRank(Integer.toString(resultSet.getInt(1)));
+				obj.setCompanyName(resultSet.getString(2));
+				obj.setSymbol(resultSet.getString(3));
+				obj.setSmartSelectCompositeRating(resultSet.getString(4));
+				obj.setEpsRating(resultSet.getString(5));
+				obj.setRsRating(resultSet.getString(6));
+				obj.setIndGroupRelativeStrength(resultSet.getString(7));
+				obj.setSmrRating(resultSet.getString(8));
+				obj.setAccDis(resultSet.getString(9));
+				obj.setWeekHigh52(resultSet.getString(10));
+				obj.setClosingPrice(resultSet.getString(11));
+				obj.setDollarChange(resultSet.getString(12));
+				obj.setVolChange(resultSet.getString(13));
+				obj.setVolume(resultSet.getString(14));
+				obj.setPe(resultSet.getString(15));
+				obj.setSponReading(resultSet.getString(16));
+				obj.setDivYield(resultSet.getString(17));
+				obj.setOffHigh(resultSet.getString(18));
+				obj.setAnnualEpsEstChange(resultSet.getString(19));
+				obj.setLastQtrEpsChange(resultSet.getString(20));
+				obj.setNextQtrEpsChange(resultSet.getString(21));
+				obj.setLastQtrSalesChange(resultSet.getString(22));
+				obj.setRoe(resultSet.getString(23));
+				obj.setPretaxmargin(resultSet.getString(24));
+				obj.setManagementOwns(resultSet.getString(25));
+				obj.setQtrEpsCountGreaterThan15(resultSet.getString(26));
+				obj.setDescription(resultSet.getString(27));
+				obj.setFootNote(resultSet.getString(28));
+				obj.setDataAsOf(resultSet.getString(29));
+				obj.setIndexAsOf(resultSet.getString(30));
+				ibd50List.add(obj);
+			}
+		}catch(Exception e){
+			//e.printStackTrace();
+		}finally{
+			try{
+				connection.close();
+				preparedStatement.close();
+			}catch(Exception ex){
+				//ex.printStackTrace();
+			}
+		}
+		return ibd50List;
+	}
+	
+	
+	public List<String> getAllTables(){
+		ibd.web.Constants.Constants.logger.info("Inside IBD50DataRetriever: Getting All Tables Names");
 		Connection c = MarketDB.getConnectionIBD50();
 		List<String> tableNames = new ArrayList<String>();
 		DatabaseMetaData md = null;
@@ -119,6 +179,12 @@ public class IBD50DataRetriever {
 					//e.printStackTrace();
 				}
 		}
+	    return tableNames;
+	}
+	
+	public String getTableName(){
+		ibd.web.Constants.Constants.logger.info("Inside IBD50DataRetriever: Getting the Newest Table Name");
+		List<String> tableNames = getAllTables();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date largestDate = null;
 		try{

@@ -9,6 +9,6 @@
 <title><spring:message code="label.applicationTitle" /></title>
 </head>
 <body>
-	<font color="red"><spring:message code="label.fundErrorMessage" /></font>
+	<font color="red"><spring:message code="label.generalErrorMessage" /></font>
 </body>
 </html>
