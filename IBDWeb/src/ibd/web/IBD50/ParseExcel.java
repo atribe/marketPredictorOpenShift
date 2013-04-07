@@ -20,6 +20,7 @@ public class ParseExcel {
 	public static void main(String args) throws IOException {//String fileName = "C://Data50.xls";
 		//String[] filesNames = getAllFiles("D:\\Important Work\\Aaron\\marketPredictorOpenShift\\Data50\\");
 		Boolean dataFlag = false;  
+		String symbol = "";
 		  /* @author Shakeel Shahzad
 		   * @description New table in database has been created for storing IBD50's data.
 		   *  
@@ -36,7 +37,7 @@ public class ParseExcel {
 			String createTable = "";
 		  
 			//while(x<filesNames.length){
-				createTable = "CREATE TABLE `^"+tableName.toLowerCase()+"` (rank INTEGER, companyName VARCHAR(100), symbol VARCHAR(10), smartSelectCompositeRating VARCHAR(20), epsRating VARCHAR(20), rsRating VARCHAR(20), indGroupRelativeStrength VARCHAR(10), smrRating VARCHAR(10), accDis VARCHAR(10), weekHigh52 VARCHAR(10), closingPrice VARCHAR(10), dollarChange VARCHAR(10), volChange VARCHAR(10), volume VARCHAR(50), pe VARCHAR(10), sponRating VARCHAR(10), divYield VARCHAR(10), offHigh VARCHAR(10), annualEpsEstChange VARCHAR(10), lastQtrEpsChange VARCHAR(10),nextQtrEpsChange VARCHAR(10), lastQtrSalesChange VARCHAR(10), roe VARCHAR(10), pretaxMargin VARCHAR(10), managementOwns VARCHAR(10), qtrEpsCountGreaterThan15 VARCHAR(10), description VARCHAR(1000), footNote VARCHAR(10), dataAsOf VARCHAR(100), indexAsOf VARCHAR(100), PRIMARY KEY (rank, dataAsOf, indexAsOf))";
+				createTable = "CREATE TABLE `^"+tableName+"` (rank INTEGER, companyName VARCHAR(100), symbol VARCHAR(10), smartSelectCompositeRating VARCHAR(20), epsRating VARCHAR(20), rsRating VARCHAR(20), indGroupRelativeStrength VARCHAR(10), smrRating VARCHAR(10), accDis VARCHAR(10), weekHigh52 VARCHAR(10), closingPrice VARCHAR(10), dollarChange VARCHAR(10), volChange VARCHAR(10), volume VARCHAR(50), pe VARCHAR(10), sponRating VARCHAR(10), divYield VARCHAR(10), offHigh VARCHAR(10), annualEpsEstChange VARCHAR(10), lastQtrEpsChange VARCHAR(10),nextQtrEpsChange VARCHAR(10), lastQtrSalesChange VARCHAR(10), roe VARCHAR(10), pretaxMargin VARCHAR(10), managementOwns VARCHAR(10), qtrEpsCountGreaterThan15 VARCHAR(10), description VARCHAR(1000), footNote VARCHAR(10), dataAsOf VARCHAR(100), indexAsOf VARCHAR(100), exchangeToTrade VARCHAR(100), indexMembership VARCHAR(100), marketCap VARCHAR(100), earningAnnouncement VARCHAR(50), PRIMARY KEY (rank, dataAsOf, indexAsOf))";
 				//System.out.println("File: "+(x+1)+" out of "+filesNames.length);
 				
 		  BufferedReader br = new BufferedReader(new FileReader(args));
@@ -94,12 +95,68 @@ public class ParseExcel {
 					  if(counter < 28){
 						  if(counter == 27){								
 							  queryy += valuesss+"','"+dataOf+"','"+indexOf+"');";
+							  String exchange = new ParseURL().exchangeToTrade(symbol);
+							  boolean flags = false;
+							  if(null == exchange || exchange.trim().equalsIgnoreCase("") || exchange.trim().equalsIgnoreCase(" ") || "null".equalsIgnoreCase(exchange)){
+								  exchange = ",'-'";
+								  flags = true;
+							  }
+							  if(!flags)
+								  queryy += ",'"+exchange+"'";
+							  else
+								  queryy += exchange;
+							  
+							  flags = false;
+							  List<String> indexMembership = new ParseURL().indexMembership(symbol);
+							  if(null == indexMembership || indexMembership.size()<=0){
+								  queryy += ",'-'";
+							  }else{
+								  int count = 0;
+								  for(String value : indexMembership){
+									  queryy += ",";
+									  if(0 == count)
+										  queryy += "'";
+									  queryy += value;
+									  count++;
+								  }
+								  queryy += "'";
+							  }
+							  String market = ""+new ParseURL().marketCap(symbol);
+							  if(null == market || market.trim().equalsIgnoreCase("") || market.trim().equalsIgnoreCase(" ") || "null".equalsIgnoreCase(market)){
+								  market = ",'-'";
+								  flags = true;
+							  }
+							  if(!flags)
+								  queryy += ",'"+market+"'";
+							  else
+								  queryy += market;
+							  List<String> earning = new ParseURL().earningAnnouncement(symbol);
+							  if(null == earning || earning.size()<=0){
+								  queryy += ",'-'";
+							  }else{
+								  int count = 0;
+								  if("No Upcoming Events".equalsIgnoreCase(earning.get(0))){
+									  queryy += ",'-'";
+								  }else{
+									  for(String value : earning){
+										  queryy += ",";
+										  if(0 == count)
+											  queryy += "'";
+										  queryy += value;
+										  count++;
+									  }
+								  queryy += "'";
+								  }
+							  }
+							  queryy += ");";
+							  //System.out.println(queryy);
 							  queries.add(queryy);
 						  }else{
 							  if(counter == 0){
 								  queryy += Integer.parseInt(valuesss)+",'"; 
 							  }else{
 								  if(2 == counter){
+									  symbol = valuesss;
 									  ibd.web.Constants.Constants.teedixIbd50PricesVolumes.add(valuesss);
 								  }
 								  queryy += valuesss+"','";

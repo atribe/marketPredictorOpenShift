@@ -31,6 +31,11 @@ public class Data50 {
 	private String footNote;
 	private String dataAsOf;
 	private String indexAsOf;
+	private String exchangeToTrade;
+	private String indexMembership;
+	private String marketCap;
+	private String earningAnnouncement;
+	
 	public String getRank() {
 		return rank;
 	}
@@ -212,4 +217,29 @@ public class Data50 {
 	public void setIndexAsOf(String indexAsOf) {
 		this.indexAsOf = indexAsOf;
 	}
+	public String getExchangeToTrade() {
+		return exchangeToTrade;
+	}
+	public void setExchangeToTrade(String exchangeToTrade) {
+		this.exchangeToTrade = exchangeToTrade;
+	}
+	public String getIndexMembership() {
+		return indexMembership;
+	}
+	public void setIndexMembership(String indexMembership) {
+		this.indexMembership = indexMembership;
+	}
+	public String getMarketCap() {
+		return marketCap;
+	}
+	public void setMarketCap(String marketCap) {
+		this.marketCap = marketCap;
+	}
+	public String getEarningAnnouncement() {
+		return earningAnnouncement;
+	}
+	public void setEarningAnnouncement(String earningAnnouncement) {
+		this.earningAnnouncement = earningAnnouncement;
+	}
+	
 }

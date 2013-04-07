@@ -60,6 +60,10 @@ public class IBD50DataRetriever {
 				obj.setFootNote(resultSet.getString(28));
 				obj.setDataAsOf(resultSet.getString(29));
 				obj.setIndexAsOf(resultSet.getString(30));
+				obj.setExchangeToTrade(resultSet.getString(31));
+				obj.setIndexMembership(resultSet.getString(32));
+				obj.setMarketCap(resultSet.getString(33));
+				obj.setEarningAnnouncement(resultSet.getString(34));
 				ibd50List.add(obj);
 			}
 		}catch(Exception e){
@@ -119,6 +123,10 @@ public class IBD50DataRetriever {
 				obj.setFootNote(resultSet.getString(28));
 				obj.setDataAsOf(resultSet.getString(29));
 				obj.setIndexAsOf(resultSet.getString(30));
+				obj.setExchangeToTrade(resultSet.getString(31));
+				obj.setIndexMembership(resultSet.getString(32));
+				obj.setMarketCap(resultSet.getString(33));
+				obj.setEarningAnnouncement(resultSet.getString(34));
 				ibd50List.add(obj);
 			}
 		}catch(Exception e){
@@ -212,6 +220,32 @@ public class IBD50DataRetriever {
 		}
 		ibd.web.Constants.Constants.logger.info("Inside IBD50Retriever: Newest Table is: "+arr[5]+"-"+month+"-"+arr[2]);
 	    return (arr[5]+"-"+month+"-"+arr[2]);
+	}
+	
+	
+	public Integer getLargestDate(List<String> allDates){
+		ibd.web.Constants.Constants.logger.info("Inside IBD50DataRetriever: Getting the LargestDate");
+		List<String> tableNames = allDates;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		int index = 0;
+		Date largestDate = null;
+		try{
+		largestDate = df.parse(tableNames.get(0));
+		}catch(Exception e){
+			//e.printStackTrace();
+		}
+		for(int i=0;i<tableNames.size();i++){
+			try {
+				Date date1 = df.parse(tableNames.get(i));
+				if(largestDate.before(date1)){
+					largestDate = date1;
+					index = i;
+				}
+			} catch (ParseException e) {
+				//e.printStackTrace();
+			}
+		}
+	    return (index);
 	}
 	
 

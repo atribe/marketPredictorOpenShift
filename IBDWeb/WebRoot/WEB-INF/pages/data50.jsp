@@ -184,6 +184,10 @@
 	        <th><spring:message code="label.qtrEpsCountGreaterThan15" /></th>
 	        <th><spring:message code="label.description" /></th>
 	        <th><spring:message code="label.footNote" /></th>
+	        <th><spring:message code="label.exchangeToTrade" /></th>
+	        <th><spring:message code="label.indexMembership" /></th>
+	        <th><spring:message code="label.marketCap" /></th>
+	        <th><spring:message code="label.earningAnnouncement" /></th>
 	    </tr> 
 	</thead>
 	    <% int counter = 1;%>
@@ -219,6 +223,10 @@
 				<td>${data50.qtrEpsCountGreaterThan15}</td>
 				<td>${data50.description}</td>
 				<td>${data50.footNote}</td>
+				<td>${data50.exchangeToTrade}</td>
+				<td>${data50.indexMembership}</td>
+				<td>${data50.marketCap}</td>
+				<td>${data50.earningAnnouncement}</td>
 	        </tr>
 	 </tbody>
 	    </c:forEach>

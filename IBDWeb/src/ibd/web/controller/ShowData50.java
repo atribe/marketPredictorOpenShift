@@ -42,9 +42,15 @@ public class ShowData50 {
 	        model.put("data50List", data50List);
 	        model.put("showDate", currentDate);
 	        List<String> allTables = new IBD50DataRetriever().getAllTables();
+	        List<String> realDates = new ArrayList<String>();
+	        for(int i=0;i<allTables.size();i++){
+	        	int index = new IBD50DataRetriever().getLargestDate(allTables);
+	        	realDates.add(allTables.get(index));
+	        	allTables.remove(index);
+	        }
 	        List<String> allDates = new ArrayList<String>();
-	        	allDates.add(currentDate);
-	        for(String tableName: allTables){
+	        allDates.add(currentDate);
+	        for(String tableName: realDates){
 	        	if(!currentDate.equalsIgnoreCase(tableName)){
 	        		allDates.add(tableName);
 	        	}
