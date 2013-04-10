@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public final class LoadProperties {
 	public static String hostName="",fromEmail="",passKey="",toEmail1="",toEmail2="";
-	public static String serverPath="";
+	public static String serverPath="", environment = "";
 	// Constructor
 	public LoadProperties(){
 		// initialize the properties file.
@@ -46,6 +46,8 @@ public final class LoadProperties {
 			passKey = file.getProperty("emailPassword");
 			ibd.web.Constants.Constants.logger.info("Loaded Password: "+"manisasocialanimal");
 			serverPath = file.getProperty("serverPath");
+			ibd.web.Constants.Constants.logger.info("Loaded Server Path.");
+			environment = file.getProperty("environment");
 			ibd.web.Constants.Constants.logger.info("Properties Loaded.");
 			file = null;
 		} catch (IOException e) {
