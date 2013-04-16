@@ -380,9 +380,9 @@ public class Base {
 		int trend = 0;
 		for(int i = index - halfRange;i < 499 && i < index + halfRange;++i)// look at range 5 before and 5 after current day
 			if(i >= 0 && i < data.length)//check to make sure we're not looking out the array bounds
-				if (i < data.length && data[i] < data[i + 1])
+				if (i < (data.length-1) && data[i] < data[i + 1])
 					++trend;
-				else if (i < data.length && data[i] > data[i + 1])
+				else if (i < (data.length-1) && data[i] > data[i + 1])
 					--trend;
 		if(trend > 0)
 			return 1;

@@ -38,8 +38,9 @@ public class Main {
 				DataAnalyzer da = new DataAnalyzer();
 				Data marketData,data;
 				da.initialize(stock);//initialize the DataAnalyzer object
-				if(da.bullOrBear(stock))//assess climate
-					/*if(da.checkDDays(stock))// check distribution days
+				da.bullOrBear(stock);
+				/*if(da.bullOrBear(stock))//assess climate
+					if(da.checkDDays(stock))// check distribution days
 						while(dr.moreToRetrieve()){
 							data = dr.retrieve();
 							if(data != null)

@@ -34,6 +34,9 @@ public class DoubleBottom extends Base{
 		int consecs = 0; //consecutive days with the same trend
 		begin = findUp(prices,begin);
 		for (index = begin;index < end;++index){//look through the whole range
+			if(index == 491){
+				System.out.print(index);				
+			}
 			curTrend = getTrend(prices,index,5);//gets the current trend
 			if(curTrend != 0 && curTrend != trend){//if it's not a neutral trend and it's a new trend
 
@@ -74,12 +77,13 @@ public class DoubleBottom extends Base{
 				}
 			}
 		}
+		System.out.println();
 		return false;//return false if looping all the way through produced no patterns
 	}
 
 
 	private static int findUp(float[] prices,int index){
-		while(getTrend(prices,index,5) < 1)//move the index to the first place where there is an uptrend
+		while(getTrend(prices,index,5) < 1 && index < 500)//move the index to the first place where there is an uptrend
 			++index;
 		return index;
 	}

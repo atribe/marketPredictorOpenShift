@@ -94,7 +94,7 @@ public class ParseExcel {
 					  }
 					  if(counter < 28){
 						  if(counter == 27){								
-							  queryy += valuesss+"','"+dataOf+"','"+indexOf+"');";
+							  queryy += valuesss+"','"+dataOf+"','"+indexOf+"'";
 							  String exchange = new ParseURL().exchangeToTrade(symbol);
 							  boolean flags = false;
 							  if(null == exchange || exchange.trim().equalsIgnoreCase("") || exchange.trim().equalsIgnoreCase(" ") || "null".equalsIgnoreCase(exchange)){
@@ -149,7 +149,7 @@ public class ParseExcel {
 								  }
 							  }
 							  queryy += ");";
-							  //System.out.println(queryy);
+							  System.out.println(queryy);
 							  queries.add(queryy);
 						  }else{
 							  if(counter == 0){
