@@ -1,0 +1,14 @@
+
+ibd.web.Constants
+ibd.web.IBD50
+ibd.web.Pattern.Recognition
+ibd.web.Resource
+ibd.web.beans
+ibd.web.buySellLineHistChart
+ibd.web.classes
+ibd.web.controller
+ibd.web.fundCheckCharts
+ibd.web.marketHistCharts
+ibd.web.patterns
+ibd.web.threads
+test

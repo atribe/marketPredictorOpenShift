@@ -9,7 +9,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@page isELIgnored="false" %>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<head><% System.out.println("1"); %>
 <title><spring:message code="label.applicationTitle" /></title>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -24,8 +24,18 @@
 </head>
 
 <body>
+<%
 
-	<%if(ibd.web.Constants.Constants.jobRunning){ %>
+int i = 0;
+i = 5;
+i++;
+System.out.println("Shakeel");
+
+
+%>
+	<%
+	System.out.println("Here");
+	if(ibd.web.Constants.Constants.jobRunning){ %>
 		<font size="2" color="red"><spring:message code="label.jobRunning" /></font>
 	<%} %>
 		<h1><spring:message code="label.applicationTitle" /></h1>
@@ -44,7 +54,8 @@
 %>
 <br/>
 <%if(!ibd.web.Constants.Constants.jobRunning){ %>
-	<a href="showData50.do"><spring:message code="label.seeData50" /></a>
+	<a href="showData50.do"><spring:message code="label.seeData50" /></a><br/>
+	<a href="showDataIndices50.do"><spring:message code="label.seeDataIndices50" /></a>
 <%} %>
 	<jsp:include page="fundChecker.jsp" />  
 <br/> 

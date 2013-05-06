@@ -27,8 +27,8 @@ public class MarketDB {
 		   host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 		    port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 		    dbURL = "jdbc:mysql://"+host+":"+port+"/teedixindices";
-		    username = "adminxQvN8PH";
-		    password = "WuLqQSWVvsg-";
+		    username = "adminQRungBu";
+		    password = "BdaTdanJuw9n";
 	    }else{
 	    
 	    
@@ -65,8 +65,8 @@ public class MarketDB {
 	    	    host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    	    port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    	    dbURL = "jdbc:mysql://"+host+":"+port+"/teedixibd50";
-	    	    username = "adminxQvN8PH";
-	    	    password = "WuLqQSWVvsg-";
+	    	    username = "adminQRungBu";
+			    password = "BdaTdanJuw9n";
     	    }else{
     	    
     	    
@@ -104,8 +104,8 @@ public class MarketDB {
 	    	    host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 	    	    port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
 	    	    dbURL = "jdbc:mysql://"+host+":"+port+"/teedixibd50pricesvolumes";
-	    	    username = "adminxQvN8PH";
-	    	    password = "WuLqQSWVvsg-";
+	    	    username = "adminQRungBu";
+			    password = "BdaTdanJuw9n";
     	    }else{
     	    
     	    

@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public final class LoadProperties {
 	public static String hostName="",fromEmail="",passKey="",toEmail1="",toEmail2="";
-	public static String serverPath="", environment = "";
+	public static String serverPath="", environment = "", fileName = "";
 	// Constructor
 	public LoadProperties(){
 		// initialize the properties file.

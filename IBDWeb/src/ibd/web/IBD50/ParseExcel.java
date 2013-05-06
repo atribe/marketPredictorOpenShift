@@ -15,6 +15,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import ibd.web.IBD50.ParseURL;
+
 
 public class ParseExcel {
 	public static void main(String args) throws IOException {//String fileName = "C://Data50.xls";

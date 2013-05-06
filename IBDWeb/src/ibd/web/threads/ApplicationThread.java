@@ -2,8 +2,8 @@ package ibd.web.threads;
 
 import ibd.web.IBD50.IBD50DailyJob;
 import ibd.web.IBD50.IBD50WeeklyJob;
-import ibd.web.Resource.LoadProperties;
 import ibd.web.Resource.Communication;
+import ibd.web.Resource.LoadProperties;
 import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -136,10 +135,14 @@ public class ApplicationThread implements Runnable {
 		//_killerThread.interrupt();
 	    }
 	    try {
-		ibd.web.threads.ThreadActions.processJobs();
-		IBD50DailyJob.processIBD50DailyJob();
+			ibd.web.threads.ThreadActions.processJobs();
+			Calendar date = Calendar.getInstance();
+			if(date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+				new IBD50WeeklyJob();
+			}
+			IBD50DailyJob.processIBD50DailyJob();
 	    } catch (IOException ex) {
-		Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
+	    	Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	    
 	    try {
@@ -171,7 +174,7 @@ public class ApplicationThread implements Runnable {
 		    //Thread.sleep(20000);//use this to test, 20 seconds
 		}
 	    } catch (InterruptedException ex) {
-		Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
+	    	Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
     }
