@@ -8,12 +8,12 @@ import java.util.TreeSet;
 
 public class CupWithHandle extends Base {
 	private int rightPeak;
-	private static final int CUPMINLENGTH = 35;
-	private static final int CUPMAXLENGTH = 50;
-	private static final float CUPWANDER = (float).4;
-	private static final float PEAK2MIN = (float).95;
-	private static final float VOLDOWN = (float).5;
-	private static final float DAYSLOWVOLUME = (float).5;
+	private static final int CUPMINLENGTH = 35; //7 weeks = 35 days
+	private static final int CUPMAXLENGTH = 325; //this needs to be 65 weeks = 325 days
+	private static final float CUPWANDER = (float).4;  //allowable departure at each point in the line
+	private static final float PEAK2MIN = (float).95;  //dito
+	private static final float VOLDOWN = (float).5;  //dito
+	private static final float DAYSLOWVOLUME = (float).5;  //dito
 
 	public CupWithHandle(int begin, int end, int min, int rightPeak){
 		super(begin,end,min);
@@ -21,11 +21,11 @@ public class CupWithHandle extends Base {
 	}
 
 	public static boolean find(float[] prices, double[] volumes, DataAnalyzer da, int begin, int end, boolean[] baseBlocks, TreeSet<Base> list,boolean[] bullArray, float[] SandP) {
-		float minCupDepth = (float).88;
-		float maxCupDepth = (float).7;
+		float minCupDepth = (float).88;  //use this if market is bull, 12% down from leftPeak?
+		float maxCupDepth = (float).7;  //use this if market is bull, 30% down from leftPeak?
 		if(!bullArray[begin]){
-			minCupDepth = (float).7;//adjust for bear times
-			maxCupDepth = (float).5;
+			minCupDepth = (float).7;//use this if market is bear
+			maxCupDepth = (float).5;//use this if marekt is bear
 		}
 		int leftPeak,rightPeak,pivot;
 		float cupDepth;
