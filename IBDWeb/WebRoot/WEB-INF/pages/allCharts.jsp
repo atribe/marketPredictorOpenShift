@@ -146,13 +146,13 @@
 <a href="index.do">GO BACK!!!</a>
 <br/>
 </form>
-<table><tr>
 	<c:set var="innndex" value="${1}"/>
 	<c:forEach var="chartText" items="${model.allTables}">
-			<td>
-				<img align="center" alt="<spring:message code="label.imageAlt" />" src="priceVolumeChartGenerator?fund=${chartText}" height="400" width="400" border="1" />
-			</td>
-		</tr>
+				<img align="center" alt="<spring:message code="label.imageAlt" />" src="priceVolumeChartGenerator?fund=${chartText}" height="400" width="100%" border="1" />		
+				<br/>	
+				<c:forEach var="i" begin="1" end="5000">
+				   <c:set var="innndex" value="${i}"/>
+				</c:forEach>
 	</c:forEach>
 </table>
 </body>

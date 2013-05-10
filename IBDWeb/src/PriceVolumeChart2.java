@@ -18,12 +18,12 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYPointerAnnotation;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.renderer.xy.HighLowRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
@@ -39,13 +39,13 @@ import org.jfree.data.xy.IntervalXYDataset;
 import org.jfree.data.xy.OHLCDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.TextAnchor;
 
 public class PriceVolumeChart2 extends ApplicationFrame{
-
 /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 //final static String filename = "D:\\A.txt";
 static TimeSeries t1 = new TimeSeries("50-day Price moving average");
 static TimeSeries t2 = new TimeSeries("50-day Volume moving average");
@@ -259,8 +259,8 @@ private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
 
     //return new TimeSeriesCollection(s1);
 	// create dataset 2...
-    TimeSeries s1 = new TimeSeries("Volume");
-    TimeSeries s2 = new TimeSeries("Volume");
+    TimeSeries s1 = new TimeSeries("Down Volume");
+    TimeSeries s2 = new TimeSeries("Up Volume");
     for(int i=0;i<stockdata.size();i++){
     	StockData obj = stockdata.get(i);
     	String dated = obj.getDataDate();
@@ -272,8 +272,8 @@ private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
     }
     
     TimeSeriesCollection dataSet = new TimeSeriesCollection();
-    dataSet.addSeries(s2);
     dataSet.addSeries(s1);
+    dataSet.addSeries(s2);
     
     return dataSet;
     //return new TimeSeriesCollection(s1);
@@ -346,6 +346,20 @@ private static JFreeChart createCombinedChart(List<StockData> stockData,String t
     a.setSeriesPaint(1, Color.orange);
     a.setSeriesPaint(2, Color.BLACK);
     plot2.setRenderer(3, a);
+
+    /*XYTextAnnotation annotation = null;
+    Font font = new Font("SansSerif", Font.PLAIN, 9);
+
+    annotation = new XYTextAnnotation("3rd", 36.5, 11.76);
+    annotation.setFont(font);
+    annotation.setTextAnchor(TextAnchor.HALF_ASCENT_LEFT);
+    plot1.addAnnotation(annotation);*/
+    XYPointerAnnotation annotation1 = new XYPointerAnnotation(
+            "Annotation 1 (2.0, 167.3)", 2.0, 167.3, -Math.PI / 4.0);
+    annotation1.setTextAnchor(TextAnchor.BOTTOM_LEFT);
+    annotation1.setPaint(Color.red);
+    annotation1.setArrowPaint(Color.red);
+    renderer2.addAnnotation(annotation1);
   /*//Overlay the Long-Term Trend Volume Indicator
     TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
     TimeSeriesCollection collection2 = new TimeSeriesCollection();
