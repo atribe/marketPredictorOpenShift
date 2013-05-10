@@ -79,6 +79,33 @@ public class IBD50DataRetriever {
 		return ibd50List;
 	}
 	
+	public List<String> getAllIndices(String tableName){
+		List<String> ibd50List = new ArrayList<String>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try{
+			String query = "SELECT symbol FROM `^"+tableName.toLowerCase()+"` ORDER BY rank ASC";
+			ibd.web.Constants.Constants.logger.info("In IBD50DataRetriever: "+query);
+			connection = MarketDB.getConnectionIBD50();
+			preparedStatement = connection.prepareStatement(query);
+			resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				ibd50List.add(resultSet.getString("symbol"));
+			}
+		}catch(Exception e){
+			//e.printStackTrace();
+		}finally{
+			try{
+				connection.close();
+				preparedStatement.close();
+			}catch(Exception ex){
+				//ex.printStackTrace();
+			}
+		}
+		return ibd50List;
+	}
+	
 	public List<Data50> getData50(String selectedDate){
 		List<Data50> ibd50List = new ArrayList<Data50>();
 		Connection connection = null;

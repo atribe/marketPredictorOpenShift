@@ -193,7 +193,7 @@ public class PriceVolumeDemo2 extends ApplicationFrame {
                 StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 
-        LogAxis rangeAxis2 = new LogAxis("Volume");
+        NumberAxis rangeAxis2 = new NumberAxis("Volume");
         rangeAxis2.setUpperMargin(1.00);  // to leave room for price line
         plot.setRangeAxis(1, rangeAxis2);
         IntervalXYDataset volumeData = createVolumeDataset(stockData);
@@ -202,6 +202,7 @@ public class PriceVolumeDemo2 extends ApplicationFrame {
         plot.mapDatasetToRangeAxis(1, 1);
         XYBarRenderer renderer2 = new XYBarRenderer();
         renderer2.setDrawBarOutline(false);
+        renderer2.setMargin(0.5);
         renderer2.setBaseToolTipGenerator(
             new StandardXYToolTipGenerator(
                 StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
@@ -220,6 +221,11 @@ public class PriceVolumeDemo2 extends ApplicationFrame {
         plot.setDataset(2,dataset2);
         XYDataset dataset3 = MovingAverage.createMovingAverage(priceData, "-200PMAVG", 200 * 24 * 60 * 60 * 1000L, 0L);
         plot.setDataset(3,dataset3);
+        /*IntervalXYDataset volumeData1 = createVolumeDatasetMovingAvg(stockData);
+        XYDataset dataset4 = MovingAverage.createMovingAverage(volumeData1, "-100PMAVG", 100 * 24 * 60 * 60 * 1000L, 0L);
+        plot.setDataset(2,dataset4);
+        XYDataset dataset5 = MovingAverage.createMovingAverage(volumeData1, "-200PMAVG", 200 * 24 * 60 * 60 * 1000L, 0L);
+        plot.setDataset(3,dataset5);*/
         /*XYDataset dataset4 = MovingAverage.createMovingAverage(volumeData, "-VMAVG", 100 * 24 * 60 * 60 * 1000L, 0L);
         plot.setDataset(4,dataset4);*/
         ChartUtilities.applyCurrentTheme(chart);
@@ -282,8 +288,28 @@ public class PriceVolumeDemo2 extends ApplicationFrame {
         }
         
         TimeSeriesCollection dataSet = new TimeSeriesCollection();
-        dataSet.addSeries(s1);
         dataSet.addSeries(s2);
+        dataSet.addSeries(s1);
+        
+        return dataSet;
+        //return new TimeSeriesCollection(s1);
+
+    }
+    
+    private static IntervalXYDataset createVolumeDatasetMovingAvg(List<StockData> stockData) {
+
+        // create dataset 2...
+        TimeSeries s1 = new TimeSeries("Volume");
+        for(int i=0;i<stockData.size();i++){
+        	StockData obj = stockData.get(i);
+        	String dated = obj.getDataDate();
+        		s1.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
+        	
+        }
+        
+        TimeSeriesCollection dataSet = new TimeSeriesCollection();
+        dataSet.addSeries(s1);
+        
         return dataSet;
         //return new TimeSeriesCollection(s1);
 

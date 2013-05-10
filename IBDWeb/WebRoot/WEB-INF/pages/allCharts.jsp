@@ -142,17 +142,19 @@
 <spring:message code="label.dataDate" />     <b>   ${model.showDate}</b>
 <br/><br/>
 	<spring:message code="label.archivedDataIndices" />
-<div class="styled-select"><select id="allDates" name="allDates" onchange="datesForm.submit();">
-		<c:forEach var="singleDate" items="${model.allTables}">
-			<option value='<c:out value="${singleDate}" />'><c:out value="${singleDate}" /></option>
-		</c:forEach>
-	</select>
-</div>
 <br/>
 <a href="index.do">GO BACK!!!</a>
 <br/>
 </form>
-	<img align="center" alt="<spring:message code="label.imageAlt" />" src="priceVolumeChartGenerator?fund=${model.chartText}" height="600" width="100%" border="1" />
+<table><tr>
+	<c:set var="innndex" value="${1}"/>
+	<c:forEach var="chartText" items="${model.allTables}">
+			<td>
+				<img align="center" alt="<spring:message code="label.imageAlt" />" src="priceVolumeChartGenerator?fund=${chartText}" height="400" width="400" border="1" />
+			</td>
+		</tr>
+	</c:forEach>
+</table>
 </body>
 </html>
 

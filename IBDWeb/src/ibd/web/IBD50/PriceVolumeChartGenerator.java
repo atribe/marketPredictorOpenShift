@@ -140,8 +140,8 @@ public class PriceVolumeChartGenerator extends HttpServlet {
         }
         
         TimeSeriesCollection dataSet = new TimeSeriesCollection();
-        dataSet.addSeries(s1);
         dataSet.addSeries(s2);
+        dataSet.addSeries(s1);
         return dataSet;
         //return new TimeSeriesCollection(s1);
 
@@ -166,7 +166,7 @@ public class PriceVolumeChartGenerator extends HttpServlet {
                 StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
                 new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 
-        LogAxis rangeAxis2 = new LogAxis("Volume");
+        NumberAxis rangeAxis2 = new NumberAxis("Volume");
         rangeAxis2.setUpperMargin(1.00);  // to leave room for price line
         plot.setRangeAxis(1, rangeAxis2);
         IntervalXYDataset volumeData = createVolumeDataset(stockData);

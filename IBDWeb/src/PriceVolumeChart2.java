@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Paint;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -7,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,11 +19,11 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.plot.CombinedDomainXYPlot;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.StackedBarRenderer;
 import org.jfree.chart.renderer.xy.HighLowRenderer;
 import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
@@ -184,6 +184,7 @@ private static OHLCDataset createPriceDataset(List<StockData> stockData,String t
             double close    = s.getClose();
             s1.add(new Day(date), open, high, low, close);
             t1.add(new Day(date), close);
+            t2.add(new Day(date), s.getVolume());
     	}/*
         BufferedReader in = new BufferedReader(new FileReader(filename));
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
@@ -219,7 +220,7 @@ private static OHLCDataset createPriceDataset(List<StockData> stockData,String t
 //create volume dataset
 private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
 {
-    //create dataset 2...
+    /*//create dataset 2...
     TimeSeries s1 = new TimeSeries("Volume");
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	for(StockData s:stockdata){
@@ -233,8 +234,8 @@ private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
         double volume   = s.getVolume();
         s1.add(new Day(date), volume);
         t2.add(new Day(date), volume);
-	}/*
-    try {
+	}*/
+    /*try {
         BufferedReader in = new BufferedReader(new FileReader(filename));
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         String inputLine;
@@ -256,7 +257,26 @@ private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
         e.printStackTrace();
     }*/
 
-    return new TimeSeriesCollection(s1);
+    //return new TimeSeriesCollection(s1);
+	// create dataset 2...
+    TimeSeries s1 = new TimeSeries("Volume");
+    TimeSeries s2 = new TimeSeries("Volume");
+    for(int i=0;i<stockdata.size();i++){
+    	StockData obj = stockdata.get(i);
+    	String dated = obj.getDataDate();
+    	if(0 != i && obj.getClose()<stockdata.get(i-1).getClose()){
+    		s1.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
+    	}else{
+    		s2.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
+    	}
+    }
+    
+    TimeSeriesCollection dataSet = new TimeSeriesCollection();
+    dataSet.addSeries(s2);
+    dataSet.addSeries(s1);
+    
+    return dataSet;
+    //return new TimeSeriesCollection(s1);
 }
 
 /**
@@ -307,13 +327,25 @@ private static JFreeChart createCombinedChart(List<StockData> stockData,String t
     renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator(
         StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
         new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
-    renderer2.setSeriesPaint(0, Color.red);
-
-    XYPlot plot2 = new XYPlot(data2, null, new LogAxis("Volume"), renderer2);
+    renderer2.setMargin(0.6);
+    renderer2.setSeriesPaint(0, Color.RED);
+    renderer2.setSeriesPaint(1, Color.BLUE);
+    renderer2.setSeriesPaint(2, Color.GREEN);
+    renderer2.setSeriesPaint(3, Color.BLACK);
+    XYPlot plot2 = new XYPlot(data2, null, new NumberAxis("Volume"), renderer2);
     plot2.setBackgroundPaint(Color.lightGray);
     plot2.setDomainGridlinePaint(Color.white);
     plot2.setRangeGridlinePaint(Color.white);
-    
+    //plot2.setRenderer((XYItemRenderer) new MySBRenderer());
+    TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
+    TimeSeriesCollection collection2 = new TimeSeriesCollection();
+    collection2.addSeries(dataset5);
+    plot2.setDataset(3, collection2);
+    StandardXYItemRenderer a = new StandardXYItemRenderer();
+    a.setSeriesPaint(0, Color.GREEN);
+    a.setSeriesPaint(1, Color.orange);
+    a.setSeriesPaint(2, Color.BLACK);
+    plot2.setRenderer(3, a);
   /*//Overlay the Long-Term Trend Volume Indicator
     TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
     TimeSeriesCollection collection2 = new TimeSeriesCollection();
@@ -352,6 +384,16 @@ private static JFreeChart createCombinedChart(List<StockData> stockData,String t
  * @param tableName
  * @return
  */
+
+private static class MySBRenderer extends XYBarRenderer {
+
+    @Override
+    public Paint getItemPaint(int row, int col) {
+        System.out.println(row + " " + col + " " + super.getItemPaint(row, col));
+        return super.getItemPaint(row, col);
+    }
+}
+
 public static JPanel createDemoPanel(List<StockData> stockData,String tableName)
 {
     JFreeChart chart = createCombinedChart(stockData,tableName);

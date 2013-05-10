@@ -2,6 +2,7 @@ package ibd.web.controller;
 
 import ibd.web.Resource.LoadProperties;
 import ibd.web.beans.StockData;
+import ibd.web.classes.IBD50DataRetriever;
 import ibd.web.classes.MarketDB;
 
 import java.awt.Color;
@@ -64,18 +65,11 @@ public class ShowDataIndices50 {
 	 */
 	@RequestMapping(method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getIndex(HttpServletRequest request, HttpServletResponse response) {
-		String selectedDate=(String)request.getParameter("allDates");
-		List<String> tables = getAllTables(selectedDate);
-        String chartText = null;
-		if(null != selectedDate && !"".equalsIgnoreCase(selectedDate.trim())){
-			chartText = selectedDate.trim();
-		}else{
-			chartText = tables.get(0);
-		}
 		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("chartText", chartText);
-		model.put("showDate",new Date().toString());
-		model.put("allTables",tables);
+		String currentDate = new IBD50DataRetriever().getTableName();
+		model.put("showDate",currentDate);
+		List<String> allTables = new IBD50DataRetriever().getAllIndices(currentDate);
+		model.put("allTables",allTables);
 		return new ModelAndView("allCharts","model",model);
 	}
 	

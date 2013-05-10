@@ -135,11 +135,19 @@ public class ApplicationThread implements Runnable {
 		//_killerThread.interrupt();
 	    }
 	    try {
+	    	boolean flg = false;
 			ibd.web.threads.ThreadActions.processJobs();
 			Calendar date = Calendar.getInstance();
+			Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "Trying to run Weekly Job.");
 			if(date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+				flg = true;
+				Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "YES!!!! Today is Sunday!!!");
 				new IBD50WeeklyJob();
 			}
+			if(!flg){
+				Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "NO!!!! Job will run on Sunday!!!");
+			}
+			Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "Running Daily Job after normal Processing Job.");
 			IBD50DailyJob.processIBD50DailyJob();
 	    } catch (IOException ex) {
 	    	Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);

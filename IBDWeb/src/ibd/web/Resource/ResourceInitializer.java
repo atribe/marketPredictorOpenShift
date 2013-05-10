@@ -51,7 +51,8 @@ public class ResourceInitializer {
 		    /*ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Going to start ServerStartupIBD50Job");
 		    ServerStartupIBD50Job.serverStartupIBD50Job();
 		    ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Ended ServerStartupIBD50Job");*/
-		    if(!ApplicationThread._isRunning)
+		if(!ApplicationThread._isRunning){
 		    	ApplicationThread.startThread();
+		}
 	}
 }
