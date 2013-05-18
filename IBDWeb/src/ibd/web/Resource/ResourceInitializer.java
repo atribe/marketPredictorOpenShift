@@ -26,6 +26,7 @@ public class ResourceInitializer {
 			_isThisRunning = true;
 			new LoadProperties();
 			ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Putting Weekly Timer for IBD50");
+			_isThisRunning = false;
 			/*Timer timer  = new Timer();
 		    Calendar date = Calendar.getInstance();
 		    date.set(

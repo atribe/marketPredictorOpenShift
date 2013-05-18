@@ -8,6 +8,7 @@ import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -127,6 +128,7 @@ public class ApplicationThread implements Runnable {
 	    try {
 		/* Start the killer thread so if the thread hangs for a specified amount of time (in KillerThread.java)
 		it will kill this thread and restart it.*/
+	    	ibd.web.Constants.Constants.logger.info("LOOP STARTED");
 		_killerThread = new Thread(new ApplicationKillerThread());
 		_killerThread.setDaemon(true);
 		_killerThread.start();
@@ -136,19 +138,24 @@ public class ApplicationThread implements Runnable {
 	    }
 	    try {
 	    	boolean flg = false;
+	    	ibd.web.Constants.Constants.logger.info("***************BEFORE PROCESSJOBS****************");
 			ibd.web.threads.ThreadActions.processJobs();
+			ibd.web.Constants.Constants.logger.info("***************AFTER PROCESSJOBS****************");
 			Calendar date = Calendar.getInstance();
-			Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "Trying to run Weekly Job.");
+			ibd.web.Constants.Constants.logger.info("***************Trying to run Weekly Job****************");
 			if(date.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
 				flg = true;
-				Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "YES!!!! Today is Sunday!!!");
+				ibd.web.Constants.Constants.logger.info("***************YES!!!! TODAY IS SUNDAY****************");
+				ibd.web.Constants.Constants.logger.info("***************RUNNING WEEKLY JOB****************");
 				new IBD50WeeklyJob();
+				ibd.web.Constants.Constants.logger.info("***************WEEKLY JOB DONE****************");
 			}
 			if(!flg){
-				Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "NO!!!! Job will run on Sunday!!!");
+				ibd.web.Constants.Constants.logger.info("***************NO!!!! JOB WILL ONLY RUN ON SUNDAY!****************");
 			}
-			Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, "Running Daily Job after normal Processing Job.");
+			ibd.web.Constants.Constants.logger.info("***************RUNNING DAILY JOB****************");
 			IBD50DailyJob.processIBD50DailyJob();
+			ibd.web.Constants.Constants.logger.info("***************AFTER DAILY JOB****************");
 	    } catch (IOException ex) {
 	    	Logger.getLogger(ApplicationThread.class.getName()).log(Level.SEVERE, null, ex);
 	    }
@@ -178,6 +185,27 @@ public class ApplicationThread implements Runnable {
 			    }
 		    }
 		    _sleepTime = getMilliSeconds(_sleepTime);
+		    ibd.web.Constants.Constants.logger.info("***************DELETE LOG FILES****************");
+		    /*File f1 = new File("/var/lib/openshift/5187f8b94382ec8408000164/app-root/runtime/repo/IBDdebug.log");
+		    if(f1.delete()){
+		    	try {
+					f1.createNewFile();
+					ibd.web.Constants.Constants.logger.info("***************DELETED AND CREATED****************");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
+		    File f2 = new File("/var/lib/openshift/5187f8b94382ec8408000164/app-root/runtime/repo/IBDinfo.log");
+		    f2.delete();
+		    if(f2.delete()){
+		    	try {
+					f2.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }*/
 		    Thread.sleep(_sleepTime);
 		    //Thread.sleep(20000);//use this to test, 20 seconds
 		}

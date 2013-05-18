@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +18,50 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class IBD50DailyJob {
+	
+	public static void main(String[] args){
+		ibd.web.Constants.Constants.teedixIbd50PricesVolumes = getAllTables();
+		processIBD50DailyJob();
+	}
+	private static List<String> getAllTables(){
+		Connection c = MarketDB.getConnectionIBD50PricesVolumes();
+		List<String> tableNames = new ArrayList<String>();
+		DatabaseMetaData md = null;
+		try {
+			md = c.getMetaData();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    ResultSet rs = null;
+		try {
+			rs = md.getTables(null, null, "%", null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	    try {
+			while (rs.next()) {
+			  String name = rs.getString(3);
+			  name = name.substring(1);
+			  tableNames.add(name);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs!=null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			if(c!=null)
+				try {
+					c.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+		}
+	    return tableNames;
+	}
 	/**
 	 * @author Shakeel Shahzad
 	 * @description This function is responsible for handling the whole teedixibd50pricesvolumes data Downloading and Insertion.
