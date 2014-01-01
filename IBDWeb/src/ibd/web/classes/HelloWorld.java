@@ -24,7 +24,7 @@ public class HelloWorld {
 	 * @throws SQLException
 	 * @throws ClassNotFoundException (I can't see why will it throw this exception though?)
 	 */
-    public static void main(String[] args) throws FileNotFoundException, IOException, URISyntaxException, SQLException, ClassNotFoundException {
+   /* public static void main(String[] args) throws FileNotFoundException, IOException, URISyntaxException, SQLException, ClassNotFoundException {
 
 	Connection connection = MarketDB.getConnection();
 
@@ -42,4 +42,5 @@ public class HelloWorld {
 	//System.out.println(status);
 	ibd.web.Constants.Constants.logger.info("Status in HelloWorld.java: "+status);
     }
+	*/
 }

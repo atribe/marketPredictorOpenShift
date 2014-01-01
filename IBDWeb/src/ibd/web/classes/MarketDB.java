@@ -20,6 +20,7 @@ public class MarketDB {
 		Connection connection = null;
 		String host, port, dbURL, username, password;
 		try {
+			//Loading the JDBC MySQL drivers that are used by java.sql.Connection
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// ************For Open Shift Account************	  
