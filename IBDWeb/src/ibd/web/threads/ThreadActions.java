@@ -8,6 +8,7 @@ import ibd.web.classes.SendFromGmail;
 import ibd.web.classes.VarDow;
 import ibd.web.classes.VarNasdaq;
 import ibd.web.classes.VarSP500;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +29,14 @@ public class ThreadActions {
     	
 	if (!hasProcessed || isItTime(updateAnalysis)) {
 		ibd.web.Constants.Constants.jobRunning = true;
-	    VarDow.varDow();
-	    VarSP500.varSP500();
-	    VarNasdaq.varNasdaq();
+		
+		System.out.println("");
+		System.out.println("ThreadAction has starting running jobs");
+		ibd.web.Constants.Constants.logger.info("ThreadAction has starting running jobs");
+		
+	    //VarDow.varDow();
+	    //VarSP500.varSP500();
+	    //VarNasdaq.varNasdaq();
 	    updateAnalysis = getNextDailyRunTime("15:30", 1);
 	    hasProcessed = true;
 	}

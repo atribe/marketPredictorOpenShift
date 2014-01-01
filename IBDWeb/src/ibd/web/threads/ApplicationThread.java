@@ -103,6 +103,7 @@ public class ApplicationThread implements Runnable {
     }
 
     public static int startThread() {
+    	System.out.println();
     	ibd.web.Constants.Constants.logger.info("THREAD STARTED FOR "+new Date());
     _isRunning = true;
 	_continueRunning = true;
