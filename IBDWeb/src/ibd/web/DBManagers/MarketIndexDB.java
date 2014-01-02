@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MarketIndexDB {
-	
+
 	public static Connection getConnection() {
 		Connection connection = null;
 		String host, port, dbURL, username, password;
@@ -42,59 +42,53 @@ public class MarketIndexDB {
 		} catch (ClassNotFoundException e) { //Handle errors for Class.forName
 			System.out.println("Database Driver not found in MarketDB.java with teedixindices "+e);
 			ibd.web.Constants.Constants.logger.info("Database Driver not found in MarketDB.java with teedixindices "+e);
-		} catch (SQLException se) { //Handle errors for JDBC
-			System.out.println("Exception loading Database Driver in MarketDB.java with teedixindices "+se);
-			System.out.println("Did you forget to turn on Apache and MySQLL again?");
-			ibd.web.Constants.Constants.logger.info("Exception loading Database Driver in MarketDB.java with teedixindices "+se);
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("Exception loading Database Driver in MarketDB.java with teedixindices");
+			System.out.println("Did you forget to turn on Apache and MySQLL again? From Exception:");
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			ibd.web.Constants.Constants.logger.info("Exception loading Database Driver in MarketDB.java with teedixindices "+ex);
 		}
-
 		return connection;
 	}
 
 	public static synchronized void priceVolumeDBInitialization(Connection connection, String[] indexList) {
-		
 		//Loop for each Price Volume DBs for each index
 		for(String index:indexList) {
-
-			//if table !exists
-			DatabaseMetaData metadata = null;
-			ResultSet tables = null;
-			try {
-				metadata = connection.getMetaData();
-				tables = metadata.getTables(null, null, index, null);
-
-				if (tables.next()) {
-					// Table exists
-					System.out.println(
-					        "   "+tables.getString("TABLE_CAT") 
-					       + ", "+tables.getString("TABLE_SCHEM")
-					       + ", "+tables.getString("TABLE_NAME")
-					       + ", "+tables.getString("TABLE_TYPE")
-					       + ", "+tables.getString("REMARKS")
-					       + ", already exists."); 
-				}
-				else {
-					// Table does not exist, so create it
-					String createTableStatement = "CREATE TABLE IF NOT EXISTS '" + index + "' (" +
-							" Date DATE not NULL," +
-							" Open FLOAT(20)," +
-							" High FLOAT(20)," +
-							" Low FLOAT(20)," +
-							" Close FLOAT(20)," +
-							" Volume BIGINT(50)," +
-							" primary key (Date))";
-					Statement statement = connection.createStatement();
-					int status = statement.executeUpdate(createTableStatement);
-				}
-
-			} catch (SQLException e) { //Handle errors for JDBC
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(e);
+			/*
+			 * Checking to see if a table with the index name exists
+			 * If it does, print to the command prompt
+			 * if not create the table
+			 */
+			if(!tableExists(index, connection)) {
+				// Table does not exist, so create it
+				String createTableSQL = "CREATE TABLE IF NOT EXISTS " + index + "' (" +
+						" Date DATE not NULL," +
+						" Open FLOAT(20)," +
+						" High FLOAT(20)," +
+						" Low FLOAT(20)," +
+						" Close FLOAT(20)," +
+						" Volume BIGINT(50)," +
+						" primary key (Date))";
+				createTable(createTableSQL, connection);
 			}
 
-			//if tables are empty
-			//populate it
+			/*
+			 * Checking to see if the tables are empty
+			 * If they are populate them from Yahoo
+			 * If not, check if they are up to date
+			 * 		If not, update them
+			 */
+			if(tableEmpty(index, connection)){
+				//if table is empty
+				//populate it
+				
+			}
+			
+			
+			
 			//else if
 			//if tables !(up to date)
 			//update it
@@ -102,5 +96,122 @@ public class MarketIndexDB {
 		}
 		//needs to be made real, set so the method would not give me an error
 
+	}
+	private static boolean tableExists(String tableName, Connection connection){
+		boolean tableExists = false;
+
+		DatabaseMetaData metadata = null;
+		ResultSet tables = null;
+
+		try {
+			metadata = connection.getMetaData();
+			tables = metadata.getTables(null, null, tableName, null);
+
+			if (tables.next()) {
+				// Table exists
+				System.out.println(
+						"   "+tables.getString("TABLE_CAT") 
+						+ ", "+tables.getString("TABLE_SCHEM")
+						+ ", "+tables.getString("TABLE_NAME")
+						+ ", "+tables.getString("TABLE_TYPE")
+						+ ", "+tables.getString("REMARKS")
+						+ ", already exists.");
+				tableExists = true;
+			}
+			else {
+				tableExists = false;
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			// it is a good idea to release
+			// resources in a finally{} block
+			// in reverse-order of their creation
+			// if they are no-longer needed
+			if (tables != null) {
+				try {
+					tables.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				tables = null;
+			}
+		}
+
+		return tableExists;
+	}
+	private static synchronized boolean createTable(String createTableSQL, Connection connection){
+
+		int status=0;
+		Statement createStatement = null;
+		try {
+			createStatement = connection.createStatement();
+			status = createStatement.executeUpdate(createTableSQL);
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		}
+		finally {
+			// it is a good idea to release
+			// resources in a finally{} block
+			// in reverse-order of their creation
+			// if they are no-longer needed
+
+			if (createStatement != null) {
+				try {
+					createStatement.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				createStatement = null;
+			}
+		}
+		if (status>0)
+			return true;
+		else
+			return false;
+	}
+	private static boolean tableEmpty(String tableName, Connection connection){
+		boolean empty = true;
+		Statement queryStatement = null;
+		ResultSet rs = null;
+		
+		try {
+			queryStatement = connection.createStatement();
+			rs = queryStatement.executeQuery("SELECT * FROM '" + tableName + "'");
+			while (rs.next())
+			{
+				empty = false;
+			}
+		} catch (SQLException ex){
+			// handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		}
+		finally {
+			// it is a good idea to release
+			// resources in a finally{} block
+			// in reverse-order of their creation
+			// if they are no-longer needed
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				rs = null;
+			}
+			if (queryStatement != null) {
+				try {
+					queryStatement.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				queryStatement = null;
+			}
+		}
+		return empty;
 	}
 }
