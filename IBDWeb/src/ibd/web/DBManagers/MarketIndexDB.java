@@ -1,6 +1,8 @@
 package ibd.web.DBManagers;
 
 import ibd.web.Resource.LoadProperties;
+import ibd.web.classes.Data;
+import ibd.web.classes.MarketRetriever;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -64,7 +66,7 @@ public class MarketIndexDB {
 			 */
 			if(!tableExists(index, connection)) {
 				// Table does not exist, so create it
-				String createTableSQL = "CREATE TABLE IF NOT EXISTS " + index + "' (" +
+				String createTableSQL = "CREATE TABLE IF NOT EXISTS `" + index + "` (" +
 						" Date DATE not NULL," +
 						" Open FLOAT(20)," +
 						" High FLOAT(20)," +
@@ -84,11 +86,11 @@ public class MarketIndexDB {
 			if(tableEmpty(index, connection)){
 				//if table is empty
 				//populate it
-				
+				MarketRetriever.populateFreshDB(connection, index);
 			}
-			
-			
-			
+
+
+
 			//else if
 			//if tables !(up to date)
 			//update it
@@ -143,7 +145,6 @@ public class MarketIndexDB {
 		return tableExists;
 	}
 	private static synchronized boolean createTable(String createTableSQL, Connection connection){
-
 		int status=0;
 		Statement createStatement = null;
 		try {
@@ -178,10 +179,10 @@ public class MarketIndexDB {
 		boolean empty = true;
 		Statement queryStatement = null;
 		ResultSet rs = null;
-		
+
 		try {
 			queryStatement = connection.createStatement();
-			rs = queryStatement.executeQuery("SELECT * FROM '" + tableName + "'");
+			rs = queryStatement.executeQuery("SELECT * FROM `" + tableName + "`");
 			while (rs.next())
 			{
 				empty = false;
@@ -213,5 +214,43 @@ public class MarketIndexDB {
 			}
 		}
 		return empty;
+	}
+
+	public static void addRecord(Connection connection, String index, Data priceVolumeData) {
+		String insertQuery = "INSERT INTO `" + index + "` "
+							+ "(Date,Open,High,Low,Close,Volume) VALUES"
+							+ "(?,?,?,?,?,?)";
+		PreparedStatement ps=null;
+		try {
+			ps = connection.prepareStatement(insertQuery);
+			
+			for (int i = 0; i < priceVolumeData.getRowCount() ; i++) {
+				ps.setDate(1, priceVolumeData.dateData[i]);
+				ps.setFloat(2,  priceVolumeData.priceDataOpen[i]);
+				ps.setFloat(3,  priceVolumeData.priceDataHigh[i]);
+				ps.setFloat(4,  priceVolumeData.priceDataLow[i]);
+				ps.setFloat(5,  priceVolumeData.priceDataClose[i]);
+				ps.setFloat(6,  priceVolumeData.volumeData[i]);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				ps = null;
+			}
+		}
+		
+		
+
+		int abc = 55;
 	}
 }

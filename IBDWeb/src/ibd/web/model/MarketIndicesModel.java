@@ -7,7 +7,7 @@ import ibd.web.DBManagers.MarketIndexDB;
 public class MarketIndicesModel {
 	
 	//							  Dow	 Nasdaq	 S&P500
-	static String[] indexList = {"^DJI","^IXIC","^GSPC"/*,"^SML","^MID"*/};
+	static String[] indexList = {/*"^DJI",*/"^IXIC","^GSPC"/*,"^SML","^MID"*/};
 
 	public static void main() {
 		/*

@@ -9,6 +9,8 @@ package ibd.web.classes;
  * Run this class once a day before MarketAnalyzer
  * @author Aaron
  */
+import ibd.web.DBManagers.MarketIndexDB;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -78,7 +80,7 @@ public class MarketRetriever {
 		} while (loop==true&numDays>0);
 		//	}end of for loop
 	}
-	
+		
 	/**
 	 * Overseeing method for retrieving stock-specific price and volume data,
 	 * getYahooStockURL() is first called to assemble the appropriate URL, then
@@ -211,32 +213,25 @@ public class MarketRetriever {
 	 * @return  construed URL
 	 */
 	public static String getYahooURL(String symbol, int daysAgo) {
-
-
-		if(symbol.equalsIgnoreCase("^DJI"))	{
-			symbol = "ETF";
-		}
 		GregorianCalendar calendarStart = new GregorianCalendar();
 		calendarStart.add(Calendar.DAY_OF_MONTH, -daysAgo);//this subtracts the number of startDaysAgo from todays date.  The add command changes the calendar object
-		int d, e, f, a, b, c;
-		a = calendarStart.get(Calendar.MONTH);//this gets todays month
-		b = calendarStart.get(Calendar.DAY_OF_MONTH);//this gets todays day of month
-		c = calendarStart.get(Calendar.YEAR);//this gets todays year
+		int a_startMonth, b_startDay, c_startYear;
+		int d_endMonth, e_endDay, f_endYear; 
+		a_startMonth = calendarStart.get(Calendar.MONTH);//this gets the beginning dates month
+		b_startDay = calendarStart.get(Calendar.DAY_OF_MONTH);//this gets beginning dates day
+		c_startYear = calendarStart.get(Calendar.YEAR);//this gets beginning dates year
 
 		GregorianCalendar calendarEnd = new GregorianCalendar();
-		//calendarEnd.add(Calendar.DAY_OF_MONTH, -endDaysAgo);
-		d = calendarEnd.get(Calendar.MONTH);//this gets the beginning dates month
-		e = calendarEnd.get(Calendar.DAY_OF_MONTH);//this gets beginning dates day
-		f = calendarEnd.get(Calendar.YEAR);//this gets beginning dates year
+		d_endMonth = calendarEnd.get(Calendar.MONTH);//this gets todays month
+		e_endDay = calendarEnd.get(Calendar.DAY_OF_MONTH);//this gets todays day of month
+		f_endYear = calendarEnd.get(Calendar.YEAR);//this gets todays year
 
-		//System.out.println("month="+a+" day="+b+" year="+c);
+		System.out.println("month="+a_startMonth+" day="+b_startDay+" year="+c_startYear);
 
-		//System.out.println(a+","+b+","+c);
-		//System.out.println(d+","+e+","+f);
 		String str = "http://ichart.finance.yahoo.com/table.csv?s="
-				+ symbol.toUpperCase() + "&a=" + a + "&b=" + b + "&c=" + c + "&g=d&d=" + d + "&e=" + e
-				+ "&f=" + f + "&ignore=.csv";
-		//System.out.println(str);
+				+ symbol.toUpperCase() + "&a=" + a_startMonth + "&b=" + b_startDay + "&c=" + c_startYear + "&g=d&d=" + d_endMonth + "&e=" + e_endDay
+				+ "&f=" + f_endYear + "&ignore=.csv";
+		System.out.println(str);
 		ibd.web.Constants.Constants.logger.info("Fetched data according to: "+str);
 		return str;
 	}
@@ -266,5 +261,38 @@ public class MarketRetriever {
 			}
 		}
 		return numDays;
+	}
+	public static int getNumberOfDaysFromNow(Date date){
+		java.util.Date today = new java.util.Date(); //Variable with today's date
+		long diffTime = today.getTime() - date.getTime(); //difference in milliseconds between today and the date supplied to this method
+		int diffDays =(int) (diffTime / (1000 * 60 * 60 * 24)); //calculating days from milliseconds and converting to an int
+		return diffDays;
+	}
+	public static void populateFreshDB(Connection connection, String index) {
+		//Container to hold the downloaded data
+		Data priceVolumeData = null;
+		
+		//This date represents the beginning of time as far as any of the indexes go
+		Date beginningDate = Date.valueOf("1920-01-01");
+		
+		//calculates the number of days from today back to beginning date
+		int numDays = getNumberOfDaysFromNow(beginningDate);
+		
+		//Creates a yahoo URL given the index symbol from now back a given number of days
+		String URL = getYahooURL(index, numDays);
+		
+		try {
+			priceVolumeData = dataParser(URL);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}// extract price and volume data for URL, # of yahoo days
+		MarketIndexDB.addRecord(connection, index, priceVolumeData);
 	}
 }

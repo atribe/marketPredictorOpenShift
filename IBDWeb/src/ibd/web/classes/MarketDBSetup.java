@@ -36,7 +36,7 @@ public class MarketDBSetup {
 		int status = 0;
 		String[] list = {"`^SML`","`^MID`","`^GSPC`","`^DJI`","`^IXIC`"};
 
-		preparedSQL = "create table ? (Date DATE, Open FLOAT(20), High FLOAT(20), Low FLOAT(20), Close FLOAT(20), Volume BIGINT(50), primary key(Date));";
+		//preparedSQL = "create table ? (Date DATE, Open FLOAT(20), High FLOAT(20), Low FLOAT(20), Close FLOAT(20), Volume BIGINT(50), primary key(Date));";
 		//PreparedStatement ps = connection.prepareStatement(preparedSQL);
 
 		for(int i=0;i<list.length;i++){
