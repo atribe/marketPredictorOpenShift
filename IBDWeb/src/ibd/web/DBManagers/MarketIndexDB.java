@@ -6,6 +6,7 @@ import ibd.web.classes.MarketRetriever;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +56,7 @@ public class MarketIndexDB {
 		}
 		return connection;
 	}
-
+	
 	public static synchronized void priceVolumeDBInitialization(Connection connection, String[] indexList) {
 		//Loop for each Price Volume DBs for each index
 		for(String index:indexList) {
@@ -89,7 +90,11 @@ public class MarketIndexDB {
 				MarketRetriever.populateFreshDB(connection, index);
 			}
 
-
+			int indexDaysBehind = 0;
+			if((indexDaysBehind=getIndexDaysBehind(connection, index))>0)
+			{
+				MarketRetriever.updateIndexDB(connection, index, indexDaysBehind);
+			}
 
 			//else if
 			//if tables !(up to date)
@@ -99,6 +104,7 @@ public class MarketIndexDB {
 		//needs to be made real, set so the method would not give me an error
 
 	}
+	
 	private static boolean tableExists(String tableName, Connection connection){
 		boolean tableExists = false;
 
@@ -144,6 +150,7 @@ public class MarketIndexDB {
 
 		return tableExists;
 	}
+	
 	private static synchronized boolean createTable(String createTableSQL, Connection connection){
 		int status=0;
 		Statement createStatement = null;
@@ -175,6 +182,7 @@ public class MarketIndexDB {
 		else
 			return false;
 	}
+	
 	private static boolean tableEmpty(String tableName, Connection connection){
 		boolean empty = true;
 		Statement queryStatement = null;
@@ -215,15 +223,17 @@ public class MarketIndexDB {
 		}
 		return empty;
 	}
-
-	public static void addRecord(Connection connection, String index, Data priceVolumeData) {
-		String insertQuery = "INSERT INTO `" + index + "` "
-							+ "(Date,Open,High,Low,Close,Volume) VALUES"
-							+ "(?,?,?,?,?,?)";
+	
+	public static void addRecordsFromData(Connection connection, String index, Data priceVolumeData) {
+		//This query ignores duplicate dates
+		String insertQuery = "INSERT IGNORE INTO `" + index + "` "
+				+ "(Date,Open,High,Low,Close,Volume) VALUES"
+				+ "(?,?,?,?,?,?)";
 		PreparedStatement ps=null;
+		int batchSize = 200;
 		try {
 			ps = connection.prepareStatement(insertQuery);
-			
+
 			for (int i = 0; i < priceVolumeData.getRowCount() ; i++) {
 				ps.setDate(1, priceVolumeData.dateData[i]);
 				ps.setFloat(2,  priceVolumeData.priceDataOpen[i]);
@@ -231,8 +241,14 @@ public class MarketIndexDB {
 				ps.setFloat(4,  priceVolumeData.priceDataLow[i]);
 				ps.setFloat(5,  priceVolumeData.priceDataClose[i]);
 				ps.setFloat(6,  priceVolumeData.volumeData[i]);
-				ps.executeUpdate();
+				ps.addBatch();
+				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
+				{
+					ps.executeBatch();
+				}
 			}
+			//Execute the last batch, in case the last value of i isn't a multiple of batchSize
+			ps.executeBatch();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -248,9 +264,45 @@ public class MarketIndexDB {
 				ps = null;
 			}
 		}
-		
-		
+	}
+	
+	private static int getIndexDaysBehind(Connection connection, String index) {
+		java.sql.Date newestDateInDB=null;
+		String getNewestDateInDBQuery = "SELECT Date FROM `" + index + "` "
+				+ "ORDER BY Date "
+				+ "DESC LIMIT 1";
+		PreparedStatement ps=null;
+		ResultSet rs = null;
+		try {
+			ps = connection.prepareStatement(getNewestDateInDBQuery);
+			rs = ps.executeQuery();
+			newestDateInDB = rs.getDate("Date");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(e);
+		} catch(NullPointerException e) {
+		    // probably don't bother doing clean up
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException sqlEx) { } // ignore
+					java.util.Calendar cal = java.util.Calendar.getInstance(); 
+					newestDateInDB = new Date(cal.getTimeInMillis());
+				ps = null;
+			}
+		}
+		//calls the getNumberOfDaysFromNow method from market retriever and immediately returns
+		//how many behind the database is from the current date
+		return MarketRetriever.getNumberOfDaysFromNow(newestDateInDB);
+	}
 
-		int abc = 55;
+	public static void indexModelParametersInitialization(
+			Connection connection, String[] indexList) {
+		// TODO Auto-generated method stub
+		
 	}
 }

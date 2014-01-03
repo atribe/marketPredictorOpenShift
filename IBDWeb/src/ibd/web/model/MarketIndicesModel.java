@@ -1,13 +1,14 @@
 package ibd.web.model;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import ibd.web.DBManagers.MarketIndexDB;
 
 public class MarketIndicesModel {
 	
 	//							  Dow	 Nasdaq	 S&P500
-	static String[] indexList = {/*"^DJI",*/"^IXIC","^GSPC"/*,"^SML","^MID"*/};
+	static String[] indexList = {/*"^DJI",*/"^IXIC","^GSPC","^SML","^MID"};
 
 	public static void main() {
 		/*
@@ -20,15 +21,15 @@ public class MarketIndicesModel {
 		MarketIndexDB.priceVolumeDBInitialization(connection, indexList);
 				
 		
-				
-				//Loop for Model parameters for each index
-					//if table !exists
-						//create it
-			
-					//if tables are empty
-						//populate it
-							//initial values would be the best values based on last optimization
-				//End Model Parameter Loop
+		MarketIndexDB.indexModelParametersInitialization(connection, indexList);		
+		//Loop for Model parameters for each index
+			//if table !exists
+				//create it
+	
+			//if tables are empty
+				//populate it
+					//initial values would be the best values based on last optimization
+		//End Model Parameter Loop
 		
 		//Market Index Models
 			/*
@@ -38,6 +39,13 @@ public class MarketIndicesModel {
 			//Run model for Dow
 			//Run model for SP500
 			//Run model for Nasdaq
+		
+		try {
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

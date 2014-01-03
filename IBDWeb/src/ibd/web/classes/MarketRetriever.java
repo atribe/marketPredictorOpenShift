@@ -262,12 +262,14 @@ public class MarketRetriever {
 		}
 		return numDays;
 	}
+	
 	public static int getNumberOfDaysFromNow(Date date){
 		java.util.Date today = new java.util.Date(); //Variable with today's date
 		long diffTime = today.getTime() - date.getTime(); //difference in milliseconds between today and the date supplied to this method
 		int diffDays =(int) (diffTime / (1000 * 60 * 60 * 24)); //calculating days from milliseconds and converting to an int
 		return diffDays;
 	}
+	
 	public static void populateFreshDB(Connection connection, String index) {
 		//Container to hold the downloaded data
 		Data priceVolumeData = null;
@@ -293,6 +295,30 @@ public class MarketRetriever {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}// extract price and volume data for URL, # of yahoo days
-		MarketIndexDB.addRecord(connection, index, priceVolumeData);
+		MarketIndexDB.addRecordsFromData(connection, index, priceVolumeData);
+	}
+
+	public static void updateIndexDB(Connection connection, String index,
+			int indexDaysBehind) {
+		//Container to hold the downloaded data
+		Data priceVolumeData = null;
+
+		//Creates a yahoo URL given the index symbol from now back a given number of days
+		String URL = getYahooURL(index, indexDaysBehind);
+		
+		try {
+			priceVolumeData = dataParser(URL);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}// extract price and volume data for URL, # of yahoo days
+		MarketIndexDB.addRecordsFromData(connection, index, priceVolumeData);
+		
 	}
 }
