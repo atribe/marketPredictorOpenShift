@@ -1,63 +1,23 @@
 package ibd.web.DBManagers;
 
-import ibd.web.Resource.LoadProperties;
 import ibd.web.classes.Data;
 import ibd.web.classes.MarketRetriever;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
-public class MarketIndexDB {
+public class MarketIndexDB extends GenericDBSuperclass {
 
-	public static Connection getConnection() {
-		Connection connection = null;
-		String host, port, dbURL, username, password;
-		try {
-			//Loading the JDBC MySQL drivers that are used by java.sql.Connection
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// ************For Open Shift Account************	  
-			if(LoadProperties.environment.trim().equalsIgnoreCase("production")){
-				host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-				port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-				dbURL = "jdbc:mysql://"+host+":"+port+"/teedixindices";
-				username = "adminQRungBu";
-				password = "BdaTdanJuw9n";
-			}else{
-				// ************For Local Account************	
-				host = "localhost";
-				port="3306";
-				dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeindices";
-				username = "root";
-				password = "";
-			}
-
-			connection = DriverManager.getConnection(dbURL, username, password);
-
-			System.out.println("Connection established");
-			ibd.web.Constants.Constants.logger.info("Connection Established in MarketDB.java with teedixindices");
-		} catch (ClassNotFoundException e) { //Handle errors for Class.forName
-			System.out.println("Database Driver not found in MarketDB.java with teedixindices "+e);
-			ibd.web.Constants.Constants.logger.info("Database Driver not found in MarketDB.java with teedixindices "+e);
-		} catch (SQLException ex){
-			// handle any errors
-			System.out.println("Exception loading Database Driver in MarketDB.java with teedixindices");
-			System.out.println("Did you forget to turn on Apache and MySQLL again? From Exception:");
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-			ibd.web.Constants.Constants.logger.info("Exception loading Database Driver in MarketDB.java with teedixindices "+ex);
-		}
-		return connection;
-	}
-	
-	public static synchronized void priceVolumeDBInitialization(Connection connection, String[] indexList) {
+	public static synchronized void priceVolumeDBInitialization(String[] indexList) {
+		//Get a database connection
+		Connection connection = MarketIndexDB.getConnection();
+		
 		//Loop for each Price Volume DBs for each index
 		for(String index:indexList) {
 			/*
@@ -87,143 +47,23 @@ public class MarketIndexDB {
 			if(tableEmpty(index, connection)){
 				//if table is empty
 				//populate it
-				MarketRetriever.populateFreshDB(connection, index);
+				populateFreshDB(connection, index);
 			}
 
 			int indexDaysBehind = 0;
 			if((indexDaysBehind=getIndexDaysBehind(connection, index))>0)
 			{
-				MarketRetriever.updateIndexDB(connection, index, indexDaysBehind);
+				updateIndexDB(connection, index, indexDaysBehind);
 			}
-
-			//else if
-			//if tables !(up to date)
-			//update it
-			//End Price Volume DB Loop
 		}
-		//needs to be made real, set so the method would not give me an error
-
-	}
-	
-	private static boolean tableExists(String tableName, Connection connection){
-		boolean tableExists = false;
-
-		DatabaseMetaData metadata = null;
-		ResultSet tables = null;
-
 		try {
-			metadata = connection.getMetaData();
-			tables = metadata.getTables(null, null, tableName, null);
-
-			if (tables.next()) {
-				// Table exists
-				System.out.println(
-						"   "+tables.getString("TABLE_CAT") 
-						+ ", "+tables.getString("TABLE_SCHEM")
-						+ ", "+tables.getString("TABLE_NAME")
-						+ ", "+tables.getString("TABLE_TYPE")
-						+ ", "+tables.getString("REMARKS")
-						+ ", already exists.");
-				tableExists = true;
-			}
-			else {
-				tableExists = false;
-			}
-		} catch (SQLException ex){
-			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		} finally {
-			// it is a good idea to release
-			// resources in a finally{} block
-			// in reverse-order of their creation
-			// if they are no-longer needed
-			if (tables != null) {
-				try {
-					tables.close();
-				} catch (SQLException sqlEx) { } // ignore
-
-				tables = null;
-			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		return tableExists;
 	}
-	
-	private static synchronized boolean createTable(String createTableSQL, Connection connection){
-		int status=0;
-		Statement createStatement = null;
-		try {
-			createStatement = connection.createStatement();
-			status = createStatement.executeUpdate(createTableSQL);
-		} catch (SQLException ex){
-			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		}
-		finally {
-			// it is a good idea to release
-			// resources in a finally{} block
-			// in reverse-order of their creation
-			// if they are no-longer needed
 
-			if (createStatement != null) {
-				try {
-					createStatement.close();
-				} catch (SQLException sqlEx) { } // ignore
-
-				createStatement = null;
-			}
-		}
-		if (status>0)
-			return true;
-		else
-			return false;
-	}
-	
-	private static boolean tableEmpty(String tableName, Connection connection){
-		boolean empty = true;
-		Statement queryStatement = null;
-		ResultSet rs = null;
-
-		try {
-			queryStatement = connection.createStatement();
-			rs = queryStatement.executeQuery("SELECT * FROM `" + tableName + "`");
-			while (rs.next())
-			{
-				empty = false;
-			}
-		} catch (SQLException ex){
-			// handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-		}
-		finally {
-			// it is a good idea to release
-			// resources in a finally{} block
-			// in reverse-order of their creation
-			// if they are no-longer needed
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException sqlEx) { } // ignore
-
-				rs = null;
-			}
-			if (queryStatement != null) {
-				try {
-					queryStatement.close();
-				} catch (SQLException sqlEx) { } // ignore
-
-				queryStatement = null;
-			}
-		}
-		return empty;
-	}
-	
 	public static void addRecordsFromData(Connection connection, String index, Data priceVolumeData) {
 		//This query ignores duplicate dates
 		String insertQuery = "INSERT IGNORE INTO `" + index + "` "
@@ -265,7 +105,7 @@ public class MarketIndexDB {
 			}
 		}
 	}
-	
+
 	private static int getIndexDaysBehind(Connection connection, String index) {
 		java.sql.Date newestDateInDB=null;
 		String getNewestDateInDBQuery = "SELECT Date FROM `" + index + "` "
@@ -284,14 +124,14 @@ public class MarketIndexDB {
 			e.printStackTrace();
 			System.out.println(e);
 		} catch(NullPointerException e) {
-		    // probably don't bother doing clean up
+			// probably don't bother doing clean up
 		} finally {
 			if (ps != null) {
 				try {
 					ps.close();
 				} catch (SQLException sqlEx) { } // ignore
-					java.util.Calendar cal = java.util.Calendar.getInstance(); 
-					newestDateInDB = new Date(cal.getTimeInMillis());
+				java.util.Calendar cal = java.util.Calendar.getInstance(); 
+				newestDateInDB = new Date(cal.getTimeInMillis());
 				ps = null;
 			}
 		}
@@ -300,9 +140,54 @@ public class MarketIndexDB {
 		return MarketRetriever.getNumberOfDaysFromNow(newestDateInDB);
 	}
 
-	public static void indexModelParametersInitialization(
-			Connection connection, String[] indexList) {
-		// TODO Auto-generated method stub
-		
+	public static void populateFreshDB(Connection connection, String index) {
+		//Container to hold the downloaded data
+		Data priceVolumeData = null;
+
+		//This date represents the beginning of time as far as any of the indexes go
+		Date beginningDate = Date.valueOf("1920-01-01");
+
+		//calculates the number of days from today back to beginning date
+		int numDays = MarketRetriever.getNumberOfDaysFromNow(beginningDate);
+
+		//Creates a yahoo URL given the index symbol from now back a given number of days
+		String URL = MarketRetriever.getYahooURL(index, numDays);
+
+		try {
+			priceVolumeData = MarketRetriever.dataParser(URL);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}// extract price and volume data for URL, # of yahoo days
+		MarketIndexDB.addRecordsFromData(connection, index, priceVolumeData);
+	}
+
+	public static void updateIndexDB(Connection connection, String index,
+			int indexDaysBehind) {
+		//Container to hold the downloaded data
+		Data priceVolumeData = null;
+
+		//Creates a yahoo URL given the index symbol from now back a given number of days
+		String URL = MarketRetriever.getYahooURL(index, indexDaysBehind);
+
+		try {
+			priceVolumeData = MarketRetriever.dataParser(URL);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}// extract price and volume data for URL, # of yahoo days
+		addRecordsFromData(connection, index, priceVolumeData);
 	}
 }
