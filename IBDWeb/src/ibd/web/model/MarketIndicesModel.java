@@ -6,6 +6,13 @@ import java.sql.SQLException;
 import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
 
+/**
+ * This class is the highest level class that deals with all things market index.
+ * Initializes and updates databases
+ * Runs the model to determine buy and sell dates
+ * @author Allan
+ *
+ */
 public class MarketIndicesModel {
 	
 	//							  Nasdaq  S&P500

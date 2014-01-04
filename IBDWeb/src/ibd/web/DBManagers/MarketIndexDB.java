@@ -165,7 +165,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}// extract price and volume data for URL, # of yahoo days
-		MarketIndexDB.addRecordsFromData(connection, index, priceVolumeData);
+		addRecordsFromData(connection, index, priceVolumeData);
 	}
 
 	public static void updateIndexDB(Connection connection, String index,
