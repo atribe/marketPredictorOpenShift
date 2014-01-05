@@ -9,34 +9,46 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * This class is the Parent class to all database classes
+ * @author Allan
+ *
+ */
 public class GenericDBSuperclass {
 
+	
+	/**
+	 * Establishes a connection to the database
+	 * @return connection
+	 */
 	public static Connection getConnection() {
 		Connection connection = null;
-		String host, port, dbURL, username, password;
+		String host, port, dbURL, username, password, DBName;
 		try {
 			//Loading the JDBC MySQL drivers that are used by java.sql.Connection
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// ************For Open Shift Account************	  
 			if(LoadProperties.environment.trim().equalsIgnoreCase("production")){
+				DBName = "teedixindices";
 				host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
 				port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-				dbURL = "jdbc:mysql://"+host+":"+port+"/teedixindices";
+				dbURL = "jdbc:mysql://"+host+":"+port+"/" + DBName;
 				username = "adminQRungBu";
 				password = "BdaTdanJuw9n";
 			}else{
-				// ************For Local Account************	
+				// ************For Local Account************
+				DBName = "moneytreeindices";
 				host = "localhost";
 				port="3306";
-				dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeindices";
+				dbURL = "jdbc:mysql://"+host+":"+port+"/" + DBName;
 				username = "root";
 				password = "";
 			}
 
 			connection = DriverManager.getConnection(dbURL, username, password);
 
-			System.out.println("Connection established");
+			System.out.println("     Connection established to " + DBName);
 			ibd.web.Constants.Constants.logger.info("Connection Established in MarketDB.java with teedixindices");
 		} catch (ClassNotFoundException e) { //Handle errors for Class.forName
 			System.out.println("Database Driver not found in MarketDB.java with teedixindices "+e);
@@ -66,16 +78,14 @@ public class GenericDBSuperclass {
 			if (tables.next()) {
 				// Table exists
 				System.out.println(
-						"   "+tables.getString("TABLE_CAT") 
-						+ ", "+tables.getString("TABLE_SCHEM")
-						+ ", "+tables.getString("TABLE_NAME")
-						+ ", "+tables.getString("TABLE_TYPE")
-						+ ", "+tables.getString("REMARKS")
-						+ ", already exists.");
+						"          " + tables.getString("TABLE_TYPE") 
+						+ " " + tables.getString("TABLE_NAME")
+						+ " already exists.");
 				tableExists = true;
 			}
 			else {
 				tableExists = false;
+				System.out.println("          Table " + tableName + "does not yet exist, let me try and create that for you.");
 			}
 		} catch (SQLException ex){
 			// handle any errors
@@ -99,9 +109,10 @@ public class GenericDBSuperclass {
 		return tableExists;
 	}
 
-	protected static synchronized boolean createTable(String createTableSQL, Connection connection){
+	protected static synchronized boolean createTable(String createTableSQL, Connection connection, String tableName){
 		int status=0;
 		Statement createStatement = null;
+		
 		try {
 			createStatement = connection.createStatement();
 			status = createStatement.executeUpdate(createTableSQL);
@@ -126,15 +137,23 @@ public class GenericDBSuperclass {
 			}
 		}
 		if (status>0)
+		{
+			System.out.println("          Table '" + tableName + "' wasn't created");
 			return true;
+		}
 		else
+		{
+			System.out.println("          Table '" + tableName + "' has been created");
 			return false;
+		}
 	}
 
 	protected static boolean tableEmpty(String tableName, Connection connection){
 		boolean empty = true;
 		Statement queryStatement = null;
 		ResultSet rs = null;
+		
+		int i = 0;
 
 		try {
 			queryStatement = connection.createStatement();
@@ -142,6 +161,9 @@ public class GenericDBSuperclass {
 			while (rs.next())
 			{
 				empty = false;
+				i++;
+				if(i>2)
+					break;
 			}
 		} catch (SQLException ex){
 			// handle any errors
@@ -169,6 +191,10 @@ public class GenericDBSuperclass {
 				queryStatement = null;
 			}
 		}
+		if(empty)
+			System.out.println("          Table '" + tableName +"' is empty.");
+		else
+			System.out.println("          Table '" + tableName +"' has some stuff in it.");
 		return empty;
 	}
 

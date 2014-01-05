@@ -57,7 +57,7 @@ public class MarketIndicesModel {
 	private static void setIndexParameterList() {
 		indexParameterList = new String[indexList.length];
 
-		for(int i = 0;i>indexList.length;i++) {
+		for(int i = 0;i<indexList.length;i++) {
 			indexParameterList[i]=indexList[i] +"vars";
 		}
 	}

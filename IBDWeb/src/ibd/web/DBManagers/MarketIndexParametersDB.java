@@ -20,22 +20,32 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 	 * @param indexList
 	 */
 	public static void indexModelParametersInitialization(String[] indexParameterList) {
+		System.out.println("");
+		System.out.println("--------------------------------------------------------------------");
+		System.out.println("Starting Market Index Parameters Database Initialization");//Get a database connection
+		
 		//Get a database connection
 		Connection connection = MarketIndexDB.getConnection();
 		
-		//Loop for each each index to create a databse to hold model parameters
+		//Iteration tracking variable for System.out.printing and debugging
+		int interationCounter = 0;
+		
+		//Loop for each each index to create a database to hold model parameters
 		for(String indexParams:indexParameterList) {
+			interationCounter++;
+			System.out.println("Loop Iteration " + interationCounter + ":");
 			/*
 			 * Checking to see if a table with the indexParams name exists
 			 * If it does, print to the command prompt
 			 * if not create the table
 			 */
+			System.out.println("     -Checking if table " + indexParams + " exists.");
 			if(!tableExists(indexParams, connection)) {
 				// Table does not exist, so create it
 				String createTableSQL = "CREATE TABLE IF NOT EXISTS `" + indexParams + "` " +
 						"(Var_Name VARCHAR(100) PRIMARY KEY," +
 						" Var_Value VARCHAR(50))";
-				createTable(createTableSQL, connection);
+				createTable(createTableSQL, connection, indexParams);
 			}
 			
 			/*
@@ -44,6 +54,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 			 * If not, check if they are up to date
 			 * 		If not, update them
 			 */
+			System.out.println("     -Checking if table " + indexParams + " is empty.");
 			if(tableEmpty(indexParams, connection)){
 				//if table is empty
 				//populate it
@@ -53,11 +64,14 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		
 		try {
 			connection.close();
+			System.out.println("     Closing the connection to the database.");
+			System.out.println("--------------------------------------------------------------------");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	private static void populateFreshParamDB(Connection connection, String indexParams){
 		HashMap<String, String> SP500Vars = new HashMap<String, String>();
 		SP500Vars.put("fileName", "ResultsSP500.txt");
@@ -92,6 +106,8 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		//Get an iterator
 		Iterator itr = keys.iterator();
 		
+		System.out.println("Populating variable database for " + indexParams);
+		
 		//Add each entry to the DB
 		while(itr.hasNext()) {
 			String key = (String)itr.next();
@@ -101,14 +117,19 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		
 		
 	}
+	
 	private static void addVarPairRecord(Connection connection, String indexParams, String key, String value) {
-		String insertQuery = "INSERT ON DUPLICATE KEY UPDATE INTO `" + indexParams + "` "
-				+ "(?,?)";
+		String insertQuery = "INSERT INTO `" + indexParams + "` "
+				+ "(Var_Name, Var_Value)"
+				+ "VALUES"
+				+ "(?,?)"
+				+ " ON DUPLICATE KEY UPDATE Var_Value=?";
 		PreparedStatement ps=null;
 		try {
 			ps = connection.prepareStatement(insertQuery);
 			ps.setString(1, key);
 			ps.setString(2, value);
+			ps.setString(3, value);
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -15,16 +15,27 @@ import java.sql.SQLException;
 public class MarketIndexDB extends GenericDBSuperclass {
 
 	public static synchronized void priceVolumeDBInitialization(String[] indexList) {
+		System.out.println("");
+		System.out.println("--------------------------------------------------------------------");
+		System.out.println("Starting Market Index Database Initialization");
+		
+		
 		//Get a database connection
 		Connection connection = MarketIndexDB.getConnection();
 		
+		//Iteration tracking variable for System.out.printing and debugging
+		int interationCounter = 0;
+		
 		//Loop for each Price Volume DBs for each index
 		for(String index:indexList) {
+			interationCounter++;
+			System.out.println("Loop Iteration " + interationCounter + ":");
 			/*
 			 * Checking to see if a table with the index name exists
 			 * If it does, print to the command prompt
 			 * if not create the table
 			 */
+			System.out.println("     -Checking if table " + index + " exists.");
 			if(!tableExists(index, connection)) {
 				// Table does not exist, so create it
 				String createTableSQL = "CREATE TABLE IF NOT EXISTS `" + index + "` (" +
@@ -35,7 +46,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 						" Close FLOAT(20)," +
 						" Volume BIGINT(50)," +
 						" primary key (Date))";
-				createTable(createTableSQL, connection);
+				createTable(createTableSQL, connection, index);
 			}
 
 			/*
@@ -44,12 +55,14 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			 * If not, check if they are up to date
 			 * 		If not, update them
 			 */
+			System.out.println("     -Checking if table " + index + " is empty.");
 			if(tableEmpty(index, connection)){
 				//if table is empty
 				//populate it
 				populateFreshDB(connection, index);
 			}
 
+			System.out.println("     -Checking to see if table " + index +" is up to date.");
 			int indexDaysBehind = 0;
 			if((indexDaysBehind=getIndexDaysBehind(connection, index))>0)
 			{
@@ -58,6 +71,8 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		}
 		try {
 			connection.close();
+			System.out.println("     Closing the connection to the database.");
+			System.out.println("--------------------------------------------------------------------");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -137,7 +152,11 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		}
 		//calls the getNumberOfDaysFromNow method from market retriever and immediately returns
 		//how many behind the database is from the current date
-		return MarketRetriever.getNumberOfDaysFromNow(newestDateInDB);
+		System.out.println("          The newest date in the database is " + newestDateInDB.toString() + ".");
+		
+		int DBDaysTilNow = MarketRetriever.getNumberOfDaysFromNow(newestDateInDB);
+		System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
+		return DBDaysTilNow;
 	}
 
 	public static void populateFreshDB(Connection connection, String index) {
