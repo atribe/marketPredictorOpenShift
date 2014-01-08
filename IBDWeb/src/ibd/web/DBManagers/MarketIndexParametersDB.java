@@ -1,10 +1,10 @@
 package ibd.web.DBManagers;
 
-import ibd.web.classes.MarketRetriever;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -19,19 +19,16 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 	/**
 	 * @param indexList
 	 */
-	public static void indexModelParametersInitialization(String[] indexParameterList) {
+	public static void indexModelParametersInitialization(Connection connection, String[] indexParametersDBNameList) {
 		System.out.println("");
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println("Starting Market Index Parameters Database Initialization");//Get a database connection
-		
-		//Get a database connection
-		Connection connection = MarketIndexDB.getConnection();
 		
 		//Iteration tracking variable for System.out.printing and debugging
 		int interationCounter = 0;
 		
 		//Loop for each each index to create a database to hold model parameters
-		for(String indexParams:indexParameterList) {
+		for(String indexParams:indexParametersDBNameList) {
 			interationCounter++;
 			System.out.println("Loop Iteration " + interationCounter + ":");
 			/*
@@ -61,15 +58,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 				populateFreshParamDB(connection, indexParams);
 			}
 		}
-		
-		try {
-			connection.close();
-			System.out.println("     Closing the connection to the database.");
-			System.out.println("--------------------------------------------------------------------");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println("--------------------------------------------------------------------");
 	}
 	
 	private static void populateFreshParamDB(Connection connection, String indexParams){
@@ -143,5 +132,38 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 				ps = null;
 			}
 		}
+	}
+	
+	public static String getStringValue(Connection connection, String tableName, String key){
+		
+		String value;
+		String query = "SELECT Var_Value FROM `" + tableName + "`"
+				+ " WHERE Var_Name=?";
+		
+		try {
+			PreparedStatement selectStatement = connection.prepareStatement(query);
+			selectStatement.setString(1, key);
+			ResultSet rs = selectStatement.executeQuery();
+			if(rs.next())
+				value = rs.getString("Var_Value");
+			else
+				value = "Error, value not found from the given key. Or something else went really wrong.";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			value = e.toString();
+			e.printStackTrace();
+		}
+		return value;
+	}
+	
+	public static boolean getBooleanValue(Connection connection, String tableName, String key){
+		String stringValue = getStringValue(connection,tableName,key);
+		boolean boolValue = Boolean.parseBoolean(stringValue);
+		return boolValue;
+	}
+	public static Date getDateValue(Connection connection, String tableName, String key){
+		String stringValue = getStringValue(connection,tableName,key);
+		Date dateValue = Date.valueOf(stringValue);
+		return dateValue;
 	}
 }

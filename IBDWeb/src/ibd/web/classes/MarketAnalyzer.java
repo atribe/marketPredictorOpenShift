@@ -48,7 +48,43 @@ public class MarketAnalyzer {
 	 * @param var
 	 */
 	public static Output checkMarkets(Variables var) throws IOException, NullPointerException {
-
+		/*
+		 * Current Market Analyzer Flow
+		 * 
+		 * Calls RetrieveMarketData
+		 * 	1.Creates a Hashmap call dataMap
+		 * 	2.Connects to the DB
+		 * 	3.Sets a set number of buffer days so that a 35 or 50 day average 
+		 * 		can be calculated at the beginning of the model
+		 * 	4.Defines start date that includes buffer
+		 * 	5.Pulls all data from the database in between the start and end date
+		 *  6.Puts that data into the HashMap such that ^DJI -> Data object with all the data
+		 *  7.Returns the HashMap
+		 *  
+		 * Dumps that hashmap and uses just the data object
+		 * Gets the number of days after the start day and before the end date
+		 * 
+		 * Calls Distribution Day Dates
+		 * 	1.Gets the data object out of the hashmap passed in
+		 * 	2.Gets the date array out of the data object
+		 * 	3.Calls dDayDates function
+		 * 		a.Extracts the data from the Data object into all of the arrays
+		 * 		b.Starts looping through every day between the start and end date
+		 * 			I.calcs d-day
+		 * 			II.calcs churning dates
+		 * 			III.returns the d-days and churning dates together as one array
+		 * 	4.Calls FollowThroughDates
+		 * 		a.Extracts the data from the Data object into all of the arrays
+		 * 		b.calcs them
+		 * 		c.returns the followThrough dates and how many followThrough are in the past x days on each date
+		 * 	5.Loops through the dates and looks at the number of d-dates in the past 20 days
+		 * 		a.if the criteria is met the dates is added to the distributionDayDates
+		 * 	6.Returns a vector with distributionDayDates, dDaysToday, and FollowThrough days
+		 * 
+		 * Create buy and sell date pairs
+		 * 
+		 * Prepares the data for output to email
+		 */
 		HashMap<String, Data> indexData = MarketAnalyzer.retrieveMarketData(var);
 
 		//this part gets the number of days of data between startDays and endDays of yahoo data, not calendar days, excludes holidays and weekends
@@ -711,4 +747,5 @@ public class MarketAnalyzer {
 		}
 		return buySellPairs;
 	}//end of method
+
 }//end of class

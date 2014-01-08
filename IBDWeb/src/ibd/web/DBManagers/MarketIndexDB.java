@@ -14,14 +14,10 @@ import java.sql.SQLException;
 
 public class MarketIndexDB extends GenericDBSuperclass {
 
-	public static synchronized void priceVolumeDBInitialization(String[] indexList) {
+	public static synchronized void priceVolumeDBInitialization(Connection connection, String[] indexList) {		
 		System.out.println("");
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println("Starting Market Index Database Initialization");
-		
-		
-		//Get a database connection
-		Connection connection = MarketIndexDB.getConnection();
 		
 		//Iteration tracking variable for System.out.printing and debugging
 		int interationCounter = 0;
@@ -69,14 +65,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 				updateIndexDB(connection, index, indexDaysBehind);
 			}
 		}
-		try {
-			connection.close();
-			System.out.println("     Closing the connection to the database.");
-			System.out.println("--------------------------------------------------------------------");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		System.out.println("--------------------------------------------------------------------");
 	}
 
 	public static void addRecordsFromData(Connection connection, String index, Data priceVolumeData) {
@@ -122,33 +111,45 @@ public class MarketIndexDB extends GenericDBSuperclass {
 	}
 
 	private static int getIndexDaysBehind(Connection connection, String index) {
+
+		//initializing variables
 		java.sql.Date newestDateInDB=null;
+		
 		String getNewestDateInDBQuery = "SELECT Date FROM `" + index + "` "
 				+ "ORDER BY Date "
 				+ "DESC LIMIT 1";
 		PreparedStatement ps=null;
 		ResultSet rs = null;
+		
 		try {
+			// Querying the database for the newest date
 			ps = connection.prepareStatement(getNewestDateInDBQuery);
 			rs = ps.executeQuery();
-			newestDateInDB = rs.getDate("Date");
+			
+			if (!rs.next() ) {
+			    System.out.println("no data");
+			    java.util.Calendar cal = java.util.Calendar.getInstance(); 
+				newestDateInDB = new Date(cal.getTimeInMillis());
+			} else {
+				newestDateInDB = rs.getDate("Date");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			System.out.println(e);
 		} catch(NullPointerException e) {
 			// probably don't bother doing clean up
 		} finally {
-			if (ps != null) {
-				try {
+			//This if statement doesn't make much sense
+			try {
+				if(rs!=null)
+					rs.close();
+				if(ps!=null)
 					ps.close();
-				} catch (SQLException sqlEx) { } // ignore
-				java.util.Calendar cal = java.util.Calendar.getInstance(); 
-				newestDateInDB = new Date(cal.getTimeInMillis());
-				ps = null;
-			}
+			} catch (SQLException sqlEx) { } // ignore
 		}
 		//calls the getNumberOfDaysFromNow method from market retriever and immediately returns
 		//how many behind the database is from the current date

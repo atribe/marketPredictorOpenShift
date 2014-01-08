@@ -1,10 +1,10 @@
 package ibd.web.model;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
+import ibd.web.analyzer.IndexAnalyzer;
 
 /**
  * This class is the highest level class that deals with all things market index.
@@ -15,16 +15,20 @@ import ibd.web.DBManagers.MarketIndexParametersDB;
  */
 public class MarketIndicesModel {
 	
-	//							  Nasdaq  S&P500
+	//							  		  Nasdaq  S&P500
 	private static String[] indexList = {"^IXIC","^GSPC","^SML","^MID"};
-	private static String[] indexParameterList;
+	private static String[] indexParametersDBNameList;
 	
 	public static void main() {
+		
+		//Get a database connection
+		Connection connection = MarketIndexDB.getConnection();
+				
 		/*
 		 * Dabase initialization Section
 		 */
 		//Initialize the price/volume databases for each index 
-		MarketIndexDB.priceVolumeDBInitialization(indexList);
+		MarketIndexDB.priceVolumeDBInitialization(connection, indexList);
 		
 		/*
 		 * setting the indexParameterList to be equal to the indexList+"_var"
@@ -34,31 +38,28 @@ public class MarketIndicesModel {
 		setIndexParameterList();
 		
 		//Initialize the model variables
-		MarketIndexParametersDB.indexModelParametersInitialization(indexParameterList);		
-		//Loop for Model parameters for each index
-			//if table !exists
-				//create it
-	
-			//if tables are empty
-				//populate it
-					//initial values would be the best values based on last optimization
-		//End Model Parameter Loop
+		MarketIndexParametersDB.indexModelParametersInitialization(connection, indexParametersDBNameList);		
+		
 		
 		//Market Index Models
 			/*
 			 * Models runs are not looped because you may want to run or optimize them one at a time
 			 * I'll figure out this code after I figure out the above
 			 */
-			//Run model for Dow
-			//Run model for SP500
-			//Run model for Nasdaq
+		IndexAnalyzer.runIndexAnalysis(connection, "^IXIC", "^IXICvars");
+		//Run model for Nasdaq
+		//Run model for SP500
 	}
 
+	/**
+	 * This method allows for the dynamic creation of the indexParameterList
+	 * The indexParameterList is simply the indexList with 'var' appended to the end
+	 */
 	private static void setIndexParameterList() {
-		indexParameterList = new String[indexList.length];
+		indexParametersDBNameList = new String[indexList.length];
 
 		for(int i = 0;i<indexList.length;i++) {
-			indexParameterList[i]=indexList[i] +"vars";
+			indexParametersDBNameList[i]=indexList[i] +"vars";
 		}
 	}
 
@@ -67,6 +68,6 @@ public class MarketIndicesModel {
 	}
 
 	private static String[] getIndexParameterList() {
-		return indexParameterList;
+		return indexParametersDBNameList;
 	}
 }
