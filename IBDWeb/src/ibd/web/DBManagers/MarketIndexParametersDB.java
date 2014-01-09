@@ -165,7 +165,6 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 	public static LocalDate getDateValue(Connection connection, String tableName, String key){
 		String stringValue = getStringValue(connection,tableName,key);
 		LocalDate dateValue = new LocalDate(stringValue);
-		//Date dateValue = Date.valueOf(stringValue);
 		return dateValue;
 	}
 }

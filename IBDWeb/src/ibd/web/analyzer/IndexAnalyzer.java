@@ -4,8 +4,6 @@ import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
 
 import java.sql.Connection;
-import java.sql.Date;
-
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
@@ -91,9 +89,7 @@ public class IndexAnalyzer {
 		LocalDate endDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyEndDate);
 		
 		m_loopDays = Days.daysBetween(startDate, endDate);
-		m_loopDays = m_loopDays.plus(m_bufferDays);
-		// TODO figure out how to get the difference between two days and then add buffer days
-		//Date adjStartDate = startDate - m_bufferDays
+		m_loopDays = m_loopDays.plus(getBufferDays());
 	}
 	private static void distributionDayAnalysis(){
 		

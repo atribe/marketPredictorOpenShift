@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.joda.time.LocalDate;
 
 public class MarketIndexDB extends GenericDBSuperclass {
 
@@ -59,8 +60,8 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			}
 
 			System.out.println("     -Checking to see if table " + index +" is up to date.");
-			int indexDaysBehind = 0;
-			if((indexDaysBehind=getIndexDaysBehind(connection, index))>0)
+			int indexDaysBehind = getIndexDaysBehind(connection, index);
+			if(indexDaysBehind>0)
 			{
 				updateIndexDB(connection, index, indexDaysBehind);
 			}
@@ -113,7 +114,8 @@ public class MarketIndexDB extends GenericDBSuperclass {
 	private static int getIndexDaysBehind(Connection connection, String index) {
 
 		//initializing variables
-		java.sql.Date newestDateInDB=null;
+		//java.sql.Date newestDateInDB=null;
+		LocalDate newestDate=null;
 		
 		String getNewestDateInDBQuery = "SELECT Date FROM `" + index + "` "
 				+ "ORDER BY Date "
@@ -128,10 +130,12 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			
 			if (!rs.next() ) {
 			    System.out.println("no data");
-			    java.util.Calendar cal = java.util.Calendar.getInstance(); 
-				newestDateInDB = new Date(cal.getTimeInMillis());
+			    //java.util.Calendar cal = java.util.Calendar.getInstance(); 
+				//newestDateInDB = new Date(cal.getTimeInMillis());
+				newestDate = new LocalDate();
 			} else {
-				newestDateInDB = rs.getDate("Date");
+				//newestDateInDB = rs.getDate("Date");
+				newestDate = LocalDate.fromDateFields(rs.getDate("Date"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -153,11 +157,13 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		}
 		//calls the getNumberOfDaysFromNow method from market retriever and immediately returns
 		//how many behind the database is from the current date
-		System.out.println("          The newest date in the database is " + newestDateInDB.toString() + ".");
+		//System.out.println("          The newest date in the database is " + newestDateInDB.toString() + ".");
+		System.out.println("          The newest date in the database is " + newestDate.toString() + ".");
 		
-		int DBDaysTilNow = MarketRetriever.getNumberOfDaysFromNow(newestDateInDB);
+		int DBDaysTilNow = MarketRetriever.getNumberOfDaysFromNow(newestDate);
+		//System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
 		System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
-		return DBDaysTilNow;
+		return DBDaysTilNow;//DBDaysTilNow;
 	}
 
 	public static void populateFreshDB(Connection connection, String index) {
@@ -165,7 +171,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		Data priceVolumeData = null;
 
 		//This date represents the beginning of time as far as any of the indexes go
-		Date beginningDate = Date.valueOf("1920-01-01");
+		LocalDate beginningDate = new LocalDate("1920-01-01");
 
 		//calculates the number of days from today back to beginning date
 		int numDays = MarketRetriever.getNumberOfDaysFromNow(beginningDate);
@@ -188,8 +194,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		addRecordsFromData(connection, index, priceVolumeData);
 	}
 
-	public static void updateIndexDB(Connection connection, String index,
-			int indexDaysBehind) {
+	public static void updateIndexDB(Connection connection, String index,int indexDaysBehind) {
 		//Container to hold the downloaded data
 		Data priceVolumeData = null;
 

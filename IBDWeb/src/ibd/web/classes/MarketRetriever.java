@@ -4,13 +4,6 @@
  */
 package ibd.web.classes;
 
-/**
- *This class gets data from yahoo.com for the markets listed in main and stores the data in a database,
- * Run this class once a day before MarketAnalyzer
- * @author Aaron
- */
-import ibd.web.DBManagers.MarketIndexDB;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,6 +17,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 /**
  * @author Aaron
@@ -213,18 +209,21 @@ public class MarketRetriever {
 	 * @return  construed URL
 	 */
 	public static String getYahooURL(String symbol, int daysAgo) {
-		GregorianCalendar calendarStart = new GregorianCalendar();
-		calendarStart.add(Calendar.DAY_OF_MONTH, -daysAgo);//this subtracts the number of startDaysAgo from todays date.  The add command changes the calendar object
+		LocalDate endDate = new LocalDate();
+		LocalDate startDate = endDate.minusDays(daysAgo);
+		//TODO remove old date code
+		//GregorianCalendar calendarStart = new GregorianCalendar();
+		//calendarStart.add(Calendar.DAY_OF_MONTH, -daysAgo);//this subtracts the number of startDaysAgo from todays date.  The add command changes the calendar object
 		int a_startMonth, b_startDay, c_startYear;
 		int d_endMonth, e_endDay, f_endYear; 
-		a_startMonth = calendarStart.get(Calendar.MONTH);//this gets the beginning dates month
-		b_startDay = calendarStart.get(Calendar.DAY_OF_MONTH);//this gets beginning dates day
-		c_startYear = calendarStart.get(Calendar.YEAR);//this gets beginning dates year
+		a_startMonth = startDate.getMonthOfYear()-1;//Yahoo uses zero based month numbering, this gets the beginning dates month
+		b_startDay = startDate.getDayOfMonth();//this gets beginning dates day
+		c_startYear = startDate.getYear();//this gets beginning dates year
 
 		GregorianCalendar calendarEnd = new GregorianCalendar();
-		d_endMonth = calendarEnd.get(Calendar.MONTH);//this gets todays month
-		e_endDay = calendarEnd.get(Calendar.DAY_OF_MONTH);//this gets todays day of month
-		f_endYear = calendarEnd.get(Calendar.YEAR);//this gets todays year
+		d_endMonth = endDate.getMonthOfYear()-1;//Yahoo uses zero based month numbering,this gets todays month
+		e_endDay = endDate.getDayOfMonth();//this gets todays day of month
+		f_endYear = endDate.getYear();//this gets todays year
 
 		System.out.println("month="+a_startMonth+" day="+b_startDay+" year="+c_startYear);
 
@@ -263,10 +262,13 @@ public class MarketRetriever {
 		return numDays;
 	}
 	
-	public static int getNumberOfDaysFromNow(Date date){
-		java.util.Date today = new java.util.Date(); //Variable with today's date
-		long diffTime = today.getTime() - date.getTime(); //difference in milliseconds between today and the date supplied to this method
-		int diffDays =(int) (diffTime / (1000 * 60 * 60 * 24)); //calculating days from milliseconds and converting to an int
-		return diffDays;
+	public static int getNumberOfDaysFromNow(LocalDate date){
+		LocalDate today = new LocalDate(); //Variable with today's date
+		
+		return Days.daysBetween(date, today).getDays();
+		// TODO remove this old date code when Joda Time takes over
+		//long diffTime = today.getTime() - date.getTime(); //difference in milliseconds between today and the date supplied to this method
+		//int diffDays =(int) (diffTime / (1000 * 60 * 60 * 24)); //calculating days from milliseconds and converting to an int
+		//return diffDays;
 	}
 }
