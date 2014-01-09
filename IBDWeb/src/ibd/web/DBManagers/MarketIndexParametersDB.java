@@ -4,10 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.joda.time.LocalDate;
 
 /**
  * This subclass handles all database operations involving the price and volume data for each index
@@ -100,7 +101,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		//Add each entry to the DB
 		while(itr.hasNext()) {
 			String key = (String)itr.next();
-			String value = (String)SP500Vars.get(key);
+			String value = SP500Vars.get(key);
 			addVarPairRecord(connection, indexParams, key, value);
 		}
 		
@@ -161,9 +162,10 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		boolean boolValue = Boolean.parseBoolean(stringValue);
 		return boolValue;
 	}
-	public static Date getDateValue(Connection connection, String tableName, String key){
+	public static LocalDate getDateValue(Connection connection, String tableName, String key){
 		String stringValue = getStringValue(connection,tableName,key);
-		Date dateValue = Date.valueOf(stringValue);
+		LocalDate dateValue = new LocalDate(stringValue);
+		//Date dateValue = Date.valueOf(stringValue);
 		return dateValue;
 	}
 }

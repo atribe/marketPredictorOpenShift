@@ -6,6 +6,9 @@ import ibd.web.DBManagers.MarketIndexParametersDB;
 import java.sql.Connection;
 import java.sql.Date;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+
 public class IndexAnalyzer {
 	/*
 	 * These variables are class member properties and once set they can be used by 
@@ -22,7 +25,7 @@ public class IndexAnalyzer {
 	
 	//member variables related to dates or number of days
 	static private int m_bufferDays;
-	static private int m_loopDays;
+	static private Days m_loopDays;
 	
 
 	public static void runIndexAnalysis(Connection connection, String index, String indexParametersDBName) {
@@ -84,9 +87,11 @@ public class IndexAnalyzer {
 	private static void setLoopDays() {
 		String keyStartDate = "startDate";
 		String keyEndDate = "endDate";
-		Date startDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyStartDate);
-		Date endDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyEndDate);
+		LocalDate startDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyStartDate);
+		LocalDate endDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyEndDate);
 		
+		m_loopDays = Days.daysBetween(startDate, endDate);
+		m_loopDays = m_loopDays.plus(m_bufferDays);
 		// TODO figure out how to get the difference between two days and then add buffer days
 		//Date adjStartDate = startDate - m_bufferDays
 	}
