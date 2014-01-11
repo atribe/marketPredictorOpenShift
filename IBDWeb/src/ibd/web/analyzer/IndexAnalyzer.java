@@ -14,6 +14,7 @@ public class IndexAnalyzer {
 	 * set every time you enter into the class from outside.
 	 */
 	
+	//TODO make a get method for each variable, then if it is called and the variable is null then throw an error so I can quickly catch it
 	//Database Connection
 	static Connection m_con;
 	
@@ -23,8 +24,8 @@ public class IndexAnalyzer {
 	
 	//member variables related to dates or number of days
 	static private int m_bufferDays;
-	static private Days m_loopDays;
-	
+	static private int m_loopBeginId;
+	static private int m_loopEndId;
 
 	public static void runIndexAnalysis(Connection connection, String index, String indexParametersDBName) {
 		/*
@@ -57,7 +58,10 @@ public class IndexAnalyzer {
 		//1. Setting the number of buffer days needed to calc averages and such
 		setBufferDays();
 		
-		setLoopDays();
+		//2. Calculating the id's of the start and end date of the loop
+		setLoopBeginId();
+		
+		setLoopEndId();
 		
 		//2. Calculate and store d-dates
 		distributionDayAnalysis();
@@ -82,16 +86,36 @@ public class IndexAnalyzer {
 		return m_bufferDays;
 	}
 	
-	private static void setLoopDays() {
-		String keyStartDate = "startDate";
-		String keyEndDate = "endDate";
-		LocalDate startDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyStartDate);
-		LocalDate endDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyEndDate);
+	/**
+	 * Gets the loopEndId by pulling the end date from the parameter database and then looking that date up in the price/volume database
+	 * 
+	 */
+	private static void setLoopEndId() {
+		String keyOriginalEndDate = "endDate";
+		LocalDate endDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyOriginalEndDate);
 		
-		m_loopDays = Days.daysBetween(startDate, endDate);
-		m_loopDays = m_loopDays.plus(getBufferDays());
+		m_loopEndId = MarketIndexDB.getIdByDate(m_con, m_index, endDate);
 	}
-	private static void distributionDayAnalysis(){
+	
+	private static void setLoopBeginId() {
+		String keyStartDate = "startDate";
+		LocalDate startDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyStartDate);
 		
+		int beginId = MarketIndexDB.getIdByDate(m_con, m_index, startDate);
+		if(beginId-m_bufferDays<1) //if the buffer goes past where the data starts, make the loop start at earliest date
+			m_loopBeginId = 1;
+		else
+			m_loopBeginId = beginId-m_bufferDays;
+	}
+	
+	private static void distributionDayAnalysis(){
+		//TODO Start here.
+		//get the date between the end and beginning (modified by the buffer)
+			//i think I need to change the setLoopDays function to get the new beginning date instead of the total loopDays
+		//cycle through each date and look at price decrease and volume increase from one day to the next
+		//When a date where the above is true...
+			//Add it to the table?
+			//Also have a running tally for a given period of time based on the parameters
+			//
 	}
 }

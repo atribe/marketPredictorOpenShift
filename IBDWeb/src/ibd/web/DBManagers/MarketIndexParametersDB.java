@@ -62,6 +62,12 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		System.out.println("--------------------------------------------------------------------");
 	}
 	
+	/**
+	 * Primary method to populate a price volume database after it is newly created
+	 * @param connection
+	 * @param indexParams
+	 * 
+	 */
 	private static void populateFreshParamDB(Connection connection, String indexParams){
 		HashMap<String, String> SP500Vars = new HashMap<String, String>();
 		SP500Vars.put("fileName", "ResultsSP500.txt");
@@ -108,6 +114,12 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		
 	}
 	
+	/**
+	 * @param connection
+	 * @param indexParams
+	 * @param key
+	 * @param value
+	 */
 	private static void addVarPairRecord(Connection connection, String indexParams, String key, String value) {
 		String insertQuery = "INSERT INTO `" + indexParams + "` "
 				+ "(Var_Name, Var_Value)"
@@ -162,6 +174,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		boolean boolValue = Boolean.parseBoolean(stringValue);
 		return boolValue;
 	}
+	
 	public static LocalDate getDateValue(Connection connection, String tableName, String key){
 		String stringValue = getStringValue(connection,tableName,key);
 		LocalDate dateValue = new LocalDate(stringValue);

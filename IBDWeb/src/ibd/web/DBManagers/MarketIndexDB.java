@@ -36,13 +36,14 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			if(!tableExists(index, connection)) {
 				// Table does not exist, so create it
 				String createTableSQL = "CREATE TABLE IF NOT EXISTS `" + index + "` (" +
+						" id INT not NULL AUTO_INCREMENT," +
 						" Date DATE not NULL," +
 						" Open FLOAT(20)," +
 						" High FLOAT(20)," +
 						" Low FLOAT(20)," +
 						" Close FLOAT(20)," +
 						" Volume BIGINT(50)," +
-						" primary key (Date))";
+						" PRIMARY KEY (id))";
 				createTable(createTableSQL, connection, index);
 			}
 
@@ -214,5 +215,51 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			e.printStackTrace();
 		}// extract price and volume data for URL, # of yahoo days
 		addRecordsFromData(connection, index, priceVolumeData);
+	}
+
+	/**
+	 * @param connection
+	 * @param tableName
+	 * @param Date
+	 * @return
+	 */
+	public static int getIdByDate(Connection connection, String tableName, LocalDate Date){
+		int value = 0;
+		String query = "SELECT id FROM `" + tableName + "`"
+				+ " WHERE Date=?";
+		
+		try {
+			PreparedStatement selectStatement = connection.prepareStatement(query);
+			selectStatement.setString(1, Date.toString());
+			ResultSet rs = selectStatement.executeQuery();
+			if(rs.next())
+				value = rs.getInt("id");
+			else {
+				System.out.println("     The date of " + Date.toString() + " not found in the database.");
+				System.out.println("          Let me check the preceeding couple of days in case you chose a weekend or holiday.");
+				for(int i = 1;i<7;i++)
+				{
+					selectStatement.setString(1, Date.minusDays(i).toString());
+					rs = selectStatement.executeQuery();
+					if(rs.next())
+					{
+						value = rs.getInt("id");
+						System.out.println("          Looks like I found one...and you got all worried for nothing.");
+						break;
+					}
+					else if(i==6)
+					{
+						System.out.println("I didn't find an earlier date, so I'll just choose the first date in the data set");
+						value=1;
+					}
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("There was an error in the getIdByDate method. And that error is: ");
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+		return value;
 	}
 }
