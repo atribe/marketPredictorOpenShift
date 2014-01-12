@@ -4,6 +4,8 @@
  */
 package ibd.web.classes;
 
+import ibd.web.dataTypes.PriceVolumeData;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -50,6 +52,7 @@ public class MarketRetriever {
 		do {
 			loop=false;
 			try {//this is the try for the getRecord method
+				/*
 				try {
 					data = getData(var.list, numDays); //var.list=^DJI
 				} catch (URISyntaxException e) {
@@ -58,7 +61,7 @@ public class MarketRetriever {
 					break;
 				} catch (Exception e) {
 				}
-
+			 	*/
 				Date[] dates = data.dateData;
 				float[] opens = data.priceDataOpen;
 				float[] highs = data.priceDataHigh;
@@ -88,8 +91,8 @@ public class MarketRetriever {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	public static Data getData(String symbol, int daysAgo) throws URISyntaxException, MalformedURLException, IOException {//these three are what dataParser throw as well
-		Data data = null;
+	public static PriceVolumeData getData(String symbol, int daysAgo) throws URISyntaxException, MalformedURLException, IOException {//these three are what dataParser throw as well
+		PriceVolumeData data = new PriceVolumeData();
 		int flag = 0;
 		while (flag < 20) {
 			try {
@@ -124,13 +127,16 @@ public class MarketRetriever {
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 */
-	public static Data dataParser(String url) throws MalformedURLException, IOException, URISyntaxException {
-		ArrayList<Float> priceListClose = new ArrayList<Float>();
-		ArrayList<Float> priceListHigh = new ArrayList<Float>();    //this is added
-		ArrayList<Float> priceListLow = new ArrayList<Float>(); //this is added
-		ArrayList<Float> priceListOpen = new ArrayList<Float>(); //this is added
-		ArrayList<Long> volumeList = new ArrayList<Long>();
-		ArrayList<Date> dateList = new ArrayList<Date>();    //this is added
+	public static PriceVolumeData dataParser(String url) throws MalformedURLException, IOException, URISyntaxException {
+		//ArrayList<Float> priceListClose = new ArrayList<Float>();
+		//ArrayList<Float> priceListHigh = new ArrayList<Float>();    //this is added
+		//ArrayList<Float> priceListLow = new ArrayList<Float>(); //this is added
+		//ArrayList<Float> priceListOpen = new ArrayList<Float>(); //this is added
+		//ArrayList<Long> volumeList = new ArrayList<Long>();
+		//ArrayList<Date> dateList = new ArrayList<Date>();    //this is added
+		
+		PriceVolumeData pvd = new PriceVolumeData();
+		
 		URL ur = new URL(url);
 		HttpURLConnection HUC = (HttpURLConnection) ur.openConnection();
 		BufferedReader in = new BufferedReader(new InputStreamReader(HUC.getInputStream()));
@@ -190,16 +196,22 @@ public class MarketRetriever {
 			}
 
 			//add current values to arrayLists
-			dateList.add(Date.valueOf(dateStr));
-			priceListOpen.add(Float.parseFloat(priceOpenStr));//these have to be parsed because they come in as strings
-			priceListHigh.add(Float.parseFloat(priceHighStr));
-			priceListLow.add(Float.parseFloat(priceLowStr));
-			priceListClose.add(Float.parseFloat(priceCloseStr));
-			volumeList.add(Long.parseLong(volumeStr));
+			pvd.addNextDate(LocalDate.parse(dateStr));
+			//dateList.add(Date.valueOf(dateStr));
+			pvd.addNextOpen(Float.parseFloat(priceOpenStr));
+			//priceListOpen.add(Float.parseFloat(priceOpenStr));//these have to be parsed because they come in as strings
+			pvd.addNextHigh(Float.parseFloat(priceHighStr));
+			//priceListHigh.add(Float.parseFloat(priceHighStr));
+			pvd.addNextLow(Float.parseFloat(priceLowStr));
+			//priceListLow.add(Float.parseFloat(priceLowStr));
+			pvd.addNextClose(Float.parseFloat(priceCloseStr));
+			//priceListClose.add(Float.parseFloat(priceCloseStr));
+			pvd.addNextVolume(Integer.parseInt(volumeStr));
+			//volumeList.add(Integer.parseInt(volumeStr));
 			//++lineCount;
 		}
 		//stores the data arrays in a Data object and returns it
-		return new Data(dateList, priceListOpen, priceListHigh, priceListLow, priceListClose, volumeList);
+		return pvd;
 	}
 
 	/**

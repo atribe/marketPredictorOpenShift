@@ -2,6 +2,7 @@ package ibd.web.DBManagers;
 
 import ibd.web.classes.Data;
 import ibd.web.classes.MarketRetriever;
+import ibd.web.dataTypes.PriceVolumeData;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -70,7 +71,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		System.out.println("--------------------------------------------------------------------");
 	}
 
-	public static void addRecordsFromData(Connection connection, String index, Data priceVolumeData) {
+	public static void addRecordsFromData(Connection connection, String index, PriceVolumeData pvd) {
 		//This query ignores duplicate dates
 		String insertQuery = "INSERT IGNORE INTO `" + index + "` "
 				+ "(Date,Open,High,Low,Close,Volume) VALUES"
@@ -80,13 +81,19 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		try {
 			ps = connection.prepareStatement(insertQuery);
 
-			for (int i = 0; i < priceVolumeData.getRowCount() ; i++) {
-				ps.setDate(1, priceVolumeData.dateData[i]);
-				ps.setFloat(2,  priceVolumeData.priceDataOpen[i]);
-				ps.setFloat(3,  priceVolumeData.priceDataHigh[i]);
-				ps.setFloat(4,  priceVolumeData.priceDataLow[i]);
-				ps.setFloat(5,  priceVolumeData.priceDataClose[i]);
-				ps.setFloat(6,  priceVolumeData.volumeData[i]);
+			for (int i = 0; i < pvd.getRowCount() ; i++) {
+				ps.setDate(1, new java.sql.Date(pvd.getSingleDate(i).toDate().getTime()));
+				//ps.setDate(1, pvd.dateData[i]);
+				ps.setFloat(2, pvd.getSingleOpen(i));
+				//ps.setFloat(2,  pvd.priceDataOpen[i]);
+				ps.setFloat(3, pvd.getSingleHigh(i));
+				//ps.setFloat(3,  pvd.priceDataHigh[i]);
+				ps.setFloat(4, pvd.getSingleLow(i));
+				//ps.setFloat(4,  pvd.priceDataLow[i]);
+				ps.setFloat(5, pvd.getSingleClose(i));
+				//ps.setFloat(5,  pvd.priceDataClose[i]);
+				ps.setInt(6, pvd.getSingleVolume(i));
+				//ps.setFloat(6,  pvd.volumeData[i]);
 				ps.addBatch();
 				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
 				{
@@ -169,10 +176,10 @@ public class MarketIndexDB extends GenericDBSuperclass {
 
 	public static void populateFreshDB(Connection connection, String index) {
 		//Container to hold the downloaded data
-		Data priceVolumeData = null;
+		PriceVolumeData priceVolumeData = new PriceVolumeData();
 
 		//This date represents the beginning of time as far as any of the indexes go
-		LocalDate beginningDate = new LocalDate("1920-01-01");
+		LocalDate beginningDate = new LocalDate("2010-01-01");
 
 		//calculates the number of days from today back to beginning date
 		int numDays = MarketRetriever.getNumberOfDaysFromNow(beginningDate);
@@ -221,7 +228,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 	 * @param connection
 	 * @param tableName
 	 * @param Date
-	 * @return
+	 * @return row id of the supplied date
 	 */
 	public static int getIdByDate(Connection connection, String tableName, LocalDate Date){
 		int value = 0;
@@ -261,5 +268,40 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			e.printStackTrace();
 		}
 		return value;
+	}
+	
+	public static PriceVolumeData getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
+		PriceVolumeData pvd = new PriceVolumeData();
+		
+		String query = "SELECT * FROM `" + tableName + "`"
+				+ " WHERE `id` BETWEEN ? AND ?"
+				+ " ORDER BY `id` ASC";
+		
+		int i=0;
+		
+		try {
+			PreparedStatement selectStatement = connection.prepareStatement(query);
+			selectStatement.setInt(1, beginId);
+			selectStatement.setInt(2, endId);
+			ResultSet rs = selectStatement.executeQuery();
+
+			while (rs.next()) {
+				pvd.addNextId(rs.getInt("id"));
+				pvd.addNextDate(LocalDate.fromDateFields(rs.getDate("Date")));
+				pvd.addNextOpen(rs.getFloat("Open"));
+				pvd.addNextHigh(rs.getFloat("High"));
+				pvd.addNextLow(rs.getFloat("Low"));
+				pvd.addNextClose(rs.getFloat("Close"));
+				pvd.addNextVolume(rs.getInt("Volume"));
+				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("There was an error in the getDatesBetweenIds method. And that error is: ");
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+		
+		return pvd;
 	}
 }

@@ -4,6 +4,7 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+  
   <servlet>
     <servlet-name>mvc-dispatcher</servlet-name>
     <servlet-class>
@@ -86,6 +87,10 @@
     <servlet-name>DownloadFile</servlet-name>
     <url-pattern>/DownloadFile</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DownloadFile</servlet-name>
+    <url-pattern>/MarketIndicesModel.java</url-pattern>
+  </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>ParseDownloadedFile</display-name>
@@ -96,4 +101,5 @@
     <servlet-name>ParseDownloadedFile</servlet-name>
     <url-pattern>/ParseDownloadedFile</url-pattern>
   </servlet-mapping>
+  
 </web-app>
