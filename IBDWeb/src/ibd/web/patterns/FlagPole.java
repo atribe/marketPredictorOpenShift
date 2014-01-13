@@ -20,13 +20,14 @@ public class FlagPole extends Base {
 		int peakDay,minDay,pivot;
 		System.out.print("  flagpole: ");
 		for (int i = begin;i < end - POLEMIN;++i){//look through the whole array
-			if((peakDay = checkUpSlope(i,POLEMIN,POLEMAX,prices,GAINMIN,WANDERVALUE,GAINMAX)) >= 0)
+			if((peakDay = checkUpSlope(i,POLEMIN,POLEMAX,prices,GAINMIN,WANDERVALUE,GAINMAX)) >= 0) {
 				if((pivot = checkHandle(true,prices,peakDay, volumes, SandP,bullArray,VOLDOWN,DAYSLOWVOLUME)) >= 0){
 					Base pole = new FlagPole(i,pivot,i);
 					list.add(pole);
 					da.baseBlocker(i, pivot, baseBlocks);
 					return true;
-				}					
+				}
+			}					
 		}
 		System.out.println("nothing found");
 		return false;

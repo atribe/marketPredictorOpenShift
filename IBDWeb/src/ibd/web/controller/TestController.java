@@ -14,7 +14,7 @@ public class TestController {
 	 */
 	@RequestMapping(method = {RequestMethod.GET})
 	public ModelAndView getIndex() {
-        return new ModelAndView("page");
+		return new ModelAndView("page");
 	}
 }
 

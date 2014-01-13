@@ -35,7 +35,7 @@ public class Data50 {
 	private String indexMembership;
 	private String marketCap;
 	private String earningAnnouncement;
-	
+
 	public String getRank() {
 		return rank;
 	}
@@ -241,5 +241,5 @@ public class Data50 {
 	public void setEarningAnnouncement(String earningAnnouncement) {
 		this.earningAnnouncement = earningAnnouncement;
 	}
-	
+
 }

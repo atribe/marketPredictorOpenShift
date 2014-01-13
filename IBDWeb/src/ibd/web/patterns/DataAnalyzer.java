@@ -1,12 +1,8 @@
 package ibd.web.patterns;
 
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -50,8 +46,9 @@ public class DataAnalyzer {
 		dispatcher(data.getPriceData(), data.getVolumeData());
 		if(baseCounter(data.getPriceData(), list) <= 3){
 			if(null != list && list.size() > 0){
-				if(isBuyable(list.last(), data.getPriceData()))
+				if(isBuyable(list.last(), data.getPriceData())) {
 					picks.add(data.getName());
+				}
 			}
 		}
 		list.clear();
@@ -61,13 +58,16 @@ public class DataAnalyzer {
 		float[] values = data.getPriceData();
 		double[] volumes = data.getVolumeData();
 		int dd = 0;
-		for(int c = 0;c < 20;++c)// identify distribution days for last 4 weeks
-			if (values[c] < values[c + 1] && volumes[c] > volumes[c + 1])
+		for(int c = 0;c < 20;++c) {
+			if (values[c] < values[c + 1] && volumes[c] > volumes[c + 1]) {
 				++dd;
+			}
+		}
 		System.out.println("S&P Distribution days: " +  dd);
 		boolean good = dd <= 4;
-		if (!good)
+		if (!good) {
 			System.out.println("Too many D-days, no trading today");
+		}
 		return good;
 	}
 
@@ -79,50 +79,61 @@ public class DataAnalyzer {
 		bullArray[0] = bull;//		initialize the first day of the array appropriately
 		for (int i = 1;i < data.getPriceData().length;++i){
 			if(bull){//look for bear during bull
-				if(i >= bearTime)  //if we're far enough in to look back that far
+				if(i >= bearTime) {
 					if(isBearLoss(data,i, bearTime, bearLoss)){//check for bears!
 						bull = false;
 						System.out.println("Bear starts on day " + i);
-						for(int j = i - bearTime; j < i;++j)//fill in bear values for the previous decline
+						for(int j = i - bearTime; j < i;++j) {
 							bullArray[j] = false;
+						}
 					}
+				}
 			}	
 			else{//look for bull during bear
-				if(data.getPriceData()[i] > data.getPriceData()[i - 1])// is this a potential rally start?
+				if(data.getPriceData()[i] > data.getPriceData()[i - 1]) {
 					for(int j = i + 4;j < i + 10;++j){
-						if(isFollowThrough(data,j)) 
+						if(isFollowThrough(data,j)) {
 							if(rallySucceeds(data,i)){
 								bull = true;
 								System.out.println("Bull starts on day " + i);
 							}
+						}
 					}
+				}
 			}
 			bullArray[i] = bull;    //set each day to bull or bear
 		}
 		System.out.print("This is a ");
-		if (bull) System.out.print("bull market. "); else System.out.print("bear market.  No trading.");
+		if (bull) {
+			System.out.print("bull market. ");
+		} else {
+			System.out.print("bear market.  No trading.");
+		}
 		return bull;//whatever the 'bull' variable was set to last will be the value returned by this
 		// method, which will be what the program operates on from here on out.
 	}
 
 	private boolean isFollowThrough(Data data, int index){
-		return(data.getPriceData()[index] >= data.getPriceData()[index - 1] * 1.02 &&
-				data.getVolumeData()[index] >= data.getVolumeData()[index -1]*1.1);
+		return data.getPriceData()[index] >= data.getPriceData()[index - 1] * 1.02 &&
+				data.getVolumeData()[index] >= data.getVolumeData()[index -1]*1.1;
 	}
 
 	private boolean rallySucceeds(Data data, int index){
 		int testLength = 20; //we'll say the bull pattern has to last at least a month
-		for(int i = index;i < index + testLength;++i)
-			if(data.getPriceLowsData()[i] < data.getPriceLowsData()[index])
+		for(int i = index;i < index + testLength;++i) {
+			if(data.getPriceLowsData()[i] < data.getPriceLowsData()[index]) {
 				return false;
+			}
+		}
 		return true;
 	}
 
 	private boolean isBearLoss(Data data, int index, int bearTime, float bearLoss){//look back in time for bear conditions
 		if(data.getPriceData()[index] <= data.getPriceData()[index - bearTime] * bearLoss){//is there a bear-size drop?
 			for(int i = index - bearTime;i < index;++i){
-				if(data.getPriceData()[i] > data.getPriceData()[index - bearTime])// if so, is it below the starting point the whole time?
+				if(data.getPriceData()[i] > data.getPriceData()[index - bearTime]) {
 					return false;
+				}
 			}
 			return true;
 		}
@@ -130,8 +141,9 @@ public class DataAnalyzer {
 	}
 
 	public void baseBlocker(int start, int stop,boolean[] baseBlocks){
-		for(int i = start;i < stop;++i)
+		for(int i = start;i < stop;++i) {
 			baseBlocks[i] = true;
+		}
 	}
 
 	private void dispatcher(float[] prices,double[] volumes){
@@ -140,15 +152,17 @@ public class DataAnalyzer {
 		while (index < prices.length){//loop till end of the whole set
 			if(!baseBlocks[index]){//base here?
 				begin = index; // if not, start here
-				while(index < prices.length && !baseBlocks[index]) //fast forward until the end of the empty space
+				while(index < prices.length && !baseBlocks[index]) {
 					++index;
+				}
 				end = --index;// and mark it, then call the find methods
-				if(CupWithHandle.find(prices,volumes,this,begin,end,baseBlocks,list,bullArray,SandPPrices))
-						index = 0;//start over if base is found
-				else if(DoubleBottom.find(prices, volumes,this,begin,end,baseBlocks,list,bullArray,SandPPrices))
-						index = 0;
-				else if(FlagPole.find(prices, volumes, this, begin, end, baseBlocks, list,bullArray,SandPPrices))
-						index = 0;
+				if(CupWithHandle.find(prices,volumes,this,begin,end,baseBlocks,list,bullArray,SandPPrices)) {
+					index = 0;//start over if base is found
+				} else if(DoubleBottom.find(prices, volumes,this,begin,end,baseBlocks,list,bullArray,SandPPrices)) {
+					index = 0;
+				} else if(FlagPole.find(prices, volumes, this, begin, end, baseBlocks, list,bullArray,SandPPrices)) {
+					index = 0;
+				}
 			}
 			++index;
 		}
@@ -158,11 +172,12 @@ public class DataAnalyzer {
 		ArrayList<Base> arraylist = new ArrayList<Base>(list);
 		int start = 0;
 		int count = 0;
-		for(int i = (prices.length-1);i > 0;--i)//find start of current bull (if we're here, it's bull)
+		for(int i = prices.length-1;i > 0;--i) {
 			if(!bullArray[i]){
 				start = ++i;
 				break;
 			}
+		}
 		for(int i = 0;i < arraylist.size();++i){// loop through bases
 			boolean restart = false;
 			if(arraylist.get(i).getEnd() >= start){//see if current base ended after start
@@ -173,22 +188,26 @@ public class DataAnalyzer {
 						restart = true;
 					}
 				}
-				if(!restart)
+				if(!restart) {
 					if(i > 0){ // count this base if it shows a 20% rise from the previous base
-						if(arraylist.get(i).getMax() >= arraylist.get(i - 1).getMax() * 1.2)
+						if(arraylist.get(i).getMax() >= arraylist.get(i - 1).getMax() * 1.2) {
 							++count;
-					}
-					else// or if it's the first base recorded, just count it
+						}
+					} else {
 						++count;
+					}
+				}
 			}
 		}
 		return count;
 	}
 
 	private boolean isBuyable(Base base, float[] prices){
-		if((prices.length -1) - base.getEnd() <= 15)//forget it if it's been more than 3 weeks
+		if(prices.length -1 - base.getEnd() <= 15) {
 			return prices[prices.length - 1] <= prices[base.getEnd()] * 1.05;
-		else return false;
+		} else {
+			return false;
+		}
 	}
 
 	public LinkedList<String> getPicks(){

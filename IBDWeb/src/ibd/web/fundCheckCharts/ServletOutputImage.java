@@ -26,56 +26,56 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ServletOutputImage extends HttpServlet {
 
-    /**
-     * Creates a new servlet demo.
-     */
-    public ServletOutputImage() {
-        // nothing required
-    }
+	/**
+	 * Creates a new servlet demo.
+	 */
+	public ServletOutputImage() {
+		// nothing required
+	}
 
-    /**
-     * Processes a POST request.
-     * <P>
-     * The chart.html page contains a form for generating the first request, after that
-     * the HTML returned by this servlet contains the same form for generating subsequent
-     * requests.
-     *
-     * @param request  the request.
-     * @param response  the response.
-     * @throws ServletException if there is a servlet related problem.
-     * @throws IOException if there is an I/O problem.
-     */
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+	/**
+	 * Processes a POST request.
+	 * <P>
+	 * The chart.html page contains a form for generating the first request, after that
+	 * the HTML returned by this servlet contains the same form for generating subsequent
+	 * requests.
+	 *
+	 * @param request  the request.
+	 * @param response  the response.
+	 * @throws ServletException if there is a servlet related problem.
+	 * @throws IOException if there is an I/O problem.
+	 */
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-        PrintWriter out = new PrintWriter(response.getWriter());
-        try {
+		PrintWriter out = new PrintWriter(response.getWriter());
+		try {
 
-	    String fund = request.getParameter("fund");
+			String fund = request.getParameter("fund");
 
-	    out.println("<img alt=\"Can't find fund "+fund+"\" src=\"fundChartGenerator?time=5&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=10&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=15&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=20&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=25&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
-	    out.println("<img alt=\" \" src=\"fundChartGenerator?time=30&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+			out.println("<img alt=\"Can't find fund "+fund+"\" src=\"fundChartGenerator?time=5&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+			out.println("<img alt=\" \" src=\"fundChartGenerator?time=10&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+			out.println("<img alt=\" \" src=\"fundChartGenerator?time=15&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+			out.println("<img alt=\" \" src=\"fundChartGenerator?time=20&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+			out.println("<img alt=\" \" src=\"fundChartGenerator?time=25&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
+			out.println("<img alt=\" \" src=\"fundChartGenerator?time=30&fund="+fund+"\" border=\"1\" width=\"200\" height=\"200\"/>");
 
-	    out.flush();
-            out.close();
-        }
-        catch (Exception e) {
-        	ibd.web.Constants.Constants.logger.info("Exception in ServletOutputImage.java"+e);
-        }
-        finally {
-            out.close();
-        }
-    }
-    
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    	doGet(request,response);
-    }
+			out.flush();
+			out.close();
+		}
+		catch (Exception e) {
+			ibd.web.Constants.Constants.logger.info("Exception in ServletOutputImage.java"+e);
+		}
+		finally {
+			out.close();
+		}
+	}
+
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request,response);
+	}
 }
 

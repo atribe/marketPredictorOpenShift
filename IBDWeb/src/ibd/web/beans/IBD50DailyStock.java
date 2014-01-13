@@ -1,6 +1,5 @@
 package ibd.web.beans;
 
-import java.util.Date;
 
 public class IBD50DailyStock {
 	private String name;
@@ -10,7 +9,7 @@ public class IBD50DailyStock {
 	private Float Low;
 	private Float Close;
 	private Float Volume;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -53,5 +52,5 @@ public class IBD50DailyStock {
 	public void setVolume(Float volume) {
 		Volume = volume;
 	}
-	
+
 }

@@ -16,7 +16,7 @@ import java.sql.Statement;
  */
 public class GenericDBSuperclass {
 
-	
+
 	/**
 	 * Establishes a connection to the database
 	 * @return connection
@@ -112,7 +112,7 @@ public class GenericDBSuperclass {
 	protected static synchronized boolean createTable(String createTableSQL, Connection connection, String tableName){
 		int status=0;
 		Statement createStatement = null;
-		
+
 		try {
 			createStatement = connection.createStatement();
 			status = createStatement.executeUpdate(createTableSQL);
@@ -152,7 +152,7 @@ public class GenericDBSuperclass {
 		boolean empty = true;
 		Statement queryStatement = null;
 		ResultSet rs = null;
-		
+
 		int i = 0;
 
 		try {
@@ -162,8 +162,9 @@ public class GenericDBSuperclass {
 			{
 				empty = false;
 				i++;
-				if(i>2)
+				if(i>2) {
 					break;
+				}
 			}
 		} catch (SQLException ex){
 			// handle any errors
@@ -191,10 +192,11 @@ public class GenericDBSuperclass {
 				queryStatement = null;
 			}
 		}
-		if(empty)
+		if(empty) {
 			System.out.println("          Table '" + tableName +"' is empty.");
-		else
+		} else {
 			System.out.println("          Table '" + tableName +"' has some stuff in it.");
+		}
 		return empty;
 	}
 

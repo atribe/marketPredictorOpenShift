@@ -45,7 +45,7 @@ public class DataRetriever{
 	private String longCookie;
 
 	private int counter;
-	
+
 	/**
 	 * indicates whether queried markets are favorable for buying
 	 */
@@ -63,9 +63,9 @@ public class DataRetriever{
 	public static final int THELENGTH = 1;
 	static{
 		GregorianCalendar gc = new GregorianCalendar();
-		MONTH = gc.get(GregorianCalendar.MONTH);
-		DAY = gc.get(GregorianCalendar.DAY_OF_MONTH);
-		YEAR = gc.get(GregorianCalendar.YEAR);
+		MONTH = gc.get(Calendar.MONTH);
+		DAY = gc.get(Calendar.DAY_OF_MONTH);
+		YEAR = gc.get(Calendar.YEAR);
 	}
 	/*
 	 * Good Java programming dictates that main be tiny, instantiating
@@ -91,15 +91,17 @@ public class DataRetriever{
 		top100 = new String[100];
 		setTop100Catcher();//retrieve top 100 and store them in top100
 		for(int i = 0;i < THELENGTH;++i){//loop through and set all non-ideal stocks to null
-			if(!checkStock(top100[i]))
+			if(!checkStock(top100[i])) {
 				top100[i] = null;
-			else
+			}
+			else {
 				++successCount;//track how many are good
+			}
 		}
 		System.out.println(successCount + " passed and " + (THELENGTH - successCount) + " failed");
 		return successCount;
 	}
-	
+
 	/*
 	 * The primary engine for DataRetriever.  
 	 *   Then retrieve()
@@ -109,10 +111,11 @@ public class DataRetriever{
 	 * retrieved and saved in a MYSQL database.
 	 */
 	public Data retrieve(){
-			counter++;
-			if(top100[counter] != null)
-				return getData(top100[counter],252 * 5);
-			return null;		
+		counter++;
+		if(top100[counter] != null) {
+			return getData(top100[counter],252 * 5);
+		}
+		return null;		
 	}
 
 	/**
@@ -222,8 +225,9 @@ public class DataRetriever{
 		Map<String, List<String>> headers = HUC.getHeaderFields(); 
 		List<String> values = headers.get("Set-Cookie"); 
 		StringBuffer cookieValue = new StringBuffer(shortCookie); 
-		for (Iterator<String> iter = values.iterator(); iter.hasNext(); )
+		for (Iterator<String> iter = values.iterator(); iter.hasNext(); ) {
 			cookieValue.append(iter.next());
+		}
 		parseTop100(cookieValue.toString());
 	}
 
@@ -264,7 +268,7 @@ public class DataRetriever{
 	 */
 	private boolean checkStock(String tickSymbol) {
 		String ratingsURL = "http://www.investors.com/member/checkup/checkUp.asp?t="
-			+ tickSymbol + "&ss=YES&ac=IFT";//  This builds the URL for the site where each stocks IBD ratings are
+				+ tickSymbol + "&ss=YES&ac=IFT";//  This builds the URL for the site where each stocks IBD ratings are
 		int flag = 0;
 		StockParameters params = null;
 		while (flag < 20){
@@ -288,7 +292,7 @@ public class DataRetriever{
 				" " + params.INDrating + " " + params.ADrating);
 		if (params.EPSrating > 84 && params.PSrating > 79 && (params.SMRrating == 'A' ||
 				params.SMRrating == 'B') && params.INDrating == 'A' && (params.ADrating == 'A' || 
-						params.ADrating == 'B')){	
+				params.ADrating == 'B')){	
 			System.out.println("PASSED");
 			return true;
 		}
@@ -309,15 +313,19 @@ public class DataRetriever{
 	public static String urlContentToString(String url, String cookie) throws MalformedURLException, URISyntaxException, IOException{
 		URL ur = new URL(url);
 		HttpURLConnection HUC =(HttpURLConnection)ur.openConnection();
-		if (cookie.length() > 0)
+		if (cookie.length() > 0) {
 			HUC.setRequestProperty("Cookie",cookie);
+		}
 		DataInputStream is = new DataInputStream(HUC.getInputStream());
 		byte[] g = new byte[4096];//buffer array for incoming data
 		int f = 0;
 		StringBuffer theString = new StringBuffer("");
 		while (true) {     
 			f=is.read(g); 
-			if (f <= 0)  break;//read 4k worth of data into byte array
+			if (f <= 0)
+			{
+				break;//read 4k worth of data into byte array
+			}
 			String tS = new String(g);//convert that array into string
 			theString.append(tS);//add to growing String of html text
 		}
@@ -347,12 +355,13 @@ public class DataRetriever{
 		int b = str.indexOf("<",a);
 		String mc = str.substring(a,b);
 		long MC = Long.parseLong(mc.substring(0,mc.length() - 1));
-		if (mc.charAt(mc.length()) == 'K')
+		if (mc.charAt(mc.length()) == 'K') {
 			MC = MC * 1000;
-		else if (mc.charAt(mc.length()) == 'M')
+		} else if (mc.charAt(mc.length()) == 'M') {
 			MC = MC * 1000 * 1000;
-		else if(mc.charAt(mc.length()) == 'B')
+		} else if(mc.charAt(mc.length()) == 'B') {
 			MC = MC * 1000 * 1000 * 1000;
+		}
 		return MC;
 	}
 
@@ -483,11 +492,13 @@ public class DataRetriever{
 			int len = line.length();
 			int lineIndex = 0;
 			//count through the first 3 items; they are ignored
-			for(int count = 0;lineIndex < len && count < 3;++count)
+			for(int count = 0;lineIndex < len && count < 3;++count) {
 				lineIndex = line.indexOf(',',lineIndex) + 1;
+			}
 			int begin = lineIndex;
-			for(int count = 0;lineIndex < len && count < 3;++count)
+			for(int count = 0;lineIndex < len && count < 3;++count) {
 				lineIndex = line.indexOf(',',lineIndex) + 1;
+			}
 			if(lineIndex >= len){
 				System.err.println("Error reading data from Yahoo");
 				System.exit(1);
@@ -520,8 +531,8 @@ public class DataRetriever{
 		month = calendar.get(Calendar.MONTH);
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 		year = calendar.get(Calendar.YEAR);
-		startMonth = month - (int)((days%365)/30.41667);
-		startDay = day - (int)((days%365)%30.41667);
+		startMonth = month - (int)(days%365/30.41667);
+		startDay = day - (int)(days%365%30.41667);
 		startYear = year - days/365;
 		if(startMonth < 0){
 			startMonth += 12;
@@ -537,8 +548,8 @@ public class DataRetriever{
 
 	public static String buildYahooUrl(String market,int startMonth,int startDay,int startYear ){
 		return "http://ichart.finance.yahoo.com/table.csv?s=" + market +
-		"&d=" + MONTH + "&e=" + DAY + "&f=" + YEAR + "&g=d&a=" + startMonth + "&b=" + startDay +
-		"&c=" + startYear + "&ignore=.csv";
+				"&d=" + MONTH + "&e=" + DAY + "&f=" + YEAR + "&g=d&a=" + startMonth + "&b=" + startDay +
+				"&c=" + startYear + "&ignore=.csv";
 	}
 
 	/**
@@ -548,16 +559,17 @@ public class DataRetriever{
 	 * @return
 	 */
 	private String assign(String symbol){
-		if(symbol.length() == 4)
+		if(symbol.length() == 4) {
 			return "^IXIC";
+		}
 		return "^GSPC";
 	}
-	
+
 	public boolean moreToRetrieve(){
-		
+
 		return counter < THELENGTH;
 	}
-	
+
 	public int arrayLength(){
 		return THELENGTH;
 	}

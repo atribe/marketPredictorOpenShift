@@ -29,82 +29,85 @@ import org.jfree.chart.JFreeChart;
  * This class is described in the JFreeChart Developer Guide.
  */
 public class ServletFundChartGenerator extends HttpServlet {
-    private String fund;
+	private String fund;
 
-//    public static JFreeChart chart5=null;
-//    public static JFreeChart chart10=null;
-    /**
-     * Default constructor.
-     */
-    public ServletFundChartGenerator() {
-	// nothing required
-    }
+	//    public static JFreeChart chart5=null;
+	//    public static JFreeChart chart10=null;
+	/**
+	 * Default constructor.
+	 */
+	public ServletFundChartGenerator() {
+		// nothing required
+	}
 
-    /**
-     * Process a GET request.
-     *
-     * @param request  the request.
-     * @param response  the response.
-     * @throws ServletException if there is a servlet related problem.
-     * @throws IOException if there is an I/O problem.
-     */
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
+	/**
+	 * Process a GET request.
+	 *
+	 * @param request  the request.
+	 * @param response  the response.
+	 * @throws ServletException if there is a servlet related problem.
+	 * @throws IOException if there is an I/O problem.
+	 */
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-	String timeString = request.getParameter("time");
-	int time = 10;
-	if(timeString==null || timeString.equalsIgnoreCase(""))
-		time = 10; // by default duration of 10 years
-	else
-		time = Integer.valueOf(timeString);
-	fund = request.getParameter("fund");
-	if(fund==null || fund.equalsIgnoreCase(""))
-		fund = "nflx"; // by default nflx
-	
-	ibd.web.Constants.Constants.logger.info("Here is the FUND in ServletFundChartGenerator.java"+fund);
-//	System.out.println("HERE IS THE FUND! "+fund);
-	Vector gains = GetFundData.getData(fund);
-	//System.out.println("HERE ARE THE GAINS!!!!!!!!!!!!!!!!");
-	ibd.web.Constants.Constants.logger.info("Here are the GAINS in ServletFundChartGenerator.java"+gains);
-	//System.out.println(gains);
+		String timeString = request.getParameter("time");
+		int time = 10;
+		if(timeString==null || timeString.equalsIgnoreCase("")) {
+			time = 10; // by default duration of 10 years
+		} else {
+			time = Integer.valueOf(timeString);
+		}
+		fund = request.getParameter("fund");
+		if(fund==null || fund.equalsIgnoreCase(""))
+		{
+			fund = "nflx"; // by default nflx
+		}
 
-	JFreeChart chart = null;
+		ibd.web.Constants.Constants.logger.info("Here is the FUND in ServletFundChartGenerator.java"+fund);
+		//	System.out.println("HERE IS THE FUND! "+fund);
+		Vector gains = GetFundData.getData(fund);
+		//System.out.println("HERE ARE THE GAINS!!!!!!!!!!!!!!!!");
+		ibd.web.Constants.Constants.logger.info("Here are the GAINS in ServletFundChartGenerator.java"+gains);
+		//System.out.println(gains);
 
-	OutputStream out = null;
-	try {
-	    chart = ReturnFundChart.returnChart(time, gains, fund);
+		JFreeChart chart = null;
 
-	    if (chart != null) {
-			out = response.getOutputStream();
-			response.setContentType("image/png");
-			ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
-			out.flush();
-			out.close();
-	    } 
-	    
-	} catch (Exception ex) {
-	    System.err.println(ex.toString());
-	    ibd.web.Constants.Constants.logger.info("Exception in ServletFundChartGenerator.java"+ex);
-	    //Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
-	    request.setAttribute("error",ex);
-	    request.setAttribute("fund",fund);
-	    RequestDispatcher rd = request.getRequestDispatcher("/error.do");
-	    rd.forward(request, response);
-	} 
-    }
-    
-    /**
-     * Process a POST request.
-     *
-     * @param request  the request.
-     * @param response  the response.
-     * @throws ServletException if there is a servlet related problem.
-     * @throws IOException if there is an I/O problem.
-     */
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-    	doGet(request,response);
-    }
+		OutputStream out = null;
+		try {
+			chart = ReturnFundChart.returnChart(time, gains, fund);
+
+			if (chart != null) {
+				out = response.getOutputStream();
+				response.setContentType("image/png");
+				ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
+				out.flush();
+				out.close();
+			} 
+
+		} catch (Exception ex) {
+			System.err.println(ex.toString());
+			ibd.web.Constants.Constants.logger.info("Exception in ServletFundChartGenerator.java"+ex);
+			//Logger.getLogger(GetFundData.class.getName()).log(Level.SEVERE, null, ex);
+			request.setAttribute("error",ex);
+			request.setAttribute("fund",fund);
+			RequestDispatcher rd = request.getRequestDispatcher("/error.do");
+			rd.forward(request, response);
+		} 
+	}
+
+	/**
+	 * Process a POST request.
+	 *
+	 * @param request  the request.
+	 * @param response  the response.
+	 * @throws ServletException if there is a servlet related problem.
+	 * @throws IOException if there is an I/O problem.
+	 */
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request,response);
+	}
 }

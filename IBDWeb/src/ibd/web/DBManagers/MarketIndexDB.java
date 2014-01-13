@@ -19,10 +19,10 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		System.out.println("");
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println("Starting Market Index Database Initialization");
-		
+
 		//Iteration tracking variable for System.out.printing and debugging
 		int interationCounter = 0;
-		
+
 		//Loop for each Price Volume DBs for each index
 		for(String index:indexList) {
 			interationCounter++;
@@ -117,21 +117,21 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		//initializing variables
 		//java.sql.Date newestDateInDB=null;
 		LocalDate newestDate=null;
-		
+
 		String getNewestDateInDBQuery = "SELECT Date FROM `" + index + "` "
 				+ "ORDER BY Date "
 				+ "DESC LIMIT 1";
 		PreparedStatement ps=null;
 		ResultSet rs = null;
-		
+
 		try {
 			// Querying the database for the newest date
 			ps = connection.prepareStatement(getNewestDateInDBQuery);
 			rs = ps.executeQuery();
-			
+
 			if (!rs.next() ) {
-			    System.out.println("no data");
-			    //java.util.Calendar cal = java.util.Calendar.getInstance(); 
+				System.out.println("no data");
+				//java.util.Calendar cal = java.util.Calendar.getInstance(); 
 				//newestDateInDB = new Date(cal.getTimeInMillis());
 				newestDate = new LocalDate();
 			} else {
@@ -141,7 +141,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -150,17 +150,19 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		} finally {
 			//This if statement doesn't make much sense
 			try {
-				if(rs!=null)
+				if(rs!=null) {
 					rs.close();
-				if(ps!=null)
+				}
+				if(ps!=null) {
 					ps.close();
+				}
 			} catch (SQLException sqlEx) { } // ignore
 		}
 		//calls the getNumberOfDaysFromNow method from market retriever and immediately returns
 		//how many behind the database is from the current date
 		//System.out.println("          The newest date in the database is " + newestDateInDB.toString() + ".");
 		System.out.println("          The newest date in the database is " + newestDate.toString() + ".");
-		
+
 		int DBDaysTilNow = MarketRetriever.getNumberOfDaysFromNow(newestDate);
 		//System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
 		System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
@@ -227,14 +229,14 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		int value = 0;
 		String query = "SELECT id FROM `" + tableName + "`"
 				+ " WHERE Date=?";
-		
+
 		try {
 			PreparedStatement selectStatement = connection.prepareStatement(query);
 			selectStatement.setString(1, Date.toString());
 			ResultSet rs = selectStatement.executeQuery();
-			if(rs.next())
+			if(rs.next()) {
 				value = rs.getInt("id");
-			else {
+			} else {
 				System.out.println("     The date of " + Date.toString() + " not found in the database.");
 				System.out.println("          Let me check the preceeding couple of days in case you chose a weekend or holiday.");
 				for(int i = 1;i<7;i++)

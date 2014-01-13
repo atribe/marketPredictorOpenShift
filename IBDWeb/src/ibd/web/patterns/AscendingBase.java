@@ -24,24 +24,29 @@ public class AscendingBase extends Base {
 				int j,day1;
 				day1 = i;
 				for(j = i;j < i + PATTERNMAXLENGTH;++j){
-					if (j < end)   // make sure we don't go past the end of this section
+					if (j < end) {
 						trend = getTrend(prices,j,10);
-					if(trend < 0)//ensure broad trend never turns down
+					}
+					if(trend < 0) {
 						break;
+					}
 					if (getTrend(prices,j,3) < 0){//count narrow downtrends 
 						min = findLowDay(j - 4,j + 4,prices);
 						max = findHighDay(j-6,j,prices);
-						if(min < max * MAXDIP)//if it dips too much, break out of this analysis loop
+						if(min < max * MAXDIP) {
 							break;
+						}
 						if(min <= max * MINDIP){// if it dips enough then count it
-							if(++dips == 3)
+							if(++dips == 3) {
 								break;
-							while (j < end && getTrend(prices,j,3) < 0)// fast forward until we're uptrending again
+							}
+							while (j < end && getTrend(prices,j,3) < 0) {
 								++j;
+							}
 						}
 					}
 				}
-				if(dips == 3)
+				if(dips == 3) {
 					for(int k = j;k < j + 10;++k){//wait 10 days for market to strengthen
 						if(k < end && !marketIsWeak(begin, SandP)){
 							Base ab = new AscendingBase(day1,k,day1);
@@ -50,6 +55,7 @@ public class AscendingBase extends Base {
 							return true;
 						}
 					}
+				}
 			}	
 		}
 		return false;
@@ -57,6 +63,6 @@ public class AscendingBase extends Base {
 
 	public static boolean marketIsWeak(int begin,  float[] SandP){
 		return getTrend(SandP,begin,20) < 0;// determine trend with 40 day window
-		
+
 	}
 }

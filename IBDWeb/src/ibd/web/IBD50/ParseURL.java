@@ -15,7 +15,7 @@ public class ParseURL {
 		new ParseURL().marketCap("AWAY");
 		new ParseURL().earningAnnouncement("MRK");
 	}
-	
+
 	public String exchangeToTrade(String symbol){
 		String exchangeToTrade = "";
 		int counter = 1;
@@ -36,7 +36,7 @@ public class ParseURL {
 		}
 		return exchangeToTrade;
 	}
-	
+
 	public List<String> indexMembership(String symbol){
 		List<String> urlText = null;
 		int counter = 1;
@@ -48,12 +48,12 @@ public class ParseURL {
 				List<String> urls = new ArrayList<String>();
 				urlText = new ArrayList<String>();
 				for (Element link : links) {					
-				  String linkHref = link.attr("href");
-				  String linkText = link.text();
-				  //System.out.println(linkHref);
-				  //System.out.println(linkText);
-				  urls.add(linkHref);
-				  urlText.add(linkText);
+					String linkHref = link.attr("href");
+					String linkText = link.text();
+					//System.out.println(linkHref);
+					//System.out.println(linkText);
+					urls.add(linkHref);
+					urlText.add(linkText);
 				}
 				break;
 			}catch(Exception e){
@@ -63,7 +63,7 @@ public class ParseURL {
 		}
 		return urlText;
 	}
-	
+
 	public Long marketCap(String symbol){
 		Long amountMarketCap = null;
 		int counter = 1;
@@ -90,7 +90,7 @@ public class ParseURL {
 		}
 		return amountMarketCap;
 	}
-	
+
 	public List<String> earningAnnouncement(String symbol){
 		List<String> dates = null;
 		int counter = 1;

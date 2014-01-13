@@ -42,5 +42,5 @@ public class StockData {
 	public void setVolume(double volume) {
 		this.volume = volume;
 	}
-	
+
 }

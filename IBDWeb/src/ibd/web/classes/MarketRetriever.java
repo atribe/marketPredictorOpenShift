@@ -39,7 +39,7 @@ public class MarketRetriever {
 	 * @param var
 	 * @throws IOException
 	 */
-	
+
 	public static void main(Variables var) throws IOException{
 
 		Connection connection = MarketDB.getConnection();
@@ -76,7 +76,7 @@ public class MarketRetriever {
 		} while (loop==true&numDays>0);
 		//	}end of for loop
 	}
-		
+
 	/**
 	 * Overseeing method for retrieving stock-specific price and volume data,
 	 * getYahooStockURL() is first called to assemble the appropriate URL, then
@@ -93,7 +93,7 @@ public class MarketRetriever {
 		int flag = 0;
 		while (flag < 20) {
 			try {
-				
+
 				String URL = getYahooURL(symbol, daysAgo);//gets URL for S&P500,dow,and nasdaq data
 				//System.out.println(URL);
 				data = dataParser(URL);// extract price and volume data for URL, # of yahoo days
@@ -245,7 +245,7 @@ public class MarketRetriever {
 				GregorianCalendar cal = new GregorianCalendar();
 				cal.setTime(date);
 				cal.add(Calendar.DAY_OF_MONTH, -1);
-				java.util.Date utilDate = (cal.getTime());
+				java.util.Date utilDate = cal.getTime();
 				date = new java.sql.Date(utilDate.getTime());//convert to sql.date
 			}
 		} catch (SQLException e) {
@@ -261,10 +261,10 @@ public class MarketRetriever {
 		}
 		return numDays;
 	}
-	
+
 	public static int getNumberOfDaysFromNow(LocalDate date){
 		LocalDate today = new LocalDate(); //Variable with today's date
-		
+
 		return Days.daysBetween(date, today).getDays();
 		// TODO remove this old date code when Joda Time takes over
 		//long diffTime = today.getTime() - date.getTime(); //difference in milliseconds between today and the date supplied to this method

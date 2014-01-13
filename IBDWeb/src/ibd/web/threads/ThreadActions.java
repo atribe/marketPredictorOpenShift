@@ -4,13 +4,10 @@
  */
 package ibd.web.threads;
 
-import ibd.web.classes.SendFromGmail;
-import ibd.web.classes.VarDow;
-import ibd.web.classes.VarNasdaq;
-import ibd.web.classes.VarSP500;
 import ibd.web.model.MarketIndicesModel;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,20 +60,20 @@ public class ThreadActions {
 			hour = "01:00";
 		}
 		IBDCalendar tomorrow = new IBDCalendar();
-		tomorrow.add(IBDCalendar.DAY_OF_MONTH, howManyDays);
+		tomorrow.add(Calendar.DAY_OF_MONTH, howManyDays);
 		IBDCalendar nextDay = new IBDCalendar(tomorrow.toString(IBDCalendar.DATE) + " 01:00", IBDCalendar.formats[50]);
 		return nextDay;
 	}
 
 	public static IBDCalendar getNextHourRunTime(int howManyHours) {
 		IBDCalendar a = new IBDCalendar();
-		a.add(IBDCalendar.HOUR_OF_DAY, howManyHours);
+		a.add(Calendar.HOUR_OF_DAY, howManyHours);
 		return a;
 	}
 
 	public static IBDCalendar getNextMinuteRunTime(int howManyMinutes) {
 		IBDCalendar a = new IBDCalendar();
-		a.add(IBDCalendar.MINUTE, howManyMinutes);
+		a.add(Calendar.MINUTE, howManyMinutes);
 		return a;
 	}
 

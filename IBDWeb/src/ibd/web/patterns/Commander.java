@@ -2,7 +2,6 @@ package ibd.web.patterns;
 
 
 import java.sql.SQLException;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 //need to: 
@@ -23,21 +22,25 @@ public class Commander {
 		marketData = dr.getMarketData("^GSPC",3,1,2003);// get a data object for the S&P
 		dr.initialize();//evaluate the basic parameters of the stocks in the top 100
 		da.initialize(marketData);//initialize the DataAnalyzer object
-		if(da.bullOrBear(marketData))//assess climate
-			if(da.checkDDays(marketData))// check distribution days
+		if(da.bullOrBear(marketData)) {
+			if(da.checkDDays(marketData)) {
 				while(dr.moreToRetrieve()){
 					data = dr.retrieve();
-					if(data != null)
+					if(data != null) {
 						da.analyze(data);
+					}
 				}
-				picks = da.getPicks();
-				if(picks != null){
-					Iterator<String> iter = picks.iterator();
-					System.out.println("Buy recommendations:");
-					while(iter.hasNext())
-						System.out.println(iter.next());
-				}
-				else
-					System.out.println("No buy recommendations");	
+			}
+		}
+		picks = da.getPicks();
+		if(picks != null){
+			Iterator<String> iter = picks.iterator();
+			System.out.println("Buy recommendations:");
+			while(iter.hasNext()) {
+				System.out.println(iter.next());
+			}
+		} else {
+			System.out.println("No buy recommendations");
+		}	
 	}
 }

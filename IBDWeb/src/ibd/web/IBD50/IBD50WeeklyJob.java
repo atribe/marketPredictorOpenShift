@@ -12,7 +12,7 @@ public class IBD50WeeklyJob extends TimerTask{
 	public void run() {
 		ibd.web.Constants.Constants.logger.info("Inside IBD50WeeklyJob: Starting downloading file from Server on: "+new Date().toString());
 		DownloadAuthenticatedFile.main(LoadProperties.serverPath);
-		
+
 		try {
 			ibd.web.Constants.Constants.logger.info("Inside IBD50WeeklyJob: Parsing the downloaded Excel File named as: "+LoadProperties.serverPath+ibd.web.Constants.Constants.fileName);
 			ParseExcel.main(LoadProperties.serverPath+ibd.web.Constants.Constants.fileName);

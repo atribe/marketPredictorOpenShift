@@ -7,8 +7,8 @@
  */
 package ibd.web.classes;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Data {
 	//Number of rows
@@ -48,7 +48,7 @@ public class Data {
 	{
 		//Getting the number of rows in the data set
 		setRowCount(pricesClose.size());
-		
+
 		//these are the instance variables of the Data class.  arrays are being initialized and subsequently populated
 		priceDataClose = new float[pricesClose.size()];
 		priceDataHigh = new float[pricesHigh.size()];
@@ -108,7 +108,7 @@ public class Data {
 
 		for (int i=0;i<priceCV50.length;i++){
 			priceCV50AVGpDay = priceCV50AVGpDay + priceCV50[i];
-			volCV50AVGpDay = volCV50AVGpDay + (double) volumeCV50[i];
+			volCV50AVGpDay = volCV50AVGpDay + volumeCV50[i];
 			//	    System.out.println(volumeAVG50[i]);
 		}
 		priceCV50AVGpDay = priceCV50AVGpDay/priceCV50.length;

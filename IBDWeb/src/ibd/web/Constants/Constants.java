@@ -1,6 +1,5 @@
 package ibd.web.Constants;
 
-import ibd.web.classes.IBD50DataRetriever;
 import ibd.web.classes.Output;
 
 import java.util.Date;

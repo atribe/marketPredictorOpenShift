@@ -1,11 +1,6 @@
 package ibd.web.Resource;
 
-import ibd.web.IBD50.IBD50WeeklyJob;
-import ibd.web.IBD50.ServerStartupIBD50Job;
 import ibd.web.threads.ApplicationThread;
-
-import java.util.Calendar;
-import java.util.Timer;
 
 public class ResourceInitializer {
 	/**
@@ -43,17 +38,17 @@ public class ResourceInitializer {
 		      1000 * 60 * 60 * 24 * 7
 		    );*/
 		}
-		    /**
-		     * @author Shakeel Shahzad
-		     * @description This is important to execute this on server start-up so when our application
-		     * is deployed, it could first delete all the tables and create new ones so that Daily Job couldn't be interrupted
-		     * because of no databases in Database (As weekly job drops and creates new Tables in Database)
-		     */
-		    /*ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Going to start ServerStartupIBD50Job");
+		/**
+		 * @author Shakeel Shahzad
+		 * @description This is important to execute this on server start-up so when our application
+		 * is deployed, it could first delete all the tables and create new ones so that Daily Job couldn't be interrupted
+		 * because of no databases in Database (As weekly job drops and creates new Tables in Database)
+		 */
+		/*ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Going to start ServerStartupIBD50Job");
 		    ServerStartupIBD50Job.serverStartupIBD50Job();
 		    ibd.web.Constants.Constants.logger.info("Inside Resource Initializer: Ended ServerStartupIBD50Job");*/
 		if(!ApplicationThread._isRunning){
-		    	ApplicationThread.startThread();
+			ApplicationThread.startThread();
 		}
 	}
 }

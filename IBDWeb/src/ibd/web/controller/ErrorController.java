@@ -14,6 +14,6 @@ public class ErrorController {
 	 */
 	@RequestMapping(method = {RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView getIndex() {
-        return new ModelAndView("error");
+		return new ModelAndView("error");
 	}
 }

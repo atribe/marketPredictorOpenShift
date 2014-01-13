@@ -27,7 +27,7 @@ public class ShowData50 {
 	public ModelAndView getIndex(HttpServletRequest request, HttpServletResponse response) {
 		if(!ibd.web.Constants.Constants.jobRunning){
 			ibd.web.Constants.Constants.logger.info("Showing Data for IBD50.");
-			String selectedDate=(String)request.getParameter("allDates");
+			String selectedDate=request.getParameter("allDates");
 			System.out.println(selectedDate);
 			Map<String, Object> model = new HashMap<String, Object>();
 			List<Data50> data50List = null;
@@ -39,30 +39,30 @@ public class ShowData50 {
 				currentDate = new IBD50DataRetriever().getTableName();
 				data50List = new IBD50DataRetriever().getData50();
 			}
-	        model.put("data50List", data50List);
-	        model.put("showDate", currentDate);
-	        List<String> allTables = new IBD50DataRetriever().getAllTables();
-	        List<String> realDates = new ArrayList<String>();
-	        for(int i=0;i<allTables.size();i++){
-	        	int index = new IBD50DataRetriever().getLargestDate(allTables);
-	        	realDates.add(allTables.get(index));
-	        	allTables.remove(index);
-	        }
-	        List<String> allDates = new ArrayList<String>();
-	        allDates.add(currentDate);
-	        for(String tableName: realDates){
-	        	if(!currentDate.equalsIgnoreCase(tableName)){
-	        		allDates.add(tableName);
-	        	}
-	        }
-	        model.put("allDates", allDates);
+			model.put("data50List", data50List);
+			model.put("showDate", currentDate);
+			List<String> allTables = new IBD50DataRetriever().getAllTables();
+			List<String> realDates = new ArrayList<String>();
+			for(int i=0;i<allTables.size();i++){
+				int index = new IBD50DataRetriever().getLargestDate(allTables);
+				realDates.add(allTables.get(index));
+				allTables.remove(index);
+			}
+			List<String> allDates = new ArrayList<String>();
+			allDates.add(currentDate);
+			for(String tableName: realDates){
+				if(!currentDate.equalsIgnoreCase(tableName)){
+					allDates.add(tableName);
+				}
+			}
+			model.put("allDates", allDates);
 			return new ModelAndView("data50","model",model);
 		}else{
 			return new ModelAndView("error","model",null);
 		}
- 
+
 	}
-	
+
 	private Integer returnMonth(String month){
 		if(month.contains("Jan")){
 			return 1;

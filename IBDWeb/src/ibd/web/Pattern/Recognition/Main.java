@@ -33,7 +33,7 @@ public class Main {
 			//loop through all 50 IBD50 stocks starting at rank 1
 			allStocks = object.getAllStocks("2013-04-05");
 			for(Data50 value:allStocks){
-				String url = object.getYahooURL(value.getSymbol(),(365+365));
+				String url = object.getYahooURL(value.getSymbol(),365+365);
 				Data stock = object.dataParser(url,value.getSymbol());
 				DataAnalyzer da = new DataAnalyzer();
 				Data marketData,data;
@@ -46,22 +46,23 @@ public class Main {
 							if(data != null)
 								da.analyze(data);
 						}*/
-					da.analyze(stock);
-						picks = da.getPicks();
-						if(picks != null){
-							Iterator<String> iter = picks.iterator();
-							System.out.println("Buy recommendations:");
-							while(iter.hasNext())
-								System.out.println(iter.next());
-						}
-						else
-							System.out.println("No buy recommendations");
+				da.analyze(stock);
+				picks = da.getPicks();
+				if(picks != null){
+					Iterator<String> iter = picks.iterator();
+					System.out.println("Buy recommendations:");
+					while(iter.hasNext()) {
+						System.out.println(iter.next());
+					}
+				} else {
+					System.out.println("No buy recommendations");
+				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	
+
 	private List<Data50> getAllStocks(String tableName){
 		List<Data50> allStocks = new ArrayList<Data50>();
 		Connection connection = null;
@@ -115,19 +116,22 @@ public class Main {
 			e.printStackTrace();
 		}finally{
 			try{
-				if(null != resultSet)
+				if(null != resultSet) {
 					resultSet.close();
-				if(null != pStmt)
+				}
+				if(null != pStmt) {
 					pStmt.close();
-				if(null != connection)
+				}
+				if(null != connection) {
 					connection.close();
+				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
 		}
 		return allStocks;
 	}
-	
+
 	private Data dataParser(String url,String symbol) throws MalformedURLException, IOException, URISyntaxException {
 		ArrayList<Float> priceListClose = new ArrayList<Float>();
 		ArrayList<Float> priceListHigh = new ArrayList<Float>();    //this is added
@@ -144,71 +148,71 @@ public class Main {
 		//the entries on the line are date, open, high, low, close, volume, adj close, misc
 		//gets a line of input if available, beginning of main loop
 		while ((line = in.readLine()) != null) {// && lineCount <= startDaysAgo) {
-		    int len = line.length();    //this is the number of character in the line
-		    int lineIndex = 0;  //this is the character index in the line
+			int len = line.length();    //this is the number of character in the line
+			int lineIndex = 0;  //this is the character index in the line
 
-		    String dateStr = "";
-		    // add characters to a string until the next ',' is encountered
-		    while (lineIndex < len && line.charAt(lineIndex) != ',') {
-			dateStr += line.charAt(lineIndex);
-			++lineIndex;
-		    }
+			String dateStr = "";
+			// add characters to a string until the next ',' is encountered
+			while (lineIndex < len && line.charAt(lineIndex) != ',') {
+				dateStr += line.charAt(lineIndex);
+				++lineIndex;
+			}
 
-		    ++lineIndex;//get off the current comma
-		    String priceOpenStr = "";
-		    // add characters to a string until the next ',' is encountered
-		    while (lineIndex < len && line.charAt(lineIndex) != ',') {
-			priceOpenStr += line.charAt(lineIndex);
-			++lineIndex;
-		    }
+			++lineIndex;//get off the current comma
+			String priceOpenStr = "";
+			// add characters to a string until the next ',' is encountered
+			while (lineIndex < len && line.charAt(lineIndex) != ',') {
+				priceOpenStr += line.charAt(lineIndex);
+				++lineIndex;
+			}
 
-		    ++lineIndex;//get off the current comma
-		    String priceHighStr = "";
-		    // add characters to a string until the next ',' is encountered
-		    while (lineIndex < len && line.charAt(lineIndex) != ',') {
-			priceHighStr += line.charAt(lineIndex);
-			++lineIndex;
-		    }
+			++lineIndex;//get off the current comma
+			String priceHighStr = "";
+			// add characters to a string until the next ',' is encountered
+			while (lineIndex < len && line.charAt(lineIndex) != ',') {
+				priceHighStr += line.charAt(lineIndex);
+				++lineIndex;
+			}
 
-		    ++lineIndex;//get off the current comma
-		    String priceLowStr = "";
-		    // add characters to a string until the next ',' is encountered
-		    while (lineIndex < len && line.charAt(lineIndex) != ',') {
-			priceLowStr += line.charAt(lineIndex);
-			++lineIndex;
-		    }
+			++lineIndex;//get off the current comma
+			String priceLowStr = "";
+			// add characters to a string until the next ',' is encountered
+			while (lineIndex < len && line.charAt(lineIndex) != ',') {
+				priceLowStr += line.charAt(lineIndex);
+				++lineIndex;
+			}
 
-		    ++lineIndex;//get off the current comma
-		    String priceCloseStr = "";
-		    // add characters to a string until the next ',' is encountered
-		    while (lineIndex < len && line.charAt(lineIndex) != ',') {
-			priceCloseStr += line.charAt(lineIndex);
-			++lineIndex;
-		    }
+			++lineIndex;//get off the current comma
+			String priceCloseStr = "";
+			// add characters to a string until the next ',' is encountered
+			while (lineIndex < len && line.charAt(lineIndex) != ',') {
+				priceCloseStr += line.charAt(lineIndex);
+				++lineIndex;
+			}
 
-		    ++lineIndex;// get off the current comma
-		    String volumeStr = "";
-		    while (lineIndex < len && line.charAt(lineIndex) != ',') {
-			volumeStr += line.charAt(lineIndex);//same for volumes(they are immediately after prices)
-			++lineIndex;
-		    }
+			++lineIndex;// get off the current comma
+			String volumeStr = "";
+			while (lineIndex < len && line.charAt(lineIndex) != ',') {
+				volumeStr += line.charAt(lineIndex);//same for volumes(they are immediately after prices)
+				++lineIndex;
+			}
 
-		    //add current values to arrayLists
-		    dateList.add(Date.valueOf(dateStr));
-		    priceListOpen.add(Float.parseFloat(priceOpenStr));//these have to be parsed because they come in as strings
-		    priceListHigh.add(Float.parseFloat(priceHighStr));
-		    priceListLow.add(Float.parseFloat(priceLowStr));
-		    priceListClose.add(Float.parseFloat(priceCloseStr));
-		    volumeList.add(Double.parseDouble(volumeStr));
-		    //++lineCount;
+			//add current values to arrayLists
+			dateList.add(Date.valueOf(dateStr));
+			priceListOpen.add(Float.parseFloat(priceOpenStr));//these have to be parsed because they come in as strings
+			priceListHigh.add(Float.parseFloat(priceHighStr));
+			priceListLow.add(Float.parseFloat(priceLowStr));
+			priceListClose.add(Float.parseFloat(priceCloseStr));
+			volumeList.add(Double.parseDouble(volumeStr));
+			//++lineCount;
 		}
 		////stores the data arrays in a Data object and returns it
 		return new Data(symbol,priceListClose,volumeList, priceListLow);
 		//return new Data(symbol, dateList, priceListOpen, priceListHigh, priceListLow, priceListClose, volumeList);
-	    }
-	
+	}
+
 	private String getYahooURL(String symbol, int daysAgo) {
-		
+
 		GregorianCalendar calendarStart = new GregorianCalendar();
 		calendarStart.add(Calendar.DAY_OF_MONTH, -daysAgo);//this subtracts the number of startDaysAgo from todays date.  The add command changes the calendar object
 		int d, e, f, a, b, c;
@@ -231,5 +235,5 @@ public class Main {
 				+ "&f=" + f + "&ignore=.csv";
 		System.out.println(str);
 		return str;
-	    }
+	}
 }

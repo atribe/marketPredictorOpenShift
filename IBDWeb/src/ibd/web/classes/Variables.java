@@ -12,13 +12,13 @@ import java.sql.Date;
  * @author Aaron
  */
 public class Variables {//constructor of the object
-//instance variables
+	//instance variables
 	public String fileName;//name of file to write results to
 	public int holiDays;//days to get data before gregStartDate so calculations can be made 35 or 50 days before first day of period
 	public String list;
 	public Date startDate;//the actual start date is holiDays before this date.  1950 jan 3 is first year in database except need 100 days after this
 	public Date endDate;
-//    these are churn dday params
+	//    these are churn dday params
 	public int dDayParam;//could this be changed based on, BV=10
 	public double churnVolRange;//volume must be within 3% of the previous days volume for churn dday, BV=.03
 	public double churnPriceRange;//priceClose must be less than 2% greater than previous day for churn day, BV=.02
@@ -26,7 +26,7 @@ public class Variables {//constructor of the object
 	public boolean churnAVG50On;//volume of churn day must be higher than 50 day average, BV=true
 	public boolean churnPriceTrend35On;//price must be on upswing over previous 35 days for a churn day, BV=false
 	public double churnPriceTrend35;//if churnPriceTrend35On=true, price must be on upswing over previous 35 days for a churn day, BV=.001
-//these are followthrough params
+	//these are followthrough params
 	public boolean volVolatilityOn;//if tru, calculates followthrough day based on volume volatility of the market, BV=false
 	public double volumeMult;//follow through day volume multiplier, BV=1.1
 	public double volMultTop;//if volVolatilityOn=true then this is the maximum value that volMult can be, BV=1.1

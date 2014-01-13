@@ -6,7 +6,7 @@ public class Base {
 	private int begin;
 	private int end;
 	private boolean buyable;
-	
+
 	public Base(int begin, int end, int min){
 		begin = this.begin;
 		end = this.end;
@@ -42,12 +42,12 @@ public class Base {
 	 * @param volumes  the array of volume data
 	 * @return  true if a flag pole pattern is detected
 	 */
-	
+
 	public static void find(float[] prices, double[] volumes){
 		System.out.println("Failed to hide superclass find method");
 		System.exit(1);
 	}
-	
+
 	/**
 	 * finds the value for the average volume for the last days number of days
 	 * @param index   the current day
@@ -57,22 +57,26 @@ public class Base {
 	 */
 	protected static double getAverage(int index, int days, float[] array){
 		double sum = 0;
-		if (index < days)
+		if (index < days) {
 			throw new IllegalArgumentException();
-		for(int i = index - days;i < index; ++i)
+		}
+		for(int i = index - days;i < index; ++i) {
 			sum += array[i];
+		}
 		return sum/days;
 	}
 
 	protected static double getVolAverage(int index, int days, double[] array){
 		double sum = 0;
-		if (index < days)
+		if (index < days) {
 			throw new IllegalArgumentException();
-		for(int i = index - days;i < index; ++i)
+		}
+		for(int i = index - days;i < index; ++i) {
 			sum += array[i];
+		}
 		return sum/days;
 	}
-	
+
 	/**
 	 *   Detects a gain of a given magnitude over a given time period and checks the deviation
 	 *   from a straight line slope. checkUpSlope() is given a single day, 'start', for which 
@@ -101,24 +105,29 @@ public class Base {
 	protected static int checkUpSlope(int start, int lengthMin, int lengthMax,
 			float prices[], double gainMin, double wanderValue, double gainMax){
 		int peakDay;
-		if(start < 0)
+		if(start < 0) {
 			start = 0;
+		}
 		boolean goOn = false;
-		for(int j = start + lengthMin;j <= start + lengthMax;++j)//loop through correct pole length boundaries
+		for(int j = start + lengthMin;j <= start + lengthMax;++j) {
 			if(j < prices.length && prices[j] >= prices[start] * gainMin){//is a potential flagpole present?
 				goOn = true;
 				break;
 			}
-		if(!goOn)
+		}
+		if(!goOn) {
 			return -1;
+		}
 		peakDay = findHighDay(start+lengthMin,start+lengthMax,prices);//get the high point
-		if(prices[peakDay] > prices[start] * gainMax) //is the slope too steep?
+		if(prices[peakDay] > prices[start] * gainMax) {
 			return -1;
-		if(checkRampDeviation(peakDay,start,prices,wanderValue,1))
+		}
+		if(checkRampDeviation(peakDay,start,prices,wanderValue,1)) {
 			return peakDay;
+		}
 		return -1;	
 	}
-	
+
 	/**
 	 *  this method operates in a manner completely analogous to checkDownSlope, and is useful
 	 *  for checking handles and other periods of correction.  
@@ -134,8 +143,9 @@ public class Base {
 	 */
 	protected static int checkDownSlope(int start,int lengthMin, int lengthMax, float[] prices,
 			double wanderValue, double lossMin, double lossMax){
-		if(start < 0)
+		if(start < 0) {
 			start = 0;
+		}
 		boolean goOn = false;
 
 		for(int j = start + lengthMin;j <= start + lengthMax;++j){
@@ -146,13 +156,15 @@ public class Base {
 		}
 		if(goOn){
 			int minDay = findLowDay(start+lengthMin,start+lengthMax,prices);
-			if(prices[minDay] >= prices[start] * lossMax)//too steep?
-				if(checkRampDeviation(minDay,start,prices,wanderValue,-1))
+			if(prices[minDay] >= prices[start] * lossMax) {
+				if(checkRampDeviation(minDay,start,prices,wanderValue,-1)) {
 					return minDay;
+				}
+			}
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * determines if a given fraction (daysLowVolume) of days during the given period 
 	 * (start - finish) have volume down by a given percentage (volDown)
@@ -170,14 +182,15 @@ public class Base {
 		double volAve = getVolAverage(start - DAYSVOLUME,DAYSVOLUME,volumes);
 		int totalDown = 0;
 		for(int j = start;j <= finish;++j){
-			if(volumes[j] <= volAve * VOLDOWN)
+			if(volumes[j] <= volAve * VOLDOWN) {
 				totalDown++;
+			}
 		}
 		int handleLength = finish - start;
 		int volDownThreshold = (int)(handleLength * DAYSLOWVOLUME);
 		return totalDown >= volDownThreshold;
 	}
-	
+
 	/**
 	 * Checks for a recovery to the required point within the required time frame.  The first
 	 * loop repeats until the pattern has taken too long to recover to the pivot point.  Inside
@@ -200,19 +213,20 @@ public class Base {
 	protected static int checkFinish(int waitForBuyPoint,int minDay,float[] prices,int peakDay){
 		int count = 0;
 		while(count < waitForBuyPoint){//allow time to get to buy point
-			if((minDay + count) >= prices.length){
+			if(minDay + count >= prices.length){
 				System.out.println("    pattern may be developing");
 				return -1;
 			}
-			if(prices[minDay + count] >= prices[peakDay]+0.1) 
-				return (minDay + count);
+			if(prices[minDay + count] >= prices[peakDay]+0.1) {
+				return minDay + count;
+			}
 			++count;
 			System.out.println("    Waiting for pivot...");
 		}
 		System.out.println("    pattern failed to recover after handle at day " + minDay);
 		return -1;
 	}
-	
+
 	/**
 	 * Determines whether any points higher than the current starting point exist in the 
 	 * specified time period in the past
@@ -223,14 +237,17 @@ public class Base {
 	 */
 	protected static boolean noHighPointsInPast(int marker, int lookBack,float[] prices){
 		int start = marker - lookBack;
-		if(start < 0)
+		if(start < 0) {
 			start = 0;
-		for(int j = start;j < marker;++j)//look for higher points in past, this invalidates the base
-			if(prices[j] >= prices[marker])
+		}
+		for(int j = start;j < marker;++j) {
+			if(prices[j] >= prices[marker]) {
 				return false;
+			}
+		}
 		return true;
 	}
-	
+
 	/**
 	 * Finds the highest day in the given time period
 	 * @param begin  the day to start on
@@ -240,9 +257,11 @@ public class Base {
 	 */
 	protected static int findHighDay(int begin,int end,float[] prices){
 		int peakDay = begin;//initial setting for the highest point
-		for(int j = begin; j>=0 && j <= end;++j)//find the high point 
-			if(j < prices.length && prices[j] > prices[peakDay])
+		for(int j = begin; j>=0 && j <= end;++j) {
+			if(j < prices.length && prices[j] > prices[peakDay]) {
 				peakDay = j;
+			}
+		}
 		return peakDay;
 	}
 
@@ -255,12 +274,14 @@ public class Base {
 	 */
 	protected static int findLowDay(int begin,int end,float[] prices){
 		int minDay = begin;//initial setting for the highest point
-		for(int j = begin; j <= end;++j)//find the high point 
-			if(j < prices.length && prices[j] < prices[minDay])
+		for(int j = begin; j <= end;++j) {
+			if(j < prices.length && prices[j] < prices[minDay]) {
 				minDay = j;
+			}
+		}
 		return minDay;
 	}
-	
+
 	/**
 	 * Checks for deviation from a linear pattern, either up or down.  maxWander is calculated
 	 * by multiplying the wanderValue by the starting point in the line.  Then the difference in 
@@ -284,14 +305,15 @@ public class Base {
 		double maxWander = prices[start] * wanderValue;//allowable departure at each point in the line
 		double priceJump = Math.abs(prices[end]-prices[start]);
 		for (int j = start;j < end;++j){//loop through each day and look for deviation from straight line
-			double progressionFraction = ((j-start)/(double)riseLength);//calculate how far through we are
-			double target = prices[start] + (upOrDown * priceJump * progressionFraction);//find value for straight line
-			if(prices[j] > target + maxWander || prices[j] < target - maxWander)//look for deviations outside allowed limits
+			double progressionFraction = (j-start)/(double)riseLength;//calculate how far through we are
+			double target = prices[start] + upOrDown * priceJump * progressionFraction;//find value for straight line
+			if(prices[j] > target + maxWander || prices[j] < target - maxWander) {
 				return false;
+			}
 		}
 		return true;
 	}
-	
+
 	protected static boolean dryUpInLows(float[] prices,double[] volumes,int start, int end){
 		float volDown = (float).5;//how much should a day's volume be down to count as "down"
 		float fractionDown = (float).4;//how many days should be down to count as a dry up
@@ -299,18 +321,21 @@ public class Base {
 		float slopeTime = (float)0.2;//how much of the cup pattern should constitute the slope, so we can subtract it out and just look at the low portion of the pattern
 		int sum = 0,tally = 0;
 		int slopeDays = (int)(length * slopeTime);// days in the slope
-		for(int i = start + slopeDays;i < end - slopeDays;++i)
+		for(int i = start + slopeDays;i < end - slopeDays;++i) {
 			sum += prices[i];
+		}
 		float ave = sum/(length - 2*slopeDays);
 		double volAve = getVolAverage(start,50,volumes);
 		for(int i = start + slopeDays;i < end - slopeDays;++i){//tally up low volume days that are low priced
-			if(prices[i] <= ave)
-				if(volumes[i] <= (volAve * volDown))
+			if(prices[i] <= ave) {
+				if(volumes[i] <= volAve * volDown) {
 					++tally;
+				}
+			}
 		}
-		return (tally >= (length - 2*slopeDays)*fractionDown);
+		return tally >= (length - 2*slopeDays)*fractionDown;
 	}
-	
+
 	protected static boolean abovePriceLine(int marker,int lookBack,float[] prices){
 		if (lookBack > marker){
 			lookBack = marker;
@@ -318,17 +343,18 @@ public class Base {
 		}
 		double ave = getAverage(marker,lookBack,prices);
 		System.out.println(prices[marker] + " " + ave);
-		return (prices[marker] > ave);
+		return prices[marker] > ave;
 	}
-	
+
 	public static boolean priceStrength(int begin,int end,float[] SandP,float[] prices){
 		int correction = SandP.length - prices.length;//this is used to ensure that we're using the 
 		// same day in both arrays; necessary if arrays are of different lengths
 		float ratio = prices[begin]/SandP[begin + correction];
 		for(int i = begin + 1;i < end;++i){
 			float newRatio = prices[i]/SandP[i + correction];
-			if(ratio > newRatio)
+			if(ratio > newRatio) {
 				return false;
+			}
 			ratio = newRatio;
 		}
 		return true;
@@ -350,47 +376,66 @@ public class Base {
 			handleMaxDepth = (float).7;
 			handleMinDepth = (float).8;
 		}
-		if(getTrend(prices,highDay,5) >= 0)//method should be called only in down trend
-			System.err.println("Trend is not as expected");System.exit(1);
+		if(getTrend(prices,highDay,5) >= 0) {
+			System.err.println("Trend is not as expected");
+		}System.exit(1);
 		index = highDay;
 		while(getTrend(prices,index,5) <= 0){//find the bottom of the handle
 			++index;
-			if(index == prices.length)
+			if(index == prices.length) {
 				return -1;
+			}
 		}
 		lowDay = findLowDay(index-6,index,prices);//mark the bottom (current index is probably not it
-		if((lowDay - highDay) >= handleMinLength && (lowDay - highDay) <= handleMaxLength){
+		if(lowDay - highDay >= handleMinLength && lowDay - highDay <= handleMaxLength){
 			if(prices[lowDay]/prices[highDay] >= handleMaxDepth && prices[lowDay]/prices[highDay] <= handleMinDepth){
 				if(volumeIsDown(highDay,lowDay,volumes, volDown, daysLowVolume)){
 					if(abovePriceLine(lowDay,200,prices)){
 						if((pivot = checkFinish(WAITFORPIVOT,lowDay,prices,highDay)) >= 0){
-							if(priceStrength(lowDay,pivot,SandP,prices))
+							if(priceStrength(lowDay,pivot,SandP,prices)) {
 								return pivot;
-							else System.out.println("not ahead of market in handle recovery");
-						}else System.out.println("handle did not finish forming");
-					}else System.out.println("not above price line average");
-				}else System.out.println("no volume dry up in handle");
-			}else System.out.println("no handle developed");
-		}else System.out.println("no handle developed");
+							} else {
+								System.out.println("not ahead of market in handle recovery");
+							}
+						} else {
+							System.out.println("handle did not finish forming");
+						}
+					} else {
+						System.out.println("not above price line average");
+					}
+				} else {
+					System.out.println("no volume dry up in handle");
+				}
+			} else {
+				System.out.println("no handle developed");
+			}
+		} else {
+			System.out.println("no handle developed");
+		}
 		return -1;
 
 	}
-	
+
 	public static int getTrend(float[] data, int index, int halfRange){
 		int trend = 0;
-		for(int i = index - halfRange;i < 499 && i < index + halfRange;++i)// look at range 5 before and 5 after current day
-			if(i >= 0 && i < data.length)//check to make sure we're not looking out the array bounds
-				if (i < (data.length-1) && data[i] < data[i + 1])
+		for(int i = index - halfRange;i < 499 && i < index + halfRange;++i) {
+			if(i >= 0 && i < data.length) {
+				if (i < data.length-1 && data[i] < data[i + 1]) {
 					++trend;
-				else if (i < (data.length-1) && data[i] > data[i + 1])
+				} else if (i < data.length-1 && data[i] > data[i + 1]) {
 					--trend;
-		if(trend > 0)
+				}
+			}
+		}
+		if(trend > 0) {
 			return 1;
-		if(trend < 0)
+		}
+		if(trend < 0) {
 			return -1;
+		}
 		return 0;
 	}
-	
+
 	public int getMin() {
 		return min;
 	}
@@ -422,7 +467,7 @@ public class Base {
 	public void setEnd(int end) {
 		this.end = end;
 	}
-	
+
 	public boolean getBuyable() {
 		return buyable;
 	}

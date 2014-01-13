@@ -28,40 +28,40 @@ import org.jfree.chart.JFreeChart;
  */
 public class ServletChartGenerator extends HttpServlet {
 
-    /**
-     * Default constructor.
-     */
-    public ServletChartGenerator() {
-	// nothing required
-    }
-
-    /**
-     * Process a GET request.
-     *
-     * @param request  the request.
-     * @param response  the response.
-     *
-     * @throws ServletException if there is a servlet related problem.
-     * @throws IOException if there is an I/O problem.
-     */
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-
-	OutputStream out = response.getOutputStream();
-	try {
-	    String timeString = request.getParameter("time");
-	    int time=Integer.valueOf(timeString);
-	    JFreeChart chart = null;
-	    chart = BarChart.returnChart(time);
-	    if (chart != null) {
-		response.setContentType("image/png");
-		ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
-	    }
-	} catch (Exception e) {
-		ibd.web.Constants.Constants.logger.info("Exception in ServletChartGenerator.java"+e);
-	} finally {
-	    out.close();
+	/**
+	 * Default constructor.
+	 */
+	public ServletChartGenerator() {
+		// nothing required
 	}
-    }
+
+	/**
+	 * Process a GET request.
+	 *
+	 * @param request  the request.
+	 * @param response  the response.
+	 *
+	 * @throws ServletException if there is a servlet related problem.
+	 * @throws IOException if there is an I/O problem.
+	 */
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		OutputStream out = response.getOutputStream();
+		try {
+			String timeString = request.getParameter("time");
+			int time=Integer.valueOf(timeString);
+			JFreeChart chart = null;
+			chart = BarChart.returnChart(time);
+			if (chart != null) {
+				response.setContentType("image/png");
+				ChartUtilities.writeChartAsPNG(out, chart, 400, 300);
+			}
+		} catch (Exception e) {
+			ibd.web.Constants.Constants.logger.info("Exception in ServletChartGenerator.java"+e);
+		} finally {
+			out.close();
+		}
+	}
 }

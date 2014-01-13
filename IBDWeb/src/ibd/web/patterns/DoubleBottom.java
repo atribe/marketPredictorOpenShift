@@ -2,7 +2,6 @@ package ibd.web.patterns;
 
 
 import java.util.TreeSet;
-import java.util.zip.DataFormatException;
 
 public class DoubleBottom extends Base{
 	private int bottom1,bottom2,middlePeak;
@@ -21,7 +20,7 @@ public class DoubleBottom extends Base{
 		this.bottom2 = bottom2;
 		this.middlePeak = middlePeak;
 	}
-	
+
 	public static boolean find(float[] prices, double[] volumes, DataAnalyzer da, int begin, int end, boolean[] baseBlocks, TreeSet<Base> list,boolean[] bullArray, float[] SandP) {
 		//deal with handle or not
 		System.out.print("  Double bottom: ");
@@ -42,23 +41,28 @@ public class DoubleBottom extends Base{
 
 				if(trend > 0){
 					int val = findHighDay(index-5,index,prices);//find exactly where the min or max (as approp) is
-					markers[count] = (val>=0)?val:0;
+					markers[count] = val>=0?val:0;
 				}else if(trend < 0){
 					int val = findLowDay(index-5,index,prices);
-					markers[count] = (val>=0)?val:0;
+					markers[count] = val>=0?val:0;
 				}
 				++count;
 
 				consecs = 0;//reset the number of consecutive days
-			}
-			else //if no new trend, just add another consecutive day
+			} else {
 				++consecs;
-			if(curTrend != 0)//if no neutral trend (ignored), reset the trend value to the current trend
+			}
+			if(curTrend != 0) {
 				trend = curTrend;
+			}
 			if(markers[3] >= 0){//check to see if we've filled up four pattern markers,
-				if(markers[4] < 0 && prices[index] > prices[markers[2]])// if we don't have the last one filled but we're past the midpeak price
-					if(prices[index] >= prices[markers[2]] + .1)//sufficiently to be called a pivot
+				if(markers[4] < 0 && prices[index] > prices[markers[2]])
+				{
+					if(prices[index] >= prices[markers[2]] + .1)
+					{
 						markers[4] = index;//then mark the pivot
+					}
+				}
 				if(markers[4] >= 0){//check the pattern if markers are filled
 					DoubleBottom twoBums = checkDoubleBottom(prices, markers,volumes,SandP,bullArray);
 					if(twoBums == null){
@@ -68,10 +72,11 @@ public class DoubleBottom extends Base{
 					}
 					else{
 						list.add(twoBums);
-						if(markers[6] < 0)
+						if(markers[6] < 0) {
 							da.baseBlocker(markers[0], markers[4], baseBlocks);
-						else
+						} else {
 							da.baseBlocker(markers[0], markers[6], baseBlocks);
+						}
 						return true;
 					}
 				}
@@ -83,32 +88,40 @@ public class DoubleBottom extends Base{
 
 
 	private static int findUp(float[] prices,int index){
-		while(getTrend(prices,index,5) < 1 && index < 500)//move the index to the first place where there is an uptrend
+		while(getTrend(prices,index,5) < 1 && index < 500) {
 			++index;
+		}
 		return index;
 	}
 
 	public static void clear(int[] array){
-		for(int i = 0;i < array.length;++i)
+		for(int i = 0;i < array.length;++i) {
 			array[i] = -1;
+		}
 	}
 
 	private static DoubleBottom checkDoubleBottom(float[] prices,int[] markers, double[] volumes, float[] SandP,boolean[] bullArray){
 		if(prices[markers[1]] >= prices[markers[0]] * LEGMAXDEPTH && prices[markers[1]] <= prices[markers[0]] * LEGMINDEPTH &&//check depths
 				prices[markers[2]] >= prices[markers[0]] * MIDDLEDOWN && prices[markers[2]] < prices[markers[0]] &&
-				prices[markers[3]] >= prices[markers[0]] * LEGMAXDEPTH && prices[markers[3]] <= prices[markers[1]])
+				prices[markers[3]] >= prices[markers[0]] * LEGMAXDEPTH && prices[markers[3]] <= prices[markers[1]]) {
 			if(markers[1] - markers[0] <= LEGMAXLENGTH && markers[1] - markers[0] >= LEGMINLENGTH &&  // check lengths
 					markers[2] - markers[1] <= LEGMAXLENGTH && markers[2] - markers[1] >= LEGMINLENGTH &&		
-					markers[3] - markers[2] <= LEGMAXLENGTH && markers[3] - markers[2] >= LEGMINLENGTH)
-				if(markers[4] - markers[0] <= PATTERNMAXLENGTH && markers[4] - markers[0] >= PATTERNMINLENGTH ) //check entire length
-					if(prices[markers[0]] > prices[markers[2]] && prices[markers[0]] > prices[markers[4]])//points in proper configuration?
+					markers[3] - markers[2] <= LEGMAXLENGTH && markers[3] - markers[2] >= LEGMINLENGTH) {
+				if(markers[4] - markers[0] <= PATTERNMAXLENGTH && markers[4] - markers[0] >= PATTERNMINLENGTH ) {
+					if(prices[markers[0]] > prices[markers[2]] && prices[markers[0]] > prices[markers[4]]) {
 						if(prices[markers[3]] < prices[markers[1]]){// 2nd bottom must be lower than first
-							if(prices[markers[4]] > prices[markers[2]])//no handle, it's gone straight up
+							if(prices[markers[4]] > prices[markers[2]]) {
 								return new DoubleBottom(markers[0],markers[4],markers[3],markers[2],markers[1],markers[3]);
+							}
 							int pivot = checkHandle(false,prices,markers[4],volumes,SandP,bullArray,VOLDOWN,DAYSLOWVOLUME);
-							if (pivot >= 0)
+							if (pivot >= 0) {
 								return new DoubleBottom(markers[0],markers[6],markers[3],markers[2],markers[1],markers[3]);
+							}
 						}
+					}
+				}
+			}
+		}
 		return null;
 	}
 

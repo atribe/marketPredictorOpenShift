@@ -42,150 +42,152 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
 public class PriceVolumeChart2 extends ApplicationFrame{
-/**
+	/**
 	 * 
 	 */
-private static final long serialVersionUID = 1L;
-//final static String filename = "D:\\A.txt";
-static TimeSeries t1 = new TimeSeries("50-day Price moving average");
-static TimeSeries t2 = new TimeSeries("50-day Volume moving average");
-private static Connection getConnection() {
-	Connection connection = null;
-	String host, port, dbURL, username, password;
-	try {
-	    Class.forName("com.mysql.jdbc.Driver");
-	    
-	    
-	 // ************For Local Account************
-	    
-    	    host = "localhost";
-    	    port="3306";
-    	    dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeibd50pricesvolumes";
-    	    username = "root";
-    	    password = "root";
-	    
-	    
-	    connection = DriverManager.getConnection(dbURL, username, password);
-	} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-	return connection;
-}
+	private static final long serialVersionUID = 1L;
+	//final static String filename = "D:\\A.txt";
+	static TimeSeries t1 = new TimeSeries("50-day Price moving average");
+	static TimeSeries t2 = new TimeSeries("50-day Volume moving average");
+	private static Connection getConnection() {
+		Connection connection = null;
+		String host, port, dbURL, username, password;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
 
-private static List<String> getAllTables(){
-	Connection c = getConnection();
-	List<String> tableNames = new ArrayList<String>();
-	DatabaseMetaData md = null;
-	try {
-		md = c.getMetaData();
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-    ResultSet rs = null;
-	try {
-		rs = md.getTables(null, null, "%", null);
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-    try {
-		while (rs.next()) {
-		  String name = rs.getString(3);
-		  name = name.substring(1);
-		  tableNames.add(name);
+
+			// ************For Local Account************
+
+			host = "localhost";
+			port="3306";
+			dbURL = "jdbc:mysql://"+host+":"+port+"/moneytreeibd50pricesvolumes";
+			username = "root";
+			password = "root";
+
+
+			connection = DriverManager.getConnection(dbURL, username, password);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}finally{
-		if(rs!=null)
-			try {
+		return connection;
+	}
+
+	private static List<String> getAllTables(){
+		Connection c = getConnection();
+		List<String> tableNames = new ArrayList<String>();
+		DatabaseMetaData md = null;
+		try {
+			md = c.getMetaData();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		ResultSet rs = null;
+		try {
+			rs = md.getTables(null, null, "%", null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			while (rs.next()) {
+				String name = rs.getString(3);
+				name = name.substring(1);
+				tableNames.add(name);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if(c!=null) {
+				try {
+					c.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return tableNames;
+	}
+
+	private static List<StockData> getDataFrom(String tableName){
+		List<StockData> data = new ArrayList<StockData>();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try{
+			con = getConnection();
+			stmt = con.createStatement();
+			String query = "SELECT * FROM `^"+tableName.toLowerCase()+"`";
+			rs = stmt.executeQuery(query);
+			while(rs.next()){
+				StockData obj = new StockData();
+				obj.setDataDate(rs.getString(1));
+				obj.setOpen(rs.getFloat(2));
+				obj.setHigh(rs.getFloat(3));
+				obj.setLow(rs.getFloat(4));
+				obj.setClose(rs.getFloat(5));
+				obj.setVolume(rs.getDouble(6));
+				data.add(obj);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try{
+				stmt.close();
+				con.close();
 				rs.close();
-			} catch (SQLException e) {
+			}catch(Exception e){
 				e.printStackTrace();
 			}
-		if(c!=null)
-			try {
-				c.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		}
+		return data;
 	}
-    return tableNames;
-}
-
-private static List<StockData> getDataFrom(String tableName){
-	List<StockData> data = new ArrayList<StockData>();
-	Connection con = null;
-	  Statement stmt = null;
-	  ResultSet rs = null;
-	  try{
-		  con = getConnection();
-		  stmt = con.createStatement();
-		  String query = "SELECT * FROM `^"+tableName.toLowerCase()+"`";
-		  rs = stmt.executeQuery(query);
-		  while(rs.next()){
-			  StockData obj = new StockData();
-			  obj.setDataDate(rs.getString(1));
-			  obj.setOpen(rs.getFloat(2));
-			  obj.setHigh(rs.getFloat(3));
-			  obj.setLow(rs.getFloat(4));
-			  obj.setClose(rs.getFloat(5));
-			  obj.setVolume(rs.getDouble(6));
-			  data.add(obj);
-		  }
-	  }catch(Exception e){
-		  e.printStackTrace();
-	  }finally{
-		  try{
-			  stmt.close();
-			  con.close();
-			  rs.close();
-		  }catch(Exception e){
-			  e.printStackTrace();
-		  }
-	  }
-	return data;
-}
-/**
- * Default constructor
- */
-public PriceVolumeChart2(String title)
-{
-    super(title);
-    List<String> tables = getAllTables();
-    List<StockData> stockData = null;
-    String t = null;
-	for(String tableName:tables){
-		t = tableName;
-		stockData = getDataFrom(tableName);// Get All Data From the Table
-		break;
+	/**
+	 * Default constructor
+	 */
+	public PriceVolumeChart2(String title)
+	{
+		super(title);
+		List<String> tables = getAllTables();
+		List<StockData> stockData = null;
+		String t = null;
+		for(String tableName:tables){
+			t = tableName;
+			stockData = getDataFrom(tableName);// Get All Data From the Table
+			break;
+		}
+		JPanel panel = createDemoPanel(stockData,t);
+		panel.setPreferredSize(new Dimension(500, 270));
+		setContentPane(panel);
 	}
-    JPanel panel = createDemoPanel(stockData,t);
-    panel.setPreferredSize(new Dimension(500, 270));
-    setContentPane(panel);
-}
 
-//create price dataset
-private static OHLCDataset createPriceDataset(List<StockData> stockData,String tableName)
-{
-    //the following data is taken from http://finance.yahoo.com/
-    //for demo purposes...
+	//create price dataset
+	private static OHLCDataset createPriceDataset(List<StockData> stockData,String tableName)
+	{
+		//the following data is taken from http://finance.yahoo.com/
+		//for demo purposes...
 
-    OHLCSeries s1 = new OHLCSeries(tableName);
+		OHLCSeries s1 = new OHLCSeries(tableName);
 
-    try {
-    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-    	for(StockData s:stockData){
-    		Date date       = sf.parse(s.getDataDate());
-            double open     = s.getOpen();
-            double high     = s.getHigh();
-            double low      = s.getLow();
-            double close    = s.getClose();
-            s1.add(new Day(date), open, high, low, close);
-            t1.add(new Day(date), close);
-            t2.add(new Day(date), s.getVolume());
-    	}/*
+		try {
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			for(StockData s:stockData){
+				Date date       = sf.parse(s.getDataDate());
+				double open     = s.getOpen();
+				double high     = s.getHigh();
+				double low      = s.getLow();
+				double close    = s.getClose();
+				s1.add(new Day(date), open, high, low, close);
+				t1.add(new Day(date), close);
+				t2.add(new Day(date), s.getVolume());
+			}/*
         BufferedReader in = new BufferedReader(new FileReader(filename));
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         String inputLine;
@@ -203,24 +205,24 @@ private static OHLCDataset createPriceDataset(List<StockData> stockData,String t
             t1.add(new Day(date), close);
         }
         in.close();*/
-    }
-    catch (Exception e) {
-        e.printStackTrace();
-    }
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
 
-    OHLCSeriesCollection dataset = new OHLCSeriesCollection();
-    dataset.addSeries(s1);
+		OHLCSeriesCollection dataset = new OHLCSeriesCollection();
+		dataset.addSeries(s1);
 
-    return dataset;
-}
+		return dataset;
+	}
 
 
-//create volume dataset
-private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
-{
-    /*//create dataset 2...
+	//create volume dataset
+	private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
+	{
+		/*//create dataset 2...
     TimeSeries s1 = new TimeSeries("Volume");
     SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	for(StockData s:stockdata){
@@ -235,7 +237,7 @@ private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
         s1.add(new Day(date), volume);
         t2.add(new Day(date), volume);
 	}*/
-    /*try {
+		/*try {
         BufferedReader in = new BufferedReader(new FileReader(filename));
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         String inputLine;
@@ -257,171 +259,171 @@ private static IntervalXYDataset createVolumeDataset(List<StockData> stockdata)
         e.printStackTrace();
     }*/
 
-    //return new TimeSeriesCollection(s1);
-	// create dataset 2...
-    TimeSeries s1 = new TimeSeries("Down Volume");
-    TimeSeries s2 = new TimeSeries("Up Volume");
-    for(int i=0;i<stockdata.size();i++){
-    	StockData obj = stockdata.get(i);
-    	String dated = obj.getDataDate();
-    	if(0 != i && obj.getClose()<stockdata.get(i-1).getClose()){
-    		s1.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
-    	}else{
-    		s2.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
-    	}
-    }
-    
-    TimeSeriesCollection dataSet = new TimeSeriesCollection();
-    dataSet.addSeries(s1);
-    dataSet.addSeries(s2);
-    
-    return dataSet;
-    //return new TimeSeriesCollection(s1);
-}
+		//return new TimeSeriesCollection(s1);
+		// create dataset 2...
+		TimeSeries s1 = new TimeSeries("Down Volume");
+		TimeSeries s2 = new TimeSeries("Up Volume");
+		for(int i=0;i<stockdata.size();i++){
+			StockData obj = stockdata.get(i);
+			String dated = obj.getDataDate();
+			if(0 != i && obj.getClose()<stockdata.get(i-1).getClose()){
+				s1.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
+			}else{
+				s2.add(new Day(Integer.parseInt(dated.substring(8)), Integer.parseInt(dated.substring(5,7)), Integer.parseInt(dated.substring(0,4))), obj.getVolume());
+			}
+		}
 
-/**
- * @param stockData
- * @param tableName
- * @return
- */
-private static JFreeChart createCombinedChart(List<StockData> stockData,String tableName)
-{
-    OHLCDataset data1 = createPriceDataset(stockData,tableName);
+		TimeSeriesCollection dataSet = new TimeSeriesCollection();
+		dataSet.addSeries(s1);
+		dataSet.addSeries(s2);
 
-    XYItemRenderer renderer1 = new HighLowRenderer();
-    renderer1.setBaseToolTipGenerator(new StandardXYToolTipGenerator(
-        StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-        new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
-    renderer1.setSeriesPaint(0, Color.blue);
-    DateAxis domainAxis = new DateAxis("Date");
-    NumberAxis rangeAxis = new NumberAxis("Price");
-    rangeAxis.setNumberFormatOverride(new DecimalFormat("$0.00"));
-    rangeAxis.setAutoRange(true);
-    rangeAxis.setAutoRangeIncludesZero(false);
-    XYPlot plot1 = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
-    plot1.setBackgroundPaint(Color.lightGray);
-    plot1.setDomainGridlinePaint(Color.white);
-    plot1.setRangeGridlinePaint(Color.white);
-    plot1.setRangePannable(true);
+		return dataSet;
+		//return new TimeSeriesCollection(s1);
+	}
 
-    //Overlay the Long-Term Trend Indicator
-    TimeSeries dataset3 = MovingAverage.createMovingAverage(t1, "50PLT", 50, 0);
-    TimeSeriesCollection collection = new TimeSeriesCollection();
-    collection.addSeries(dataset3);
-    plot1.setDataset(1, collection);
-    plot1.setRenderer(1, new StandardXYItemRenderer());
-    
-  //Overlay the Long-Term Trend Indicator
-    TimeSeries dataset4 = MovingAverage.createMovingAverage(t1, "200PLT", 200, 0);
-    TimeSeriesCollection collection1 = new TimeSeriesCollection();
-    collection.addSeries(dataset4);
-    plot1.setDataset(2, collection1);
-    plot1.setRenderer(2, new StandardXYItemRenderer());
-    
-  
+	/**
+	 * @param stockData
+	 * @param tableName
+	 * @return
+	 */
+	private static JFreeChart createCombinedChart(List<StockData> stockData,String tableName)
+	{
+		OHLCDataset data1 = createPriceDataset(stockData,tableName);
 
-    //add a second dataset (volume) and renderer
-    IntervalXYDataset data2 = createVolumeDataset(stockData);
-    XYBarRenderer renderer2 = new XYBarRenderer();
-    renderer2.setDrawBarOutline(false);
-    renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator(
-        StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-        new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
-    renderer2.setMargin(0.6);
-    renderer2.setSeriesPaint(0, Color.RED);
-    renderer2.setSeriesPaint(1, Color.BLUE);
-    renderer2.setSeriesPaint(2, Color.GREEN);
-    renderer2.setSeriesPaint(3, Color.BLACK);
-    XYPlot plot2 = new XYPlot(data2, null, new NumberAxis("Volume"), renderer2);
-    plot2.setBackgroundPaint(Color.lightGray);
-    plot2.setDomainGridlinePaint(Color.white);
-    plot2.setRangeGridlinePaint(Color.white);
-    //plot2.setRenderer((XYItemRenderer) new MySBRenderer());
-    TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
-    TimeSeriesCollection collection2 = new TimeSeriesCollection();
-    collection2.addSeries(dataset5);
-    plot2.setDataset(3, collection2);
-    StandardXYItemRenderer a = new StandardXYItemRenderer();
-    a.setSeriesPaint(0, Color.GREEN);
-    a.setSeriesPaint(1, Color.orange);
-    a.setSeriesPaint(2, Color.BLACK);
-    plot2.setRenderer(3, a);
+		XYItemRenderer renderer1 = new HighLowRenderer();
+		renderer1.setBaseToolTipGenerator(new StandardXYToolTipGenerator(
+				StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
+		renderer1.setSeriesPaint(0, Color.blue);
+		DateAxis domainAxis = new DateAxis("Date");
+		NumberAxis rangeAxis = new NumberAxis("Price");
+		rangeAxis.setNumberFormatOverride(new DecimalFormat("$0.00"));
+		rangeAxis.setAutoRange(true);
+		rangeAxis.setAutoRangeIncludesZero(false);
+		XYPlot plot1 = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
+		plot1.setBackgroundPaint(Color.lightGray);
+		plot1.setDomainGridlinePaint(Color.white);
+		plot1.setRangeGridlinePaint(Color.white);
+		plot1.setRangePannable(true);
 
-    /*XYTextAnnotation annotation = null;
+		//Overlay the Long-Term Trend Indicator
+		TimeSeries dataset3 = MovingAverage.createMovingAverage(t1, "50PLT", 50, 0);
+		TimeSeriesCollection collection = new TimeSeriesCollection();
+		collection.addSeries(dataset3);
+		plot1.setDataset(1, collection);
+		plot1.setRenderer(1, new StandardXYItemRenderer());
+
+		//Overlay the Long-Term Trend Indicator
+		TimeSeries dataset4 = MovingAverage.createMovingAverage(t1, "200PLT", 200, 0);
+		TimeSeriesCollection collection1 = new TimeSeriesCollection();
+		collection.addSeries(dataset4);
+		plot1.setDataset(2, collection1);
+		plot1.setRenderer(2, new StandardXYItemRenderer());
+
+
+
+		//add a second dataset (volume) and renderer
+		IntervalXYDataset data2 = createVolumeDataset(stockData);
+		XYBarRenderer renderer2 = new XYBarRenderer();
+		renderer2.setDrawBarOutline(false);
+		renderer2.setBaseToolTipGenerator(new StandardXYToolTipGenerator(
+				StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
+		renderer2.setMargin(0.6);
+		renderer2.setSeriesPaint(0, Color.RED);
+		renderer2.setSeriesPaint(1, Color.BLUE);
+		renderer2.setSeriesPaint(2, Color.GREEN);
+		renderer2.setSeriesPaint(3, Color.BLACK);
+		XYPlot plot2 = new XYPlot(data2, null, new NumberAxis("Volume"), renderer2);
+		plot2.setBackgroundPaint(Color.lightGray);
+		plot2.setDomainGridlinePaint(Color.white);
+		plot2.setRangeGridlinePaint(Color.white);
+		//plot2.setRenderer((XYItemRenderer) new MySBRenderer());
+		TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
+		TimeSeriesCollection collection2 = new TimeSeriesCollection();
+		collection2.addSeries(dataset5);
+		plot2.setDataset(3, collection2);
+		StandardXYItemRenderer a = new StandardXYItemRenderer();
+		a.setSeriesPaint(0, Color.GREEN);
+		a.setSeriesPaint(1, Color.orange);
+		a.setSeriesPaint(2, Color.BLACK);
+		plot2.setRenderer(3, a);
+
+		/*XYTextAnnotation annotation = null;
     Font font = new Font("SansSerif", Font.PLAIN, 9);
 
     annotation = new XYTextAnnotation("3rd", 36.5, 11.76);
     annotation.setFont(font);
     annotation.setTextAnchor(TextAnchor.HALF_ASCENT_LEFT);
     plot1.addAnnotation(annotation);*/
-    XYPointerAnnotation annotation1 = new XYPointerAnnotation(
-            "Annotation 1 (2.0, 167.3)", 2.0, 167.3, -Math.PI / 4.0);
-    annotation1.setTextAnchor(TextAnchor.BOTTOM_LEFT);
-    annotation1.setPaint(Color.red);
-    annotation1.setArrowPaint(Color.red);
-    renderer2.addAnnotation(annotation1);
-  /*//Overlay the Long-Term Trend Volume Indicator
+		XYPointerAnnotation annotation1 = new XYPointerAnnotation(
+				"Annotation 1 (2.0, 167.3)", 2.0, 167.3, -Math.PI / 4.0);
+		annotation1.setTextAnchor(TextAnchor.BOTTOM_LEFT);
+		annotation1.setPaint(Color.red);
+		annotation1.setArrowPaint(Color.red);
+		renderer2.addAnnotation(annotation1);
+		/*//Overlay the Long-Term Trend Volume Indicator
     TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
     TimeSeriesCollection collection2 = new TimeSeriesCollection();
     collection.addSeries(dataset5);
     plot2.setDataset(3, collection2);
     plot2.setRenderer(3, new StandardXYItemRenderer());*/
 
-    CombinedDomainXYPlot cplot = new CombinedDomainXYPlot(domainAxis);
-    cplot.add(plot1, 3);
-    cplot.add(plot2, 2);
-    cplot.setGap(8.0);
-    cplot.setDomainGridlinePaint(Color.white);
-    cplot.setDomainGridlinesVisible(true);
-    cplot.setDomainPannable(true);
-    XYBarRenderer renderer4 = (XYBarRenderer) cplot.getRenderer(); 
-    /*TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
+		CombinedDomainXYPlot cplot = new CombinedDomainXYPlot(domainAxis);
+		cplot.add(plot1, 3);
+		cplot.add(plot2, 2);
+		cplot.setGap(8.0);
+		cplot.setDomainGridlinePaint(Color.white);
+		cplot.setDomainGridlinesVisible(true);
+		cplot.setDomainPannable(true);
+		XYBarRenderer renderer4 = (XYBarRenderer) cplot.getRenderer(); 
+		/*TimeSeries dataset5 = MovingAverage.createMovingAverage(t2, "50VLT", 50, 0);
     TimeSeriesCollection collection5 = new TimeSeriesCollection();
     //renderer4.setBasePaint(Color.red);
     collection.addSeries(dataset5);
     cplot.setDataset(3, collection5);
     cplot.setRenderer(3, renderer4);*/
-    //return the new combined chart
-    JFreeChart chart = new JFreeChart("OHLC-Volume Chart with Moving Average for: "+tableName,
-        JFreeChart.DEFAULT_TITLE_FONT, cplot, true);
+		//return the new combined chart
+		JFreeChart chart = new JFreeChart("OHLC-Volume Chart with Moving Average for: "+tableName,
+				JFreeChart.DEFAULT_TITLE_FONT, cplot, true);
 
-    ChartUtilities.applyCurrentTheme(chart);
-    renderer2.setShadowVisible(false);
-    renderer2.setBarPainter(new StandardXYBarPainter());
+		ChartUtilities.applyCurrentTheme(chart);
+		renderer2.setShadowVisible(false);
+		renderer2.setBarPainter(new StandardXYBarPainter());
 
-    return chart;
-}
+		return chart;
+	}
 
-//create a panel
-/**
- * @param stockData
- * @param tableName
- * @return
- */
+	//create a panel
+	/**
+	 * @param stockData
+	 * @param tableName
+	 * @return
+	 */
 
-private static class MySBRenderer extends XYBarRenderer {
+	private static class MySBRenderer extends XYBarRenderer {
 
-    @Override
-    public Paint getItemPaint(int row, int col) {
-        System.out.println(row + " " + col + " " + super.getItemPaint(row, col));
-        return super.getItemPaint(row, col);
-    }
-}
+		@Override
+		public Paint getItemPaint(int row, int col) {
+			System.out.println(row + " " + col + " " + super.getItemPaint(row, col));
+			return super.getItemPaint(row, col);
+		}
+	}
 
-public static JPanel createDemoPanel(List<StockData> stockData,String tableName)
-{
-    JFreeChart chart = createCombinedChart(stockData,tableName);
-    return new ChartPanel(chart);
-}
+	public static JPanel createDemoPanel(List<StockData> stockData,String tableName)
+	{
+		JFreeChart chart = createCombinedChart(stockData,tableName);
+		return new ChartPanel(chart);
+	}
 
-public static void main(String[] args) {
-    // TODO code application logic here
-    PriceVolumeChart2 demo = new PriceVolumeChart2(
-        "OHLC-Volume Chart with Moving Average");
-    demo.pack();
-    RefineryUtilities.centerFrameOnScreen(demo);
-    demo.setVisible(true);
-}
+	public static void main(String[] args) {
+		// TODO code application logic here
+		PriceVolumeChart2 demo = new PriceVolumeChart2(
+				"OHLC-Volume Chart with Moving Average");
+		demo.pack();
+		RefineryUtilities.centerFrameOnScreen(demo);
+		demo.setVisible(true);
+	}
 
-//Download data from web
+	//Download data from web
 }

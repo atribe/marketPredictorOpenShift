@@ -21,6 +21,6 @@ public class IndexController {
 		java.util.Date today = new java.util.Date();
 		String dateOut = dateFormatter.format(today);
 		return new ModelAndView("index","dateOut",dateOut);
- 
+
 	}
 }

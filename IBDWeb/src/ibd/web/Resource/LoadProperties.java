@@ -1,7 +1,5 @@
 package ibd.web.Resource;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,9 +11,9 @@ public final class LoadProperties {
 		// initialize the properties file.
 		init();
 	}
-	
+
 	// init() function
-	
+
 	private void init(){
 		ibd.web.Constants.Constants.logger.info("Loading Properties from the file.");
 		Properties file = new Properties();
@@ -25,7 +23,7 @@ public final class LoadProperties {
 			file.load(ibd.web.Resource.ResourceInitializer.class.getClassLoader().getResourceAsStream("resources.properties"));	
 			//file.load(getClass().getResourceAsStream("report.properties"));
 			//properties.put("path", file.getProperty("pathOfFile"));
-			
+
 			//file = null;
 			//file = new Properties();
 			// Load all the properties at once in the map for later use.
@@ -54,6 +52,6 @@ public final class LoadProperties {
 			ibd.web.Constants.Constants.logger.info(e.toString());
 		} 
 	}
-	
+
 }
 

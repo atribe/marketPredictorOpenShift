@@ -1,15 +1,14 @@
 package ibd.web.threads;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 
 public class IBDCalendar extends java.util.GregorianCalendar
 {
-   	// used for the localization convenience methods
+	// used for the localization convenience methods
 	private DateFormatSymbols dfs = new DateFormatSymbols();
 
 
@@ -47,166 +46,166 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	 * ones.
 	 */
 	public static final String[] formats = new String[] {
-			"yyyy-MM-dd hh:mm:ss.SSS a zzz", // 0
-			"yyyy-MM-dd HH:mm:ss.SSS zzz",
-			"yyyy-MM-dd hh:mm:ss.SSS a",
-			"yyyy-MM-dd HH:mm:ss.SSS",
-			"yyyy-MM-dd hh:mm:ss a zzz",
-			"yyyy-MM-dd HH:mm:ss zzz",
-			"yyyy-MM-dd hh:mm:ss a",
-			"yyyy-MM-dd HH:mm:ss", // our Oracle date, or should we use the tz?
-			"yyyy-MM-dd hh:mm a zzz",
-			"yyyy-MM-dd HH:mm zzz",
-			"yyyy-MM-dd hh:mm a", // 10
-			"yyyy-MM-dd HH:mm",
-			"yyyy-MM-dd'T'HH:mm:ss.SSS", // sort of ISO 8601
-			"yyyy-MM-dd'T'HH:mm:ss", // ISO 8601
-			"yyyy-MM-dd'T'HH:mm", // ISO 8601
-			"yyyy/MM/dd hh:mm:ss.SSS a zzz",
-			"yyyy/MM/dd HH:mm:ss.SSS zzz",
-			"yyyy/MM/dd hh:mm:ss.SSS a",
-			"yyyy/MM/dd HH:mm:ss.SSS",
-			"yyyy/MM/dd hh:mm:ss a zzz",
-			"yyyy/MM/dd HH:mm:ss zzz", // 20
-			"yyyy/MM/dd hh:mm:ss a",
-			"yyyy/MM/dd HH:mm:ss",
-			"yyyy/MM/dd hh:mm a zzz",
-			"yyyy/MM/dd HH:mm zzz",
-			"yyyy/MM/dd hh:mm a",
-			"yyyy/MM/dd HH:mm",
-			"dd-MM-yyyy hh:mm:ss.SSS a zzz",
-			"dd-MM-yyyy HH:mm:ss.SSS zzz",
-			"dd-MM-yyyy hh:mm:ss.SSS a",
-			"dd-MM-yyyy HH:mm:ss.SSS", // 30
-			"dd-MM-yyyy hh:mm:ss a zzz",
-			"dd-MM-yyyy HH:mm:ss zzz",
-			"dd-MM-yyyy hh:mm:ss a",
-			"dd-MM-yyyy HH:mm:ss",
-			"dd-MM-yyyy hh:mm a zzz",
-			"dd-MM-yyyy HH:mm zzz",
-			"dd-MM-yyyy hh:mm a",
-			"dd-MM-yyyy HH:mm",
-			"MM/dd/yyyy hh:mm:ss.SSS a zzz",
-			"MM/dd/yyyy HH:mm:ss.SSS zzz", // 40
-			"MM/dd/yyyy hh:mm:ss.SSS a",
-			"MM/dd/yyyy HH:mm:ss.SSS",
-			"MM/dd/yyyy hh:mm:ss a zzz",
-			"MM/dd/yyyy HH:mm:ss zzz",
-			"MM/dd/yyyy hh:mm:ss a",
-			"MM/dd/yyyy HH:mm:ss", // DISPLAY_FULL
-			"MM/dd/yyyy hh:mm a zzz",
-			"MM/dd/yyyy HH:mm zzz",
-			"MM/dd/yyyy hh:mm a",
-			"MM/dd/yyyy HH:mm", // 50
-			"EEE dd MMM yyyy hh:mm:ss.SSS a zzz",
-			"EEE dd MMM yyyy HH:mm:ss.SSS zzz",
-			"EEE dd MMM yyyy hh:mm:ss.SSS a",
-			"EEE dd MMM yyyy HH:mm:ss.SSS",
-			"EEE dd MMM yyyy hh:mm:ss a zzz",
-			"EEE dd MMM yyyy HH:mm:ss zzz",
-			"EEE dd MMM yyyy hh:mm:ss a",
-			"EEE dd MMM yyyy HH:mm:ss",
-			"EEE dd MMM yyyy hh:mm a zzz",
-			"EEE dd MMM yyyy HH:mm zzz", // 60
-			"EEE dd MMM yyyy hh:mm a",
-			"EEE dd MMM yyyy HH:mm",
-			"EEE, MMM dd, yyyy hh:mm:ss.SSS a zzz",
-			"EEE, MMM dd, yyyy HH:mm:ss.SSS zzz",
-			"EEE, MMM dd, yyyy hh:mm:ss.SSS a",
-			"EEE, MMM dd, yyyy HH:mm:ss.SSS",
-			"EEE, MMM dd, yyyy hh:mm:ss a zzz",
-			"EEE, MMM dd, yyyy HH:mm:ss zzz",
-			"EEE, MMM dd, yyyy hh:mm:ss a",
-			"EEE, MMM dd, yyyy HH:mm:ss", // 70
-			"EEE, MMM dd, yyyy hh:mm a zzz",
-			"EEE, MMM dd, yyyy HH:mm zzz",
-			"EEE, MMM dd, yyyy hh:mm a",
-			"EEE, MMM dd, yyyy HH:mm",
-			"MMM dd, yyyy hh:mm:ss.SSS a zzz",
-			"MMM dd, yyyy HH:mm:ss.SSS zzz",
-			"MMM dd, yyyy hh:mm:ss.SSS a",
-			"MMM dd, yyyy HH:mm:ss.SSS",
-			"MMM dd, yyyy hh:mm:ss a zzz",
-			"MMM dd, yyyy HH:mm:ss zzz", // 80
-			"MMM dd, yyyy hh:mm:ss a",
-			"MMM dd, yyyy HH:mm:ss",
-			"MMM dd, yyyy hh:mm a zzz",
-			"MMM dd, yyyy HH:mm zzz",
-			"MMM dd, yyyy hh:mm a",
-			"MMM dd, yyyy HH:mm",
-			"MMM dd yyyy hh:mm:ss.SSS a zzz",
-			"MMM dd yyyy HH:mm:ss.SSS zzz",
-			"MMM dd yyyy hh:mm:ss.SSS a",
-			"MMM dd yyyy HH:mm:ss.SSS", // 90
-			"MMM dd yyyy hh:mm:ss a zzz",
-			"MMM dd yyyy HH:mm:ss zzz",
-			"MMM dd yyyy hh:mm:ss a",
-			"MMM dd yyyy HH:mm:ss",
-			"MMM dd yyyy hh:mm a zzz",
-			"MMM dd yyyy HH:mm zzz",
-			"MMM dd yyyy hh:mm a",
-			"MMM dd yyyy HH:mm",
-			"dd MMM yyyy hh:mm:ss.SSS a zzz",
-			"dd MMM yyyy HH:mm:ss.SSS zzz", // 100
-			"dd MMM yyyy hh:mm:ss.SSS a",
-			"dd MMM yyyy HH:mm:ss.SSS",
-			"dd MMM yyyy hh:mm:ss a zzz",
-			"dd MMM yyyy HH:mm:ss zzz",
-			"dd MMM yyyy hh:mm:ss a",
-			"dd MMM yyyy HH:mm:ss",
-			"dd MMM yyyy hh:mm a zzz",
-			"dd MMM yyyy HH:mm zzz",
-			"dd MMM yyyy hh:mm a",
-			"dd MMM yyyy HH:mm", // 110
-			"dd-MMM-yyyy hh:mm:ss.SSS a zzz",
-			"dd-MMM-yyyy HH:mm:ss.SSS zzz",
-			"dd-MMM-yyyy hh:mm:ss.SSS a",
-			"dd-MMM-yyyy HH:mm:ss.SSS",
-			"dd-MMM-yyyy hh:mm:ss a zzz",
-			"dd-MMM-yyyy HH:mm:ss zzz",
-			"dd-MMM-yyyy hh:mm:ss a",
-			"dd-MMM-yyyy HH:mm:ss",
-			"dd-MMM-yyyy hh:mm a zzz",
-			"dd-MMM-yyyy HH:mm zzz", // 120
-			"dd-MMM-yyyy hh:mm a",
-			"dd-MMM-yyyy HH:mm",
-			"EEE, MMM dd, yyyy",
-			"EEE dd MMM yyyy",
-			"yyyy/MM/dd",
-			"yyyy-MM-dd",
-			"dd-MM-yyyy",
-			"MM/dd/yyyy", // Date
-			"dd-MMM-yyyy",
-			"dd MMM yyyy", // 130
-			"MMM dd, yyyy",
-			"MMM dd yyyy",
-			"MMM-yyyy",
-			"yyyy-MM", // short date
-			"MM-yyyy",
-			"yyyy/MM",
-			"MM/yyyy",
-			"MMM yyyy",
-			"hh:mm:ss.SSS a zzz",
-			"HH:mm:ss.SSS zzz", // 140
-			"hh:mm:ss.SSS a",
-			"HH:mm:ss.SSS",
-			"hh:mm:ss a zzz",
-			"HH:mm:ss zzz",
-			"hh:mm:ss a",
-			"HH:mm:ss", // TIME
-			"hh:mm a zzz",
-			"HH:mm zzz",
-			"hh:mm a",
-			"HH:mm", // 150
-			"yyyy", // year only
-			"MM/dd/yy", //152
-			"dd", //153
-			"MM", //154
-			"HH",
-			"ddMMMyyyy",
-         "CCCDDD",  //JDE Date
-			"CCCDDD-HHmmss",//JDE Date with time 158
-		   "HHmmss"	}; //JDE Time with time 159
+		"yyyy-MM-dd hh:mm:ss.SSS a zzz", // 0
+		"yyyy-MM-dd HH:mm:ss.SSS zzz",
+		"yyyy-MM-dd hh:mm:ss.SSS a",
+		"yyyy-MM-dd HH:mm:ss.SSS",
+		"yyyy-MM-dd hh:mm:ss a zzz",
+		"yyyy-MM-dd HH:mm:ss zzz",
+		"yyyy-MM-dd hh:mm:ss a",
+		"yyyy-MM-dd HH:mm:ss", // our Oracle date, or should we use the tz?
+		"yyyy-MM-dd hh:mm a zzz",
+		"yyyy-MM-dd HH:mm zzz",
+		"yyyy-MM-dd hh:mm a", // 10
+		"yyyy-MM-dd HH:mm",
+		"yyyy-MM-dd'T'HH:mm:ss.SSS", // sort of ISO 8601
+		"yyyy-MM-dd'T'HH:mm:ss", // ISO 8601
+		"yyyy-MM-dd'T'HH:mm", // ISO 8601
+		"yyyy/MM/dd hh:mm:ss.SSS a zzz",
+		"yyyy/MM/dd HH:mm:ss.SSS zzz",
+		"yyyy/MM/dd hh:mm:ss.SSS a",
+		"yyyy/MM/dd HH:mm:ss.SSS",
+		"yyyy/MM/dd hh:mm:ss a zzz",
+		"yyyy/MM/dd HH:mm:ss zzz", // 20
+		"yyyy/MM/dd hh:mm:ss a",
+		"yyyy/MM/dd HH:mm:ss",
+		"yyyy/MM/dd hh:mm a zzz",
+		"yyyy/MM/dd HH:mm zzz",
+		"yyyy/MM/dd hh:mm a",
+		"yyyy/MM/dd HH:mm",
+		"dd-MM-yyyy hh:mm:ss.SSS a zzz",
+		"dd-MM-yyyy HH:mm:ss.SSS zzz",
+		"dd-MM-yyyy hh:mm:ss.SSS a",
+		"dd-MM-yyyy HH:mm:ss.SSS", // 30
+		"dd-MM-yyyy hh:mm:ss a zzz",
+		"dd-MM-yyyy HH:mm:ss zzz",
+		"dd-MM-yyyy hh:mm:ss a",
+		"dd-MM-yyyy HH:mm:ss",
+		"dd-MM-yyyy hh:mm a zzz",
+		"dd-MM-yyyy HH:mm zzz",
+		"dd-MM-yyyy hh:mm a",
+		"dd-MM-yyyy HH:mm",
+		"MM/dd/yyyy hh:mm:ss.SSS a zzz",
+		"MM/dd/yyyy HH:mm:ss.SSS zzz", // 40
+		"MM/dd/yyyy hh:mm:ss.SSS a",
+		"MM/dd/yyyy HH:mm:ss.SSS",
+		"MM/dd/yyyy hh:mm:ss a zzz",
+		"MM/dd/yyyy HH:mm:ss zzz",
+		"MM/dd/yyyy hh:mm:ss a",
+		"MM/dd/yyyy HH:mm:ss", // DISPLAY_FULL
+		"MM/dd/yyyy hh:mm a zzz",
+		"MM/dd/yyyy HH:mm zzz",
+		"MM/dd/yyyy hh:mm a",
+		"MM/dd/yyyy HH:mm", // 50
+		"EEE dd MMM yyyy hh:mm:ss.SSS a zzz",
+		"EEE dd MMM yyyy HH:mm:ss.SSS zzz",
+		"EEE dd MMM yyyy hh:mm:ss.SSS a",
+		"EEE dd MMM yyyy HH:mm:ss.SSS",
+		"EEE dd MMM yyyy hh:mm:ss a zzz",
+		"EEE dd MMM yyyy HH:mm:ss zzz",
+		"EEE dd MMM yyyy hh:mm:ss a",
+		"EEE dd MMM yyyy HH:mm:ss",
+		"EEE dd MMM yyyy hh:mm a zzz",
+		"EEE dd MMM yyyy HH:mm zzz", // 60
+		"EEE dd MMM yyyy hh:mm a",
+		"EEE dd MMM yyyy HH:mm",
+		"EEE, MMM dd, yyyy hh:mm:ss.SSS a zzz",
+		"EEE, MMM dd, yyyy HH:mm:ss.SSS zzz",
+		"EEE, MMM dd, yyyy hh:mm:ss.SSS a",
+		"EEE, MMM dd, yyyy HH:mm:ss.SSS",
+		"EEE, MMM dd, yyyy hh:mm:ss a zzz",
+		"EEE, MMM dd, yyyy HH:mm:ss zzz",
+		"EEE, MMM dd, yyyy hh:mm:ss a",
+		"EEE, MMM dd, yyyy HH:mm:ss", // 70
+		"EEE, MMM dd, yyyy hh:mm a zzz",
+		"EEE, MMM dd, yyyy HH:mm zzz",
+		"EEE, MMM dd, yyyy hh:mm a",
+		"EEE, MMM dd, yyyy HH:mm",
+		"MMM dd, yyyy hh:mm:ss.SSS a zzz",
+		"MMM dd, yyyy HH:mm:ss.SSS zzz",
+		"MMM dd, yyyy hh:mm:ss.SSS a",
+		"MMM dd, yyyy HH:mm:ss.SSS",
+		"MMM dd, yyyy hh:mm:ss a zzz",
+		"MMM dd, yyyy HH:mm:ss zzz", // 80
+		"MMM dd, yyyy hh:mm:ss a",
+		"MMM dd, yyyy HH:mm:ss",
+		"MMM dd, yyyy hh:mm a zzz",
+		"MMM dd, yyyy HH:mm zzz",
+		"MMM dd, yyyy hh:mm a",
+		"MMM dd, yyyy HH:mm",
+		"MMM dd yyyy hh:mm:ss.SSS a zzz",
+		"MMM dd yyyy HH:mm:ss.SSS zzz",
+		"MMM dd yyyy hh:mm:ss.SSS a",
+		"MMM dd yyyy HH:mm:ss.SSS", // 90
+		"MMM dd yyyy hh:mm:ss a zzz",
+		"MMM dd yyyy HH:mm:ss zzz",
+		"MMM dd yyyy hh:mm:ss a",
+		"MMM dd yyyy HH:mm:ss",
+		"MMM dd yyyy hh:mm a zzz",
+		"MMM dd yyyy HH:mm zzz",
+		"MMM dd yyyy hh:mm a",
+		"MMM dd yyyy HH:mm",
+		"dd MMM yyyy hh:mm:ss.SSS a zzz",
+		"dd MMM yyyy HH:mm:ss.SSS zzz", // 100
+		"dd MMM yyyy hh:mm:ss.SSS a",
+		"dd MMM yyyy HH:mm:ss.SSS",
+		"dd MMM yyyy hh:mm:ss a zzz",
+		"dd MMM yyyy HH:mm:ss zzz",
+		"dd MMM yyyy hh:mm:ss a",
+		"dd MMM yyyy HH:mm:ss",
+		"dd MMM yyyy hh:mm a zzz",
+		"dd MMM yyyy HH:mm zzz",
+		"dd MMM yyyy hh:mm a",
+		"dd MMM yyyy HH:mm", // 110
+		"dd-MMM-yyyy hh:mm:ss.SSS a zzz",
+		"dd-MMM-yyyy HH:mm:ss.SSS zzz",
+		"dd-MMM-yyyy hh:mm:ss.SSS a",
+		"dd-MMM-yyyy HH:mm:ss.SSS",
+		"dd-MMM-yyyy hh:mm:ss a zzz",
+		"dd-MMM-yyyy HH:mm:ss zzz",
+		"dd-MMM-yyyy hh:mm:ss a",
+		"dd-MMM-yyyy HH:mm:ss",
+		"dd-MMM-yyyy hh:mm a zzz",
+		"dd-MMM-yyyy HH:mm zzz", // 120
+		"dd-MMM-yyyy hh:mm a",
+		"dd-MMM-yyyy HH:mm",
+		"EEE, MMM dd, yyyy",
+		"EEE dd MMM yyyy",
+		"yyyy/MM/dd",
+		"yyyy-MM-dd",
+		"dd-MM-yyyy",
+		"MM/dd/yyyy", // Date
+		"dd-MMM-yyyy",
+		"dd MMM yyyy", // 130
+		"MMM dd, yyyy",
+		"MMM dd yyyy",
+		"MMM-yyyy",
+		"yyyy-MM", // short date
+		"MM-yyyy",
+		"yyyy/MM",
+		"MM/yyyy",
+		"MMM yyyy",
+		"hh:mm:ss.SSS a zzz",
+		"HH:mm:ss.SSS zzz", // 140
+		"hh:mm:ss.SSS a",
+		"HH:mm:ss.SSS",
+		"hh:mm:ss a zzz",
+		"HH:mm:ss zzz",
+		"hh:mm:ss a",
+		"HH:mm:ss", // TIME
+		"hh:mm a zzz",
+		"HH:mm zzz",
+		"hh:mm a",
+		"HH:mm", // 150
+		"yyyy", // year only
+		"MM/dd/yy", //152
+		"dd", //153
+		"MM", //154
+		"HH",
+		"ddMMMyyyy",
+		"CCCDDD",  //JDE Date
+		"CCCDDD-HHmmss",//JDE Date with time 158
+	"HHmmss"	}; //JDE Time with time 159
 
 	/**
 	 * Allocates an <code>IBDCalendar</code> object and initializes it so that
@@ -407,11 +406,13 @@ public class IBDCalendar extends java.util.GregorianCalendar
 		throw e;
 	}
 
+	@Override
 	public long getTimeInMillis()
 	{
 		return super.getTimeInMillis();
 	}
 
+	@Override
 	public void setTimeInMillis(long time)
 	{
 		super.setTimeInMillis(time);
@@ -447,41 +448,41 @@ public class IBDCalendar extends java.util.GregorianCalendar
 		long difference = getTimeInMillis() - other.getTimeInMillis();
 		switch (field)
 		{
-			case YEAR:
-				difference = get(YEAR) - other.get(YEAR);
-				break;
-			case MONTH:
-				difference =
-					((get(YEAR) - other.get(YEAR)) * 12) +
-					(get(MONTH) - other.get(MONTH) );
-				break;
-				// notice no use of breaks! this cascades
-			case WEEK_OF_YEAR:
-			case WEEK_OF_MONTH:
-			case DAY_OF_WEEK_IN_MONTH:
-				difference /= 7;
-			case DATE:
-			case WORKDAYS:
-			case DAY_OF_YEAR:
-			case DAY_OF_WEEK:
-				difference /= 24;
-			case HOUR:
-			case HOUR_OF_DAY:
-				difference /= 60;
-			case Calendar.MINUTE:
-				difference /= 60;
-			case Calendar.SECOND:
-				difference /= 1000;
-			case Calendar.MILLISECOND:
-				// do nothing, already in milliseconds
-				break;
-			default:
-				throw new IllegalArgumentException("Illegal Argument: " + field);
+		case YEAR:
+			difference = get(YEAR) - other.get(YEAR);
+			break;
+		case MONTH:
+			difference =
+			(get(YEAR) - other.get(YEAR)) * 12 +
+			get(MONTH) - other.get(MONTH);
+			break;
+			// notice no use of breaks! this cascades
+		case WEEK_OF_YEAR:
+		case WEEK_OF_MONTH:
+		case DAY_OF_WEEK_IN_MONTH:
+			difference /= 7;
+		case DATE:
+		case WORKDAYS:
+		case DAY_OF_YEAR:
+		case DAY_OF_WEEK:
+			difference /= 24;
+		case HOUR:
+		case HOUR_OF_DAY:
+			difference /= 60;
+		case Calendar.MINUTE:
+			difference /= 60;
+		case Calendar.SECOND:
+			difference /= 1000;
+		case Calendar.MILLISECOND:
+			// do nothing, already in milliseconds
+			break;
+		default:
+			throw new IllegalArgumentException("Illegal Argument: " + field);
 		}
 		if(field == WORKDAYS)
 		{
-		  double weeks = ((double)difference)/7;
-		  difference = (long)(weeks*5);
+			double weeks = (double)difference/7;
+			difference = (long)(weeks*5);
 		}
 		return difference;
 	}
@@ -492,6 +493,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	 *
 	 * @return String representation of this Date.
 	 */
+	@Override
 	public String toString()
 	{
 		return toString(IBDCalendar.DATE);
@@ -525,39 +527,39 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	 */
 	public String toString(String format)
 	{
-	   if("CCCDDD".equals(format))
+		if("CCCDDD".equals(format))
 		{
-		  String yr = toString("yyyy");
-		  int intyr = Integer.parseInt(yr);
-		  if(intyr < 100)
-		  {
-			 yr="0"+Integer.toString(intyr-1900);
-		  }
-		  else
-		  {
-			 yr=Integer.toString(intyr-1900);
-		  }
-   	  return  yr + toString("DDD");
+			String yr = toString("yyyy");
+			int intyr = Integer.parseInt(yr);
+			if(intyr < 100)
+			{
+				yr="0"+Integer.toString(intyr-1900);
+			}
+			else
+			{
+				yr=Integer.toString(intyr-1900);
+			}
+			return  yr + toString("DDD");
 		}
 		else if("CCCDDDHHmmss".equals(format))
 		{
-		  String yr = toString("yyyy");
-		  int intyr = Integer.parseInt(yr);
-		  if(intyr < 100)
-		  {
-			 yr="0"+Integer.toString(intyr-1900);
-		  }
-		  else
-		  {
-			 yr=Integer.toString(intyr-1900);
-		  }
-		  return yr + toString("DDDHHmmss");
+			String yr = toString("yyyy");
+			int intyr = Integer.parseInt(yr);
+			if(intyr < 100)
+			{
+				yr="0"+Integer.toString(intyr-1900);
+			}
+			else
+			{
+				yr=Integer.toString(intyr-1900);
+			}
+			return yr + toString("DDDHHmmss");
 
 		}
 		else
 		{
-		  SimpleDateFormat sdf = new SimpleDateFormat(format);
-		  return sdf.format(getTime());
+			SimpleDateFormat sdf = new SimpleDateFormat(format);
+			return sdf.format(getTime());
 		}
 	}
 
@@ -596,7 +598,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	public String getEraName()
 	{
 		String eras[] = dfs.getEras();
-		return eras[get(IBDCalendar.ERA)];
+		return eras[get(Calendar.ERA)];
 	}
 
 	/**
@@ -608,7 +610,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	public String getMonthName()
 	{
 		String months[] = dfs.getMonths();
-		return months[get(IBDCalendar.MONTH)];
+		return months[get(Calendar.MONTH)];
 	}
 
 	/**
@@ -620,7 +622,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	public String getShortMonthName()
 	{
 		String shortMonths[] = dfs.getShortMonths();
-		return shortMonths[get(IBDCalendar.MONTH)];
+		return shortMonths[get(Calendar.MONTH)];
 	}
 
 	/**
@@ -632,7 +634,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	public String getWeekdayName()
 	{
 		String days[] = dfs.getWeekdays();
-		return days[get(IBDCalendar.DAY_OF_WEEK)];
+		return days[get(Calendar.DAY_OF_WEEK)];
 	}
 
 	/**
@@ -644,7 +646,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	public String getShortWeekdayName()
 	{
 		String shortWeekdays[] = dfs.getShortWeekdays();
-		return shortWeekdays[get(IBDCalendar.DAY_OF_WEEK)];
+		return shortWeekdays[get(Calendar.DAY_OF_WEEK)];
 	}
 
 	/**
@@ -656,7 +658,7 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	public String getAmpmName()
 	{
 		String ampms[] = dfs.getAmPmStrings();
-		return ampms[get(IBDCalendar.AM_PM)];
+		return ampms[get(Calendar.AM_PM)];
 	}
 
 	/**
@@ -669,8 +671,8 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	{
 		TimeZone tz = getTimeZone();
 		boolean daylight = tz.inDaylightTime(getTime());
-// jdk1.2
-//		return tz.getDisplayName(daylight,tz.LONG);
+		// jdk1.2
+		//		return tz.getDisplayName(daylight,tz.LONG);
 
 		return tz.getID();
 	}
@@ -685,8 +687,8 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	{
 		TimeZone tz = getTimeZone();
 		boolean daylight = tz.inDaylightTime(getTime());
-// jdk1.2
-//		return tz.getDisplayName(daylight,tz.SHORT);
+		// jdk1.2
+		//		return tz.getDisplayName(daylight,tz.SHORT);
 
 		return tz.getID();
 	}
@@ -696,40 +698,40 @@ public class IBDCalendar extends java.util.GregorianCalendar
 	 */
 	private void format(String dateString, String format)
 	{
-	  if(format.equals("CCCDDD"))
-	  {
-		int cyear = Integer.parseInt(dateString.substring(0,dateString.length()-3));
-		dateString=Integer.toString(cyear + 1900) + dateString.substring(dateString.length()-3);
-		format = "yyyyDDD";
-	  }
-	  else if(format.equals("CCCDDD-HHmmss"))
-	  {
-		 int indx = dateString.indexOf("-");
-		 String yearStr = dateString.substring(0,indx);
-		 int cyear = Integer.parseInt(yearStr.substring(0,yearStr.length()-3));
-		 String timeStr = dateString.substring(indx+1);
-		 if(timeStr.length() == 5)
-		 {
-			timeStr= "0" + timeStr;
-		 }
-		 dateString=Integer.toString(cyear + 1900) + yearStr.substring(yearStr.length()-3) + timeStr;
-		 format = "yyyyDDDHHmmss";
-	  }
+		if(format.equals("CCCDDD"))
+		{
+			int cyear = Integer.parseInt(dateString.substring(0,dateString.length()-3));
+			dateString=Integer.toString(cyear + 1900) + dateString.substring(dateString.length()-3);
+			format = "yyyyDDD";
+		}
+		else if(format.equals("CCCDDD-HHmmss"))
+		{
+			int indx = dateString.indexOf("-");
+			String yearStr = dateString.substring(0,indx);
+			int cyear = Integer.parseInt(yearStr.substring(0,yearStr.length()-3));
+			String timeStr = dateString.substring(indx+1);
+			if(timeStr.length() == 5)
+			{
+				timeStr= "0" + timeStr;
+			}
+			dateString=Integer.toString(cyear + 1900) + yearStr.substring(yearStr.length()-3) + timeStr;
+			format = "yyyyDDDHHmmss";
+		}
 
 
-	  SimpleDateFormat sdf = new SimpleDateFormat(format);
-	  sdf.setLenient(false); // this MUST BE SET!
-	  try
-	  {
-		 long val = sdf.parse(dateString).getTime();
-		 setTimeInMillis(val);
-	  }
-	  catch (java.text.ParseException pe)
-	  {
-		 throw new IllegalArgumentException(pe.toString());
-	  }
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		sdf.setLenient(false); // this MUST BE SET!
+		try
+		{
+			long val = sdf.parse(dateString).getTime();
+			setTimeInMillis(val);
+		}
+		catch (java.text.ParseException pe)
+		{
+			throw new IllegalArgumentException(pe.toString());
+		}
 	}
-			/**
+	/**
 			 @return The Julian day number that begins at noon of
 			 this day
 			 Positive year signifies A.D., negative year B.C.
@@ -742,105 +744,114 @@ public class IBDCalendar extends java.util.GregorianCalendar
 
 			 This algorithm is from Press et al., Numerical Recipes
 			 in C, 2nd ed., Cambridge University Press 1992
-		 */
+	 */
 
-		public int toJulian()
-		{
-			int jul = 0;
-			try{
-				int year = get(Calendar.YEAR);
-				int month = get(Calendar.MONTH);
-				int day = get(Calendar.DAY_OF_MONTH);
-				int jy = year;
-				if ( year < 0 ) jy++;
-				int jm = month;
-				if ( month > 2 ) jm++;
-				else
-				{
-						jy--;
-						jm += 13;
-				}
-				jul = (int) (java.lang.Math.floor(365.25 * jy)
-												 + java.lang.Math.floor(30.6001*jm) + day + 1720995.0);
-
-				int IGREG = 15 + 31*(10+12*1582);
-				// Gregorian Calendar adopted Oct. 15, 1582
-
-				if ( day + 31 * (month + 12 * year) >= IGREG )
-				// change over to Gregorian calendar
-				{
-						int ja = (int)(0.01 * jy);
-						jul += 2 - ja + (int)(0.25 * ja);
-				}
-			}catch(Exception e)
-			{
-				return 0;
+	public int toJulian()
+	{
+		int jul = 0;
+		try{
+			int year = get(Calendar.YEAR);
+			int month = get(Calendar.MONTH);
+			int day = get(Calendar.DAY_OF_MONTH);
+			int jy = year;
+			if ( year < 0 ) {
+				jy++;
 			}
-				return jul;
-		}
+			int jm = month;
+			if ( month > 2 ) {
+				jm++;
+			} else
+			{
+				jy--;
+				jm += 13;
+			}
+			jul = (int) (java.lang.Math.floor(365.25 * jy)
+					+ java.lang.Math.floor(30.6001*jm) + day + 1720995.0);
 
-		/**
+			int IGREG = 15 + 31*(10+12*1582);
+			// Gregorian Calendar adopted Oct. 15, 1582
+
+			if ( day + 31 * (month + 12 * year) >= IGREG )
+				// change over to Gregorian calendar
+			{
+				int ja = (int)(0.01 * jy);
+				jul += 2 - ja + (int)(0.25 * ja);
+			}
+		}catch(Exception e)
+		{
+			return 0;
+		}
+		return jul;
+	}
+
+	/**
 			 Converts a Julian day to a calendar date
 
 			 This algorithm is from Press et al., Numerical Recipes
 			 in C, 2nd ed., Cambridge University Press 1992
 			 @param j  the Julian date
 			 @return IBDCalendar
+	 */
+
+	public static IBDCalendar fromJulian(int j)
+	{
+		int ja = j;
+		int JGREG = 2299161;
+		/* the Julian date of the adoption of the Gregorian
+					 calendar
 		 */
 
-		public static IBDCalendar fromJulian(int j)
-		{
-				int ja = j;
-				int JGREG = 2299161;
-				/* the Julian date of the adoption of the Gregorian
-					 calendar
-				*/
-
-				if ( j >= JGREG )
-				/* cross-over to Gregorian Calendar produces this
+		if ( j >= JGREG )
+			/* cross-over to Gregorian Calendar produces this
 					 correction
-				*/
-				{
-						int jalpha = (int)(((float)(j - 1867216) - 0.25)
-															 / 36524.25);
-						ja += 1 + jalpha - (int)(0.25 * jalpha);
-				}
-				int jb = ja + 1524;
-				int jc = (int)(6680.0 + ((float)(jb-2439870) - 122.1)
-											 /365.25);
-				int jd = (int)(365 * jc + (0.25 * jc));
-				int je = (int)((jb - jd)/30.6001);
-				int day = jb - jd - (int)(30.6001 * je);
-				int month = je - 1;
-				if ( month > 12 ) month -= 12;
-				int year = jc - 4715;
-				if ( month > 2 ) --year;
-				if ( year <= 0 ) --year;
-				IBDCalendar c = new IBDCalendar();
-				c.set(year,month,day);
-				return c;
-		}
-
-
-		public static void main(String[] args)
+			 */
 		{
-		  IBDCalendar ac = new IBDCalendar("104040", "CCCDDD");
-		  System.out.println(ac.toString(IBDCalendar.DATE_FULL));
-		  System.out.println(ac.toString(157));
-		  IBDCalendar ac1 = new IBDCalendar("104050", "CCCDDD");
-		  System.out.println(ac1.toString(IBDCalendar.DATE_FULL));
-		  System.out.println(ac1.toString(157));
-		  System.out.println("DayOfWeek " + ac1.difference(IBDCalendar.WORKDAYS, ac) );
-
-		  ac = new IBDCalendar("94108-21224", "CCCDDD-HHmmss");
-		  System.out.println(ac.toString(IBDCalendar.DATE_FULL));
-		  System.out.println(ac.toString(157));
-		  System.out.println(Integer.parseInt(ac.toString(159)));
-		  ac = new IBDCalendar("104102-121214", "CCCDDD-HHmmss");
-		  System.out.println(ac.toString(IBDCalendar.DATE_FULL));
-		  System.out.println(ac.toString(157));
-		  System.out.println(ac.toString(159));
+			int jalpha = (int)((j - 1867216 - 0.25)
+					/ 36524.25);
+			ja += 1 + jalpha - (int)(0.25 * jalpha);
 		}
+		int jb = ja + 1524;
+		int jc = (int)(6680.0 + (jb-2439870 - 122.1)
+				/365.25);
+		int jd = (int)(365 * jc + 0.25 * jc);
+		int je = (int)((jb - jd)/30.6001);
+		int day = jb - jd - (int)(30.6001 * je);
+		int month = je - 1;
+		if ( month > 12 ) {
+			month -= 12;
+		}
+		int year = jc - 4715;
+		if ( month > 2 ) {
+			--year;
+		}
+		if ( year <= 0 ) {
+			--year;
+		}
+		IBDCalendar c = new IBDCalendar();
+		c.set(year,month,day);
+		return c;
+	}
+
+
+	public static void main(String[] args)
+	{
+		IBDCalendar ac = new IBDCalendar("104040", "CCCDDD");
+		System.out.println(ac.toString(IBDCalendar.DATE_FULL));
+		System.out.println(ac.toString(157));
+		IBDCalendar ac1 = new IBDCalendar("104050", "CCCDDD");
+		System.out.println(ac1.toString(IBDCalendar.DATE_FULL));
+		System.out.println(ac1.toString(157));
+		System.out.println("DayOfWeek " + ac1.difference(IBDCalendar.WORKDAYS, ac) );
+
+		ac = new IBDCalendar("94108-21224", "CCCDDD-HHmmss");
+		System.out.println(ac.toString(IBDCalendar.DATE_FULL));
+		System.out.println(ac.toString(157));
+		System.out.println(Integer.parseInt(ac.toString(159)));
+		ac = new IBDCalendar("104102-121214", "CCCDDD-HHmmss");
+		System.out.println(ac.toString(IBDCalendar.DATE_FULL));
+		System.out.println(ac.toString(157));
+		System.out.println(ac.toString(159));
+	}
 
 
 

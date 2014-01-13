@@ -16,7 +16,7 @@ import org.joda.time.LocalDate;
  *
  */
 public class MarketIndexParametersDB extends GenericDBSuperclass{
-	
+
 	/**
 	 * @param indexList
 	 */
@@ -24,10 +24,10 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		System.out.println("");
 		System.out.println("--------------------------------------------------------------------");
 		System.out.println("Starting Market Index Parameters Database Initialization");//Get a database connection
-		
+
 		//Iteration tracking variable for System.out.printing and debugging
 		int interationCounter = 0;
-		
+
 		//Loop for each each index to create a database to hold model parameters
 		for(String indexParams:indexParametersDBNameList) {
 			interationCounter++;
@@ -45,7 +45,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 						" Var_Value VARCHAR(50))";
 				createTable(createTableSQL, connection, indexParams);
 			}
-			
+
 			/*
 			 * Checking to see if the tables are empty
 			 * If they are populate them from Yahoo
@@ -61,7 +61,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		}
 		System.out.println("--------------------------------------------------------------------");
 	}
-	
+
 	/**
 	 * Primary method to populate a price volume database after it is newly created
 	 * @param connection
@@ -95,25 +95,25 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		SP500Vars.put("pivotTrend35", "-0.003");
 		SP500Vars.put("rallyVolAVG50On", "false");
 		SP500Vars.put("rallyPriceHighOn", "true");
-		
+
 		//Get a set of the entries
 		Set keys = SP500Vars.keySet();
-		
+
 		//Get an iterator
 		Iterator itr = keys.iterator();
-		
+
 		System.out.println("Populating variable database for " + indexParams);
-		
+
 		//Add each entry to the DB
 		while(itr.hasNext()) {
 			String key = (String)itr.next();
 			String value = SP500Vars.get(key);
 			addVarPairRecord(connection, indexParams, key, value);
 		}
-		
-		
+
+
 	}
-	
+
 	/**
 	 * @param connection
 	 * @param indexParams
@@ -146,21 +146,22 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 			}
 		}
 	}
-	
+
 	public static String getStringValue(Connection connection, String tableName, String key){
-		
+
 		String value;
 		String query = "SELECT Var_Value FROM `" + tableName + "`"
 				+ " WHERE Var_Name=?";
-		
+
 		try {
 			PreparedStatement selectStatement = connection.prepareStatement(query);
 			selectStatement.setString(1, key);
 			ResultSet rs = selectStatement.executeQuery();
-			if(rs.next())
+			if(rs.next()) {
 				value = rs.getString("Var_Value");
-			else
+			} else {
 				value = "Error, value not found from the given key. Or something else went really wrong.";
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			value = e.toString();
@@ -168,13 +169,13 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		}
 		return value;
 	}
-	
+
 	public static boolean getBooleanValue(Connection connection, String tableName, String key){
 		String stringValue = getStringValue(connection,tableName,key);
 		boolean boolValue = Boolean.parseBoolean(stringValue);
 		return boolValue;
 	}
-	
+
 	public static LocalDate getDateValue(Connection connection, String tableName, String key){
 		String stringValue = getStringValue(connection,tableName,key);
 		LocalDate dateValue = new LocalDate(stringValue);
