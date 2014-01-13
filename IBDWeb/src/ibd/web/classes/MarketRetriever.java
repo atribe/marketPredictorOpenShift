@@ -4,9 +4,15 @@
  */
 package ibd.web.classes;
 
+import ibd.web.DataObjects.PriceVolumeData;
+import ibd.web.DataObjects.YahooDOHLCVARow;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -17,9 +23,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Hashtable;
+import java.util.List;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+
+import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
+import au.com.bytecode.opencsv.bean.CsvToBean;
 
 /**
  * @author Aaron
@@ -201,6 +213,37 @@ public class MarketRetriever {
 		//stores the data arrays in a Data object and returns it
 		return new Data(dateList, priceListOpen, priceListHigh, priceListLow, priceListClose, volumeList);
 	}
+	
+	public static List<YahooDOHLCVARow> PVDParser(String url) {
+		List<YahooDOHLCVARow> rowsFromYahooURL = null;
+		
+		try {
+			URL ur = new URL(url);
+			HttpURLConnection HUC = (HttpURLConnection) ur.openConnection();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(HUC.getInputStream()));
+			
+			//System.out.println(reader.readLine());//reads the first line, it's just headers
+			reader.readLine();//reads the first line, it's just headers
+			
+			//OpenCSV parser
+			CSVReader csvReader = new CSVReader(reader, ',', '\"');
+			ColumnPositionMappingStrategy<YahooDOHLCVARow> strategy = new ColumnPositionMappingStrategy<YahooDOHLCVARow>();
+		    strategy.setType(YahooDOHLCVARow.class);
+		    strategy.setColumnMapping(new String[]{"date","Open","High","Low","Close","Volume","AdjClose"});
+
+		    CsvToBean<YahooDOHLCVARow> csv = new CsvToBean<YahooDOHLCVARow>();
+		    rowsFromYahooURL = csv.parse(strategy, csvReader);
+		    
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rowsFromYahooURL;
+	}
 
 	/**
 	 * *Builds url for a user supplied # of startDaysAgo
@@ -225,12 +268,13 @@ public class MarketRetriever {
 		e_endDay = endDate.getDayOfMonth();//this gets todays day of month
 		f_endYear = endDate.getYear();//this gets todays year
 
-		System.out.println("month="+a_startMonth+" day="+b_startDay+" year="+c_startYear);
+		//System.out.println("month="+a_startMonth+" day="+b_startDay+" year="+c_startYear);
 
 		String str = "http://ichart.finance.yahoo.com/table.csv?s="
 				+ symbol.toUpperCase() + "&a=" + a_startMonth + "&b=" + b_startDay + "&c=" + c_startYear + "&g=d&d=" + d_endMonth + "&e=" + e_endDay
 				+ "&f=" + f_endYear + "&ignore=.csv";
-		System.out.println(str);
+		System.out.println("          Using the following Yahoo URL:");
+		System.out.println("          " + str);
 		ibd.web.Constants.Constants.logger.info("Fetched data according to: "+str);
 		return str;
 	}
@@ -265,10 +309,10 @@ public class MarketRetriever {
 	public static int getNumberOfDaysFromNow(LocalDate date){
 		LocalDate today = new LocalDate(); //Variable with today's date
 
+		//Check if today is weekend, if so adjust the date back until it isn't a weekend
+		while(today.getDayOfWeek() > 5){
+			today.minusDays(1);
+		}
 		return Days.daysBetween(date, today).getDays();
-		// TODO remove this old date code when Joda Time takes over
-		//long diffTime = today.getTime() - date.getTime(); //difference in milliseconds between today and the date supplied to this method
-		//int diffDays =(int) (diffTime / (1000 * 60 * 60 * 24)); //calculating days from milliseconds and converting to an int
-		//return diffDays;
 	}
 }

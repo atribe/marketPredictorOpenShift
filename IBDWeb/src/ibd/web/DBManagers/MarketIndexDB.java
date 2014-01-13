@@ -1,5 +1,7 @@
 package ibd.web.DBManagers;
 
+import ibd.web.DataObjects.PriceVolumeData;
+import ibd.web.DataObjects.YahooDOHLCVARow;
 import ibd.web.classes.Data;
 import ibd.web.classes.MarketRetriever;
 
@@ -10,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 
@@ -70,48 +73,6 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		System.out.println("--------------------------------------------------------------------");
 	}
 
-	public static void addRecordsFromData(Connection connection, String index, Data priceVolumeData) {
-		//This query ignores duplicate dates
-		String insertQuery = "INSERT IGNORE INTO `" + index + "` "
-				+ "(Date,Open,High,Low,Close,Volume) VALUES"
-				+ "(?,?,?,?,?,?)";
-		PreparedStatement ps=null;
-		int batchSize = 200;
-		try {
-			ps = connection.prepareStatement(insertQuery);
-
-			for (int i = 0; i < priceVolumeData.getRowCount() ; i++) {
-				ps.setDate(1, priceVolumeData.dateData[i]);
-				ps.setFloat(2,  priceVolumeData.priceDataOpen[i]);
-				ps.setFloat(3,  priceVolumeData.priceDataHigh[i]);
-				ps.setFloat(4,  priceVolumeData.priceDataLow[i]);
-				ps.setFloat(5,  priceVolumeData.priceDataClose[i]);
-				ps.setFloat(6,  priceVolumeData.volumeData[i]);
-				ps.addBatch();
-				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
-				{
-					ps.executeBatch();
-				}
-			}
-			//Execute the last batch, in case the last value of i isn't a multiple of batchSize
-			ps.executeBatch();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IndexOutOfBoundsException e) {
-			e.printStackTrace();
-			System.out.println(e);
-		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException sqlEx) { } // ignore
-
-				ps = null;
-			}
-		}
-	}
-
 	private static int getIndexDaysBehind(Connection connection, String index) {
 
 		//initializing variables
@@ -163,6 +124,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		//System.out.println("          The newest date in the database is " + newestDateInDB.toString() + ".");
 		System.out.println("          The newest date in the database is " + newestDate.toString() + ".");
 
+		
 		int DBDaysTilNow = MarketRetriever.getNumberOfDaysFromNow(newestDate);
 		//System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
 		System.out.println("          Which is " + DBDaysTilNow + " days out of date.");
@@ -170,11 +132,13 @@ public class MarketIndexDB extends GenericDBSuperclass {
 	}
 
 	public static void populateFreshDB(Connection connection, String index) {
+		System.out.println("     -Populating Table " + index);
+		
 		//Container to hold the downloaded data
 		Data priceVolumeData = null;
-
+		List<YahooDOHLCVARow> rowsFromYahoo = null;
 		//This date represents the beginning of time as far as any of the indexes go
-		LocalDate beginningDate = new LocalDate("1920-01-01");
+		LocalDate beginningDate = new LocalDate("2012-01-01");
 
 		//calculates the number of days from today back to beginning date
 		int numDays = MarketRetriever.getNumberOfDaysFromNow(beginningDate);
@@ -182,8 +146,11 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		//Creates a yahoo URL given the index symbol from now back a given number of days
 		String URL = MarketRetriever.getYahooURL(index, numDays);
 
+		rowsFromYahoo = MarketRetriever.PVDParser(URL);
+		/*
 		try {
-			priceVolumeData = MarketRetriever.dataParser(URL);
+			//priceVolumeData = MarketRetriever.dataParser(URL);
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -194,29 +161,32 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}// extract price and volume data for URL, # of yahoo days
-		addRecordsFromData(connection, index, priceVolumeData);
+		*/
+		addRecordsFromData(connection, index, rowsFromYahoo);
+		 
 	}
 
 	public static void updateIndexDB(Connection connection, String index,int indexDaysBehind) {
 		//Container to hold the downloaded data
 		Data priceVolumeData = null;
-
+		List<YahooDOHLCVARow> rowsFromYahoo = null;
 		//Creates a yahoo URL given the index symbol from now back a given number of days
 		String URL = MarketRetriever.getYahooURL(index, indexDaysBehind);
 
-		try {
-			priceVolumeData = MarketRetriever.dataParser(URL);
-		} catch (MalformedURLException e) {
+		//try {
+			rowsFromYahoo = MarketRetriever.PVDParser(URL);
+			//priceVolumeData = MarketRetriever.dataParser(URL);
+		//} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		//	e.printStackTrace();
+		//} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
+		//	e.printStackTrace();
+		//} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}// extract price and volume data for URL, # of yahoo days
-		addRecordsFromData(connection, index, priceVolumeData);
+		//	e.printStackTrace();
+		//}// extract price and volume data for URL, # of yahoo days
+		addRecordsFromData(connection, index, rowsFromYahoo);
 	}
 
 	/**
@@ -263,5 +233,90 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			e.printStackTrace();
 		}
 		return value;
+	}
+
+	public static void addRecordsFromData(Connection connection, String index, Data priceVolumeData) {
+		//This query ignores duplicate dates
+		String insertQuery = "INSERT IGNORE INTO `" + index + "` "
+				+ "(Date,Open,High,Low,Close,Volume) VALUES"
+				+ "(?,?,?,?,?,?)";
+		PreparedStatement ps=null;
+		int batchSize = 200;
+		try {
+			ps = connection.prepareStatement(insertQuery);
+
+			for (int i = 0; i < priceVolumeData.getRowCount() ; i++) {
+				ps.setDate(1, priceVolumeData.dateData[i]);
+				ps.setFloat(2,  priceVolumeData.priceDataOpen[i]);
+				ps.setFloat(3,  priceVolumeData.priceDataHigh[i]);
+				ps.setFloat(4,  priceVolumeData.priceDataLow[i]);
+				ps.setFloat(5,  priceVolumeData.priceDataClose[i]);
+				ps.setFloat(6,  priceVolumeData.volumeData[i]);
+				ps.addBatch();
+				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
+				{
+					ps.executeBatch();
+				}
+			}
+			//Execute the last batch, in case the last value of i isn't a multiple of batchSize
+			ps.executeBatch();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				ps = null;
+			}
+		}
+	}
+	public static void addRecordsFromData(Connection connection, String index, List<YahooDOHLCVARow> rowsFromYahoo) {
+		//This query ignores duplicate dates
+		String insertQuery = "INSERT INTO `" + index + "` "
+				+ "(Date,Open,High,Low,Close,Volume) VALUES"
+				+ "(?,?,?,?,?,?)";
+		PreparedStatement ps=null;
+		int batchSize = 500;
+		try {
+			ps = connection.prepareStatement(insertQuery);
+
+			//Iterate through the list backwards. I want the oldest date in first and this achieves that
+			for (int i = rowsFromYahoo.size()-1; i > 0 ; i--) {
+				ps.setString(1, rowsFromYahoo.get(i).getDate());
+				ps.setDouble(2,  rowsFromYahoo.get(i).getOpen());
+				ps.setDouble(3,  rowsFromYahoo.get(i).getHigh());
+				ps.setDouble(4,  rowsFromYahoo.get(i).getLow());
+				ps.setDouble(5,  rowsFromYahoo.get(i).getClose());
+				ps.setFloat(6,  rowsFromYahoo.get(i).getVolume());
+				ps.addBatch();
+				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
+				{
+					ps.executeBatch();
+					System.out.println("Executed at i="+i);
+				}
+			}
+			//Execute the last batch, in case the last value of i isn't a multiple of batchSize
+			ps.executeBatch();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				ps = null;
+			}
+		}
 	}
 }
