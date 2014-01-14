@@ -111,13 +111,19 @@ public class IndexAnalyzer {
 	}
 
 	private static void distributionDayAnalysis(){
-		//TODO Start here.
-		//get the date between the end and beginning (modified by the buffer)
-		//i think I need to change the setLoopDays function to get the new beginning date instead of the total loopDays
-		//cycle through each date and look at price decrease and volume increase from one day to the next
-		//When a date where the above is true...
-		//Add it to the table?
-		//Also have a running tally for a given period of time based on the parameters
-		//
+		/*TODO Start here.
+		 * INPUT m_con
+		 * INPUT Index name
+		 */
+		
+		//1.Pull data between the start and end ids
+		//2.Cycle through the data and look for lower price on higher volume than the preceeding day
+		//3.When a date where the above is true...
+			//3a)Add it to the table?
+			//3b)Also have a running tally for a given period of time based on the parameters
+		//PriceVolumeData pvd = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
+		
+		int i = 2;
+
 	}
 }

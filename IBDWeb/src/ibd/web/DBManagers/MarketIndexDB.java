@@ -162,7 +162,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			e.printStackTrace();
 		}// extract price and volume data for URL, # of yahoo days
 		*/
-		addRecordsFromData(connection, index, rowsFromYahoo);
+		initialAddRecordsFromData(connection, index, rowsFromYahoo);
 		 
 	}
 
@@ -276,7 +276,8 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			}
 		}
 	}
-	public static void addRecordsFromData(Connection connection, String index, List<YahooDOHLCVARow> rowsFromYahoo) {
+	
+	public static void initialAddRecordsFromData(Connection connection, String index, List<YahooDOHLCVARow> rowsFromYahoo) {
 		//This query ignores duplicate dates
 		String insertQuery = "INSERT INTO `" + index + "` "
 				+ "(Date,Open,High,Low,Close,Volume) VALUES"
@@ -319,4 +320,115 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			}
 		}
 	}
+	
+	public static void addRecordsFromData(Connection connection, String tableName, List<YahooDOHLCVARow> rowsFromYahoo) {
+
+		//This query ignores duplicate dates
+		String insertQuery = "INSERT INTO `" + tableName + "` "
+				+ "(Date,Open,High,Low,Close,Volume) VALUES"
+				+ "(?,?,?,?,?,?)";
+		PreparedStatement ps = null;
+		int batchSize = 20;
+		
+		try {
+			//prepare the statement
+			ps = connection.prepareStatement(insertQuery);
+
+			//Iterate through the list backwards. I want the oldest date in first and this achieves that
+			for (int i = rowsFromYahoo.size()-1; i > 0 ; i--) {
+				
+				//Check if the row is already in the DB
+				if( !isAlreadyInDB(connection, tableName,rowsFromYahoo.get(i)) ) {
+					//if the row is not in the DB prepare it for insertion
+					ps.setString(1, rowsFromYahoo.get(i).getDate());
+					ps.setDouble(2,  rowsFromYahoo.get(i).getOpen());
+					ps.setDouble(3,  rowsFromYahoo.get(i).getHigh());
+					ps.setDouble(4,  rowsFromYahoo.get(i).getLow());
+					ps.setDouble(5,  rowsFromYahoo.get(i).getClose());
+					ps.setFloat(6,  rowsFromYahoo.get(i).getVolume());
+					ps.addBatch();
+				}
+				
+				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
+				{
+					ps.executeBatch();
+					System.out.println("Executed at i="+i);
+				}
+			}
+			//Execute the last batch, in case the last value of i isn't a multiple of batchSize
+			ps.executeBatch();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				ps = null;
+			}
+		}
+	}
+	public static PriceVolumeData getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
+		PriceVolumeData pvd = new PriceVolumeData();
+		
+		String query = "SELECT * FROM `" + tableName + "`"
+		+ " WHERE `id` BETWEEN ? AND ?"
+		+ " ORDER BY `id` ASC";
+		
+		int i=0;
+		
+		try {
+			PreparedStatement selectStatement = connection.prepareStatement(query);
+			selectStatement.setInt(1, beginId);
+			selectStatement.setInt(2, endId);
+			ResultSet rs = selectStatement.executeQuery();
+
+			while (rs.next()) {
+				pvd.addNextId(rs.getInt("id"));
+				pvd.addNextDate(LocalDate.fromDateFields(rs.getDate("Date")));
+				pvd.addNextOpen(rs.getFloat("Open"));
+				pvd.addNextHigh(rs.getFloat("High"));
+				pvd.addNextLow(rs.getFloat("Low"));
+				pvd.addNextClose(rs.getFloat("Close"));
+				pvd.addNextVolume(rs.getInt("Volume"));
+				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("There was an error in the getDatesBetweenIds method. And that error is: ");
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+		
+		return pvd;
+	}
+	
+	public static boolean isAlreadyInDB(Connection connection, String tableName, YahooDOHLCVARow row) throws SQLException {
+		
+		boolean alreadyExists = false;
+		int j=0;
+		String checkQuery = "SELECT `id` FROM `" + tableName + "`"
+				+ " WHERE `date` = ?";
+		
+		PreparedStatement ps_check = null;
+		
+		ps_check = connection.prepareStatement(checkQuery);
+
+		ps_check.setString(1, row.getDate());
+		ResultSet rs = ps_check.executeQuery();
+			
+		while(rs.next())
+		{
+			int CheckMe = rs.getInt("id");
+			alreadyExists = true;
+		}
+		return alreadyExists;
+	}
+
 }

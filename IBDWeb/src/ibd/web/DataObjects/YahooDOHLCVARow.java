@@ -24,6 +24,17 @@ public class YahooDOHLCVARow {
 	
 	private LocalDate convertedDate;
 	
+	@Override
+    public String toString() {
+		return "Date: " + getDate() 
+				+ "\nOpen: " + getOpen() 
+				+ "\nHigh: " + getHigh()
+				+ "\nLow: " + getLow()
+				+ "\nClose: " + getClose()
+				+ "\nVolume: " + getVolume();
+	}
+
+	
 	/**
 	 * @return the date
 	 */
