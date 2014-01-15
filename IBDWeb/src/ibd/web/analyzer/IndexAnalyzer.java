@@ -2,8 +2,10 @@ package ibd.web.analyzer;
 
 import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
+import ibd.web.DataObjects.YahooDOHLCVARow;
 
 import java.sql.Connection;
+import java.util.List;
 
 import org.joda.time.LocalDate;
 
@@ -95,14 +97,14 @@ public class IndexAnalyzer {
 		String keyOriginalEndDate = "endDate";
 		LocalDate endDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyOriginalEndDate);
 
-		m_loopEndId = MarketIndexDB.getIdByDate(m_con, m_index, endDate);
+		m_loopEndId = MarketIndexDB.getIdByDate(m_con, m_index, endDate, false);
 	}
 
 	private static void setLoopBeginId() {
 		String keyStartDate = "startDate";
 		LocalDate startDate = MarketIndexParametersDB.getDateValue(m_con, m_indexParametersDBName, keyStartDate);
 
-		int beginId = MarketIndexDB.getIdByDate(m_con, m_index, startDate);
+		int beginId = MarketIndexDB.getIdByDate(m_con, m_index, startDate, true);
 		if(beginId-m_bufferDays<1) {
 			m_loopBeginId = 1;
 		} else {
@@ -122,8 +124,18 @@ public class IndexAnalyzer {
 			//3a)Add it to the table?
 			//3b)Also have a running tally for a given period of time based on the parameters
 		//PriceVolumeData pvd = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
+		List<YahooDOHLCVARow> rowsFromDB = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
 		
-		int i = 2;
+		int rowCount = rowsFromDB.size();
+		
+		for(int i = 0; i < rowCount; i++) {
+			if( rowsFromDB.get(i).getClose() > 1) {
+				int j = 5;
+				j++;
+			}
+			int k = 5;
+			k++;
+		}
 
 	}
 }

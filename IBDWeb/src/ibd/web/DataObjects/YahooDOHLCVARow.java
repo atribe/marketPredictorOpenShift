@@ -14,6 +14,7 @@ import org.joda.time.LocalDate;
  */
 public class YahooDOHLCVARow {
 
+	private int id;
 	private String date;
 	private double Open;
 	private double High;
@@ -23,6 +24,8 @@ public class YahooDOHLCVARow {
 	private double AdjClose;
 	
 	private LocalDate convertedDate;
+	
+	public void YahooDOHLCVArow() {	}
 	
 	@Override
     public String toString() {
@@ -34,6 +37,18 @@ public class YahooDOHLCVARow {
 				+ "\nVolume: " + getVolume();
 	}
 
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	/**
 	 * @return the date

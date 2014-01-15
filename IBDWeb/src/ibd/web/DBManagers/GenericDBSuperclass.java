@@ -200,4 +200,17 @@ public class GenericDBSuperclass {
 		return empty;
 	}
 
+	protected static int getLastRowId(Connection connection, String tableName) throws SQLException {
+		Statement queryStatement = null;
+		ResultSet rs = null;
+		
+		//TODO this isn't working. start here tomorrow.
+		
+		queryStatement = connection.createStatement();
+		rs = queryStatement.executeQuery("select last_insert_id() as last_id from " + tableName);
+		int lastId = 0;
+		if(rs.next())
+			lastId = rs.getInt("last_id");
+		return lastId;
+	}
 }

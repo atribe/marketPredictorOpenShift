@@ -193,9 +193,10 @@ public class MarketIndexDB extends GenericDBSuperclass {
 	 * @param connection
 	 * @param tableName
 	 * @param Date
+	 * @param isStartDate determines whether you look for alternative days before or after the supplied date
 	 * @return
 	 */
-	public static int getIdByDate(Connection connection, String tableName, LocalDate Date){
+	public static int getIdByDate(Connection connection, String tableName, LocalDate Date, boolean isStartDate){
 		int value = 0;
 		String query = "SELECT id FROM `" + tableName + "`"
 				+ " WHERE Date=?";
@@ -206,7 +207,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			ResultSet rs = selectStatement.executeQuery();
 			if(rs.next()) {
 				value = rs.getInt("id");
-			} else {
+			} else if (isStartDate) {
 				System.out.println("     The date of " + Date.toString() + " not found in the database.");
 				System.out.println("          Let me check the preceeding couple of days in case you chose a weekend or holiday.");
 				for(int i = 1;i<7;i++)
@@ -221,8 +222,27 @@ public class MarketIndexDB extends GenericDBSuperclass {
 					}
 					else if(i==6)
 					{
-						System.out.println("I didn't find an earlier date, so I'll just choose the first date in the data set");
+						System.out.println("          I didn't find an earlier date, so I'll just choose the first date in the data set");
 						value=1;
+					}
+				}
+			} else {
+				System.out.println("     The date of " + Date.toString() + " not found in the database.");
+				System.out.println("          Let me check the next couple days in case you chose a weekend or holiday.");
+				for(int i = 1;i<7;i++)
+				{
+					selectStatement.setString(1, Date.plusDays(i).toString());
+					rs = selectStatement.executeQuery();
+					if(rs.next())
+					{
+						value = rs.getInt("id");
+						System.out.println("          Looks like I found one...and you got all worried for nothing.");
+						break;
+					}
+					else if(i==6)
+					{
+						System.out.println("          I didn't find an earlier date, so I'll just choose the last date in the data set");
+						value= getLastRowId(connection, tableName);
 					}
 				}
 			}
@@ -374,8 +394,10 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			}
 		}
 	}
-	public static PriceVolumeData getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
-		PriceVolumeData pvd = new PriceVolumeData();
+	
+	public static List<YahooDOHLCVARow> getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
+		List<YahooDOHLCVARow> rowsFromDB = null;
+		
 		
 		String query = "SELECT * FROM `" + tableName + "`"
 		+ " WHERE `id` BETWEEN ? AND ?"
@@ -390,14 +412,16 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			ResultSet rs = selectStatement.executeQuery();
 
 			while (rs.next()) {
-				pvd.addNextId(rs.getInt("id"));
-				pvd.addNextDate(LocalDate.fromDateFields(rs.getDate("Date")));
-				pvd.addNextOpen(rs.getFloat("Open"));
-				pvd.addNextHigh(rs.getFloat("High"));
-				pvd.addNextLow(rs.getFloat("Low"));
-				pvd.addNextClose(rs.getFloat("Close"));
-				pvd.addNextVolume(rs.getInt("Volume"));
-				i++;
+				YahooDOHLCVARow singleRow = null;
+				singleRow.setId(rs.getInt("id"));
+				singleRow.setConvertedDate(LocalDate.fromDateFields(rs.getDate("Date")));
+				singleRow.setOpen(rs.getFloat("Open"));
+				singleRow.setHigh(rs.getFloat("High"));
+				singleRow.setLow(rs.getFloat("Low"));
+				singleRow.setClose(rs.getFloat("Close"));
+				singleRow.setVolume(rs.getInt("Volume"));
+				
+				rowsFromDB.add(singleRow);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -406,7 +430,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			e.printStackTrace();
 		}
 		
-		return pvd;
+		return rowsFromDB;
 	}
 	
 	public static boolean isAlreadyInDB(Connection connection, String tableName, YahooDOHLCVARow row) throws SQLException {
