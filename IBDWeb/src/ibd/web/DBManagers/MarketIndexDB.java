@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -314,7 +315,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 				ps.setDouble(3,  rowsFromYahoo.get(i).getHigh());
 				ps.setDouble(4,  rowsFromYahoo.get(i).getLow());
 				ps.setDouble(5,  rowsFromYahoo.get(i).getClose());
-				ps.setFloat(6,  rowsFromYahoo.get(i).getVolume());
+				ps.setLong(6,  rowsFromYahoo.get(i).getVolume());
 				ps.addBatch();
 				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
 				{
@@ -365,7 +366,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 					ps.setDouble(3,  rowsFromYahoo.get(i).getHigh());
 					ps.setDouble(4,  rowsFromYahoo.get(i).getLow());
 					ps.setDouble(5,  rowsFromYahoo.get(i).getClose());
-					ps.setFloat(6,  rowsFromYahoo.get(i).getVolume());
+					ps.setLong(6,  rowsFromYahoo.get(i).getVolume());
 					ps.addBatch();
 				}
 				
@@ -396,14 +397,12 @@ public class MarketIndexDB extends GenericDBSuperclass {
 	}
 	
 	public static List<YahooDOHLCVARow> getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
-		List<YahooDOHLCVARow> rowsFromDB = null;
+		List<YahooDOHLCVARow> rowsFromDB = new ArrayList<YahooDOHLCVARow>();
 		
 		
 		String query = "SELECT * FROM `" + tableName + "`"
 		+ " WHERE `id` BETWEEN ? AND ?"
 		+ " ORDER BY `id` ASC";
-		
-		int i=0;
 		
 		try {
 			PreparedStatement selectStatement = connection.prepareStatement(query);
@@ -412,14 +411,16 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			ResultSet rs = selectStatement.executeQuery();
 
 			while (rs.next()) {
-				YahooDOHLCVARow singleRow = null;
+				YahooDOHLCVARow singleRow = new YahooDOHLCVARow();
 				singleRow.setId(rs.getInt("id"));
-				singleRow.setConvertedDate(LocalDate.fromDateFields(rs.getDate("Date")));
+				java.sql.Date date = rs.getDate("Date");
+				LocalDate convertedDate = new LocalDate(date);
+				singleRow.setConvertedDate(convertedDate);
 				singleRow.setOpen(rs.getFloat("Open"));
 				singleRow.setHigh(rs.getFloat("High"));
 				singleRow.setLow(rs.getFloat("Low"));
 				singleRow.setClose(rs.getFloat("Close"));
-				singleRow.setVolume(rs.getInt("Volume"));
+				singleRow.setVolume(rs.getLong("Volume"));
 				
 				rowsFromDB.add(singleRow);
 			}

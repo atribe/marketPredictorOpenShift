@@ -204,10 +204,8 @@ public class GenericDBSuperclass {
 		Statement queryStatement = null;
 		ResultSet rs = null;
 		
-		//TODO this isn't working. start here tomorrow.
-		
 		queryStatement = connection.createStatement();
-		rs = queryStatement.executeQuery("select last_insert_id() as last_id from " + tableName);
+		rs = queryStatement.executeQuery("select max(`id`) as last_id from `" + tableName + "`");
 		int lastId = 0;
 		if(rs.next())
 			lastId = rs.getInt("last_id");

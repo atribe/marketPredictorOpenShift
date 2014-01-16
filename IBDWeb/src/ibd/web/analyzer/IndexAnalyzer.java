@@ -128,14 +128,37 @@ public class IndexAnalyzer {
 		
 		int rowCount = rowsFromDB.size();
 		
-		for(int i = 0; i < rowCount; i++) {
-			if( rowsFromDB.get(i).getClose() > 1) {
-				int j = 5;
-				j++;
+		int ddayCount=0;
+		
+		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		{
+			/*
+			 * D day rules
+			 * 1. Volume Higher than the previous day
+			 * 2. Price drops by X% (IBD states .2%)
+			 */
+			long todaysVolume = rowsFromDB.get(i).getVolume();
+			long previousDaysVolume = rowsFromDB.get(i-1).getVolume();
+			
+			float todaysClose = rowsFromDB.get(i).getClose();
+			float previousDaysClose = rowsFromDB.get(i-1).getClose();
+
+			float closePercentChange = (todaysClose/previousDaysClose-1);
+			float closePercentRequiredDrop = (float) -0.002; //TODO make this come from the parameter database
+			
+			if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
+			{
+				ddayCount++;
+				/*
+				 * TODO add these to the database
+				 * update date each row to with a flag whether or not it is a d-day
+				 * update each row to record how many d-days within the past x-days (x should come from the DB)
+				 */
 			}
-			int k = 5;
-			k++;
+			
 		}
+		int k = 5;
+		k++;
 
 	}
 }

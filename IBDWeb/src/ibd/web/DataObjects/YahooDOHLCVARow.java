@@ -16,12 +16,12 @@ public class YahooDOHLCVARow {
 
 	private int id;
 	private String date;
-	private double Open;
-	private double High;
-	private double Low;
-	private double Close;
+	private float Open;
+	private float High;
+	private float Low;
+	private float Close;
 	private long Volume;
-	private double AdjClose;
+	private float AdjClose;
 	
 	private LocalDate convertedDate;
 	
@@ -29,7 +29,8 @@ public class YahooDOHLCVARow {
 	
 	@Override
     public String toString() {
-		return "Date: " + getDate() 
+		return "id: " + getId()
+				+ "\nDate: " + getDate() + " or " + getConvertedDate().toString() 
 				+ "\nOpen: " + getOpen() 
 				+ "\nHigh: " + getHigh()
 				+ "\nLow: " + getLow()
@@ -67,52 +68,52 @@ public class YahooDOHLCVARow {
 	/**
 	 * @return the open
 	 */
-	public double getOpen() {
+	public float getOpen() {
 		return Open;
 	}
 	/**
 	 * @param open the open to set
 	 */
-	public void setOpen(double open) {
+	public void setOpen(float open) {
 		Open = open;
 	}
 	
 	/**
 	 * @return the high
 	 */
-	public double getHigh() {
+	public float getHigh() {
 		return High;
 	}
 	/**
 	 * @param high the high to set
 	 */
-	public void setHigh(double high) {
+	public void setHigh(float high) {
 		High = high;
 	}
 	
 	/**
 	 * @return the low
 	 */
-	public double getLow() {
+	public float getLow() {
 		return Low;
 	}
 	/**
 	 * @param low the low to set
 	 */
-	public void setLow(double low) {
+	public void setLow(float low) {
 		Low = low;
 	}
 	
 	/**
 	 * @return the close
 	 */
-	public double getClose() {
+	public float getClose() {
 		return Close;
 	}
 	/**
 	 * @param close the close to set
 	 */
-	public void setClose(double close) {
+	public void setClose(float close) {
 		Close = close;
 	}
 	
@@ -128,17 +129,20 @@ public class YahooDOHLCVARow {
 	public void setVolume(long volume) {
 		Volume = volume;
 	}
+	public void setVolume(float volume) {
+		Volume = Math.round(volume);
+	}
 	
 	/**
 	 * @return the adjClose
 	 */
-	public double getAdjClose() {
+	public float getAdjClose() {
 		return AdjClose;
 	}
 	/**
 	 * @param adjClose the adjClose to set
 	 */
-	public void setAdjClose(double adjClose) {
+	public void setAdjClose(float adjClose) {
 		AdjClose = adjClose;
 	}
 	/**
