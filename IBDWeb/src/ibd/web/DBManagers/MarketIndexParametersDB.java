@@ -70,11 +70,15 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 	 */
 	private static void populateFreshParamDB(Connection connection, String indexParams){
 		HashMap<String, String> SP500Vars = new HashMap<String, String>();
+		
+		/*
+		 * Parameters with comments have been used. The rest are not yet used.
+		 */
 		SP500Vars.put("fileName", "ResultsSP500.txt");
-		SP500Vars.put("index", "^GSPC");
-		SP500Vars.put("startDate", "1980-01-01");
-		SP500Vars.put("endDate", "2009-12-31");
-		SP500Vars.put("dDayParam", "10");
+		SP500Vars.put("startDate", "1980-01-01");//Analysis Start Date
+		SP500Vars.put("endDate", "2009-12-31");//Analysis End Date
+		SP500Vars.put("dDayWindow", "20");//Track all the d days in the past 20 days (4 weeks)
+		SP500Vars.put("dDayParam", "10");//10 d days in a window = sell
 		SP500Vars.put("churnVolRange", "0.03");
 		SP500Vars.put("churnPriceRange", "0.02");
 		SP500Vars.put("chrunPriceCloseHigherOn", "true");
@@ -169,7 +173,7 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		}
 		return value;
 	}
-
+	
 	public static boolean getBooleanValue(Connection connection, String tableName, String key){
 		String stringValue = getStringValue(connection,tableName,key);
 		boolean boolValue = Boolean.parseBoolean(stringValue);
@@ -180,5 +184,12 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		String stringValue = getStringValue(connection,tableName,key);
 		LocalDate dateValue = new LocalDate(stringValue);
 		return dateValue;
+	}
+
+	
+	public static int getIntValue(Connection connection, String tableName, String key) {
+		String stringValue = getStringValue(connection,tableName,key);
+		int intValue = Integer.parseInt(stringValue);
+		return intValue;
 	}
 }

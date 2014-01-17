@@ -7,6 +7,8 @@ import ibd.web.analyzer.IndexAnalyzer;
 
 import java.sql.Connection;
 
+import DBManagers.MarketIndexAnalysisDB;
+
 /**
  * This class is the highest level class that deals with all things market index.
  * Initializes and updates databases
@@ -47,6 +49,16 @@ public class MarketIndicesModel {
 		 * Models runs are not looped because you may want to run or optimize them one at a time
 		 * I'll figure out this code after I figure out the above
 		 */
+		
+		/*
+		 * Analysis data for each index is stored in a separate database. I chose this because it makes it easier
+		 * to clear and repopulate when doing debugging or optimization. The analysis data table can be dropped without
+		 * having to reimport all the data, which is quite time consuming.
+		 * 
+		 * IndexAnalysisDBInitialization checks if the table already
+		 */
+		MarketIndexAnalysisDB.IndexAnalysisTableInitialization(connection, indexList);
+		
 		IndexAnalyzer.runIndexAnalysis(connection, "^IXIC", "^IXICvars");
 		//Run model for Nasdaq
 		//Run model for SP500
@@ -63,7 +75,7 @@ public class MarketIndicesModel {
 			indexParametersDBNameList[i]=indexList[i] +"vars";
 		}
 	}
-
+	
 	private static String[] getIndexList() {
 		return indexList;
 	}

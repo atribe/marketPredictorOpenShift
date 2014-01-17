@@ -5,9 +5,12 @@ import ibd.web.DBManagers.MarketIndexParametersDB;
 import ibd.web.DataObjects.YahooDOHLCVARow;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.joda.time.LocalDate;
+
+import DBManagers.MarketIndexAnalysisDB;
 
 public class IndexAnalyzer {
 	/*
@@ -149,14 +152,21 @@ public class IndexAnalyzer {
 			if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
 			{
 				ddayCount++;
-				/*
-				 * TODO add these to the database
-				 * update date each row to with a flag whether or not it is a d-day
-				 * update each row to record how many d-days within the past x-days (x should come from the DB)
-				 */
+				
+				try {
+					MarketIndexAnalysisDB.addDDay(m_con, m_index, rowsFromDB.get(i).getId());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 		}
+		//Getting window length from parameter database
+		String keydDayWindow = "dDayWindow";
+		int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
+
+		MarketIndexAnalysisDB.countDDaysInWindow(m_con,m_index,dDayWindow);
 		int k = 5;
 		k++;
 
