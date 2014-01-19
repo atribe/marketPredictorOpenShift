@@ -4,6 +4,7 @@ import ibd.web.DBManagers.GenericDBSuperclass;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MarketIndexAnalysisDB extends GenericDBSuperclass{
@@ -43,28 +44,29 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		}
 	}
 	
-	private static String getTableName(String index) {
+	public static String getTableName(String index) {
 		return index +"DataAnalysis";
 	}
 
-	public static void addDDay(Connection connection, String index, int id) throws SQLException {
-		String tableName = getTableName(index);
-		
-		String insertQuery = "INSERT INTO `" + tableName + "` "
-				+ "(PVD_id,isDDay) VALUES(?,1)";
-		
-		PreparedStatement ps = null;
-		
-		//prepare the statement
-		ps = connection.prepareStatement(insertQuery);
-		
+	public static void addDDayStatus(PreparedStatement ps, int id, boolean isDDay) throws SQLException {
 		ps.setInt(1, id);
-		
+		if(isDDay)
+			ps.setInt(2, 1);
+		else
+			ps.setInt(2, 0);
 		ps.execute();
 	}
 
-	public static void countDDaysInWindow(Connection connection, String index, int dDayWindow) {
-		// TODO START HERE TOMORROW
+	public static void getAllDDayData(Connection connection, String indexTableName) throws SQLException {
+		String tableName = getTableName(indexTableName);
 		
+		String query = "SELECT I.id, I.Date, A.IsDDay, " 
+				+ "FROM `" + indexTableName + "` I "
+				+ "INNER JOIN `" + tableName + "` A ON I.id = A.PVD_id";
+		PreparedStatement ps = null;
+		ps = connection.prepareStatement(query);
+		ResultSet rs = ps.executeQuery();
+		
+		//TODO store these results in some object and then pass a list of those objects back to the function
 	}
 }

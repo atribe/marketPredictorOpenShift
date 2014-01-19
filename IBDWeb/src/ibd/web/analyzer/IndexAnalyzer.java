@@ -5,6 +5,7 @@ import ibd.web.DBManagers.MarketIndexParametersDB;
 import ibd.web.DataObjects.YahooDOHLCVARow;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -133,6 +134,23 @@ public class IndexAnalyzer {
 		
 		int ddayCount=0;
 		
+		/*
+		 * PreparedStatement prep. This will speed up this loop by not requiring a compiling of the query
+		 * every iteration
+		 */
+			String tableName = MarketIndexAnalysisDB.getTableName(m_index);
+		
+			String insertQuery = "INSERT INTO `" + tableName + "` "
+					+ "(PVD_id,isDDay) VALUES(?,?)";
+		
+			PreparedStatement ps = null;
+			try {
+				ps = m_con.prepareStatement(insertQuery);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		
 		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
 		{
 			/*
@@ -154,7 +172,16 @@ public class IndexAnalyzer {
 				ddayCount++;
 				
 				try {
-					MarketIndexAnalysisDB.addDDay(m_con, m_index, rowsFromDB.get(i).getId());
+					MarketIndexAnalysisDB.addDDayStatus(ps, rowsFromDB.get(i).getId(), true);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				try {
+					MarketIndexAnalysisDB.addDDayStatus(ps, rowsFromDB.get(i).getId(), false);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -166,9 +193,27 @@ public class IndexAnalyzer {
 		String keydDayWindow = "dDayWindow";
 		int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
 
-		MarketIndexAnalysisDB.countDDaysInWindow(m_con,m_index,dDayWindow);
+		countDDaysInWindow(dDayWindow);
 		int k = 5;
 		k++;
 
+	}
+	public static void countDDaysInWindow(int dDayWindow) {
+		/* TODO START HERE TOMORROW
+		 * 		1. Pull from d-days table and join them to the table with the date
+		 * 		1b) Store this in a new type of class? New type could hold all the computational data needed
+		 * 		2. For each loop of all the data
+		 * 		3. As the loop progresses through each row, look back in the data the number of days in the window
+		 * 			and see how many d-days there are
+		 * 		4. Write the results to the database 
+		*/
+		try {
+			MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
