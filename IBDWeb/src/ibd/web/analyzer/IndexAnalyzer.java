@@ -2,6 +2,7 @@ package ibd.web.analyzer;
 
 import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
+import ibd.web.DataObjects.IndexAnalysisRow;
 import ibd.web.DataObjects.YahooDOHLCVARow;
 
 import java.sql.Connection;
@@ -200,15 +201,15 @@ public class IndexAnalyzer {
 	}
 	public static void countDDaysInWindow(int dDayWindow) {
 		/* TODO START HERE TOMORROW
-		 * 		1. Pull from d-days table and join them to the table with the date
-		 * 		1b) Store this in a new type of class? New type could hold all the computational data needed
+		 * 		Done 1. Pull from d-days table and join them to the table with the date
+		 * 		Done 1b) Store this in a new type of class? New type could hold all the computational data needed
 		 * 		2. For each loop of all the data
 		 * 		3. As the loop progresses through each row, look back in the data the number of days in the window
 		 * 			and see how many d-days there are
 		 * 		4. Write the results to the database 
 		*/
 		try {
-			MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
+			List<IndexAnalysisRow> AnalysisRows = MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
 			
 			
 		} catch (SQLException e) {

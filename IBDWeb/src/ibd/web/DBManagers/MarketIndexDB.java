@@ -413,9 +413,7 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			while (rs.next()) {
 				YahooDOHLCVARow singleRow = new YahooDOHLCVARow();
 				singleRow.setId(rs.getInt("id"));
-				java.sql.Date date = rs.getDate("Date");
-				LocalDate convertedDate = new LocalDate(date);
-				singleRow.setConvertedDate(convertedDate);
+				singleRow.setConvertedDate(rs.getDate("Date"));
 				singleRow.setOpen(rs.getFloat("Open"));
 				singleRow.setHigh(rs.getFloat("High"));
 				singleRow.setLow(rs.getFloat("Low"));

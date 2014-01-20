@@ -157,10 +157,12 @@ public class YahooDOHLCVARow {
 	public void setConvertedDate(LocalDate convertedDate) {
 		this.convertedDate = convertedDate;
 	}
-	
+	public void setConvertedDate(java.sql.Date convertedDate) {
+		this.convertedDate = new LocalDate(convertedDate);
+	}
 	public void setConvertedDate(String date) {
 		this.convertedDate = new LocalDate(date);
 	}
-	
+
 	
 }

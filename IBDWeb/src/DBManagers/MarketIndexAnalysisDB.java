@@ -1,11 +1,15 @@
 package DBManagers;
 
 import ibd.web.DBManagers.GenericDBSuperclass;
+import ibd.web.DataObjects.IndexAnalysisRow;
+import ibd.web.DataObjects.YahooDOHLCVARow;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 
@@ -57,7 +61,7 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		ps.execute();
 	}
 
-	public static void getAllDDayData(Connection connection, String indexTableName) throws SQLException {
+	public static List<IndexAnalysisRow> getAllDDayData(Connection connection, String indexTableName) throws SQLException {
 		String tableName = getTableName(indexTableName);
 		
 		String query = "SELECT I.id, I.Date, A.IsDDay, " 
@@ -67,6 +71,22 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		ps = connection.prepareStatement(query);
 		ResultSet rs = ps.executeQuery();
 		
-		//TODO store these results in some object and then pass a list of those objects back to the function
+		List<IndexAnalysisRow> AnalysisRows = new ArrayList<IndexAnalysisRow>();
+		
+		while (rs.next()) {
+			IndexAnalysisRow singleResult = new IndexAnalysisRow();
+			singleResult.setId(rs.getInt("id"));
+			singleResult.setDate(rs.getDate("Date"));
+			boolean isDDay;
+			if(rs.getInt("IsDDay")==1)
+				isDDay=true;
+			else
+				isDDay=false;
+			singleResult.setDDay(isDDay);
+			
+			AnalysisRows.add(singleResult);
+		}
+		
+		return AnalysisRows;
 	}
 }
