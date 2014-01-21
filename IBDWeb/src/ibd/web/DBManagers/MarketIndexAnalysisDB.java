@@ -1,6 +1,5 @@
-package DBManagers;
+package ibd.web.DBManagers;
 
-import ibd.web.DBManagers.GenericDBSuperclass;
 import ibd.web.DataObjects.IndexAnalysisRow;
 import ibd.web.DataObjects.YahooDOHLCVARow;
 
@@ -36,13 +35,7 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 			System.out.println("     -Checking if table " + indexAnalysisTableName + " exists.");
 			if(!tableExists(indexAnalysisTableName, connection)) {
 				// Table does not exist, so create it
-				String createTableSQL = "CREATE TABLE IF NOT EXISTS `" + indexAnalysisTableName + "` (" +
-						" id INT not NULL AUTO_INCREMENT," +
-						" PVD_id INT," +
-						" IsDDay TINYINT(1)," +
-						" DDayCounter BIGINT(50)," +
-						" PRIMARY KEY (id)," +
-						" FOREIGN KEY (PVD_id) REFERENCES `" + index + "`(id))";
+				String createTableSQL = tableCreationString(index, indexAnalysisTableName);
 				createTable(createTableSQL, connection, indexAnalysisTableName);
 			}
 		}
@@ -52,6 +45,16 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		return index +"DataAnalysis";
 	}
 
+	public static String tableCreationString(String index, String indexAnalysisTableName) {
+		 return "CREATE TABLE IF NOT EXISTS `" + indexAnalysisTableName + "` (" +
+				" id INT not NULL AUTO_INCREMENT," +
+				" PVD_id INT," +
+				" IsDDay TINYINT(1)," +
+				" DDayCounter BIGINT(50)," +
+				" PRIMARY KEY (id)," +
+				" FOREIGN KEY (PVD_id) REFERENCES `" + index + "`(id))";
+	}
+	
 	public static void addDDayStatus(PreparedStatement ps, int id, boolean isDDay) throws SQLException {
 		ps.setInt(1, id);
 		if(isDDay)
@@ -64,9 +67,10 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 	public static List<IndexAnalysisRow> getAllDDayData(Connection connection, String indexTableName) throws SQLException {
 		String tableName = getTableName(indexTableName);
 		
-		String query = "SELECT I.id, I.Date, A.IsDDay, " 
-				+ "FROM `" + indexTableName + "` I "
-				+ "INNER JOIN `" + tableName + "` A ON I.id = A.PVD_id";
+		String query = "SELECT A.PVD_id, I.Date, A.IsDDay" 
+				+ " FROM `" + indexTableName + "` I"
+				+ " INNER JOIN `" + tableName + "` A ON I.id = A.PVD_id"
+				+ " ORDER BY I.Date DESC";
 		PreparedStatement ps = null;
 		ps = connection.prepareStatement(query);
 		ResultSet rs = ps.executeQuery();
@@ -75,7 +79,7 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		
 		while (rs.next()) {
 			IndexAnalysisRow singleResult = new IndexAnalysisRow();
-			singleResult.setId(rs.getInt("id"));
+			singleResult.setId(rs.getInt("PVD_id"));
 			singleResult.setDate(rs.getDate("Date"));
 			boolean isDDay;
 			if(rs.getInt("IsDDay")==1)
@@ -88,5 +92,18 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		}
 		
 		return AnalysisRows;
+	}
+
+	public static void updateRow(Connection connection, String indexTableName, IndexAnalysisRow analysisRow) throws SQLException {
+		String tableName = getTableName(indexTableName);
+		
+		String updateQuery = "UPDATE `" + tableName + "`"
+				+ " SET DDayCounter=?"
+				+ " WHERE PVD_id=?";
+		PreparedStatement ps = connection.prepareStatement(updateQuery);
+		ps.setInt(1, analysisRow.getdDayCounter());
+		ps.setInt(2, analysisRow.getId());
+		int rowsUpdated = ps.executeUpdate();
+		rowsUpdated = rowsUpdated;//just something to stop the debugging
 	}
 }

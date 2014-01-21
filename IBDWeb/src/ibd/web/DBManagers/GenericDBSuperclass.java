@@ -5,6 +5,7 @@ import ibd.web.Resource.LoadProperties;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -200,6 +201,18 @@ public class GenericDBSuperclass {
 		return empty;
 	}
 
+	public static void resetTable(Connection connection, String tableName) throws SQLException {
+		String truncQuery = "TRUNCATE TABLE `" + tableName + "`"; 
+		Statement s = connection.createStatement();
+		s.execute(truncQuery);
+	}
+	
+	public static boolean dropTable(Connection connection, String tableName) throws SQLException {
+		String dropQuery = "DROP TABLE IF EXISTS `" + tableName + "`";
+		PreparedStatement ps = connection.prepareStatement(dropQuery);
+		return ps.execute();
+	}
+	
 	protected static int getLastRowId(Connection connection, String tableName) throws SQLException {
 		Statement queryStatement = null;
 		ResultSet rs = null;

@@ -1,5 +1,6 @@
 package ibd.web.analyzer;
 
+import ibd.web.DBManagers.MarketIndexAnalysisDB;
 import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
 import ibd.web.DataObjects.IndexAnalysisRow;
@@ -11,8 +12,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.joda.time.LocalDate;
-
-import DBManagers.MarketIndexAnalysisDB;
 
 public class IndexAnalyzer {
 	/*
@@ -53,14 +52,13 @@ public class IndexAnalyzer {
 		 * 
 		 * 7.Saves needed data to DB so that it maybe displayed on the website.
 		 */
-
-		System.out.println("");
-		System.out.println("--------------------------------------------------------------------");
-		System.out.println("Starting Index Analyzer");
-
 		m_con = connection;
 		m_index = index;
 		m_indexParametersDBName = indexParametersDBName;
+		
+		System.out.println("");
+		System.out.println("--------------------------------------------------------------------");
+		System.out.println("Starting Index Analyzer for " + m_index);
 
 		//1. Setting the number of buffer days needed to calc averages and such
 		setBufferDays();
@@ -118,29 +116,51 @@ public class IndexAnalyzer {
 	}
 
 	private static void distributionDayAnalysis(){
-		/*TODO Start here.
-		 * INPUT m_con
-		 * INPUT Index name
-		 */
+		System.out.println("     Starting D-Day Counting and recording");
+
+		//Check and record all d days in the DB
+		checkForDDays();
 		
-		//1.Pull data between the start and end ids
-		//2.Cycle through the data and look for lower price on higher volume than the preceeding day
-		//3.When a date where the above is true...
-			//3a)Add it to the table?
-			//3b)Also have a running tally for a given period of time based on the parameters
-		//PriceVolumeData pvd = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
+		//TODO put the churning D Day finder here
+		checkForChurningDays();
+		
+			//Getting window length from parameter database
+			String keydDayWindow = "dDayWindow";
+			int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
+		
+		//Counting up d-day that have fallen in a given window is handled in the following function
+		countDDaysInWindow(dDayWindow);
+	}
+
+	public static void checkForDDays() {
+		String tableName = MarketIndexAnalysisDB.getTableName(m_index);
+		
+		/* 
+		 * TODO there should probably be a table that has the timestamp of when the pricevolume tables have been updated
+		 * and when the parameter tables have been updated
+		 * and when the analysis tables have been updated
+		 * 
+		 * Then when this method is run it would first check to see if there have been any changes to either table since the last update
+		 */
+		try {
+			//Reset the table so that the data can be reanalyzed
+			MarketIndexAnalysisDB.resetTable(m_con, tableName);
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		
+		System.out.println("          Checking to see if each day is a D-Day");
+		
 		List<YahooDOHLCVARow> rowsFromDB = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
 		
 		int rowCount = rowsFromDB.size();
-		
 		int ddayCount=0;
 		
 		/*
 		 * PreparedStatement prep. This will speed up this loop by not requiring a compiling of the query
 		 * every iteration
-		 */
-			String tableName = MarketIndexAnalysisDB.getTableName(m_index);
-		
+		 */		
 			String insertQuery = "INSERT INTO `" + tableName + "` "
 					+ "(PVD_id,isDDay) VALUES(?,?)";
 		
@@ -167,39 +187,31 @@ public class IndexAnalyzer {
 
 			float closePercentChange = (todaysClose/previousDaysClose-1);
 			float closePercentRequiredDrop = (float) -0.002; //TODO make this come from the parameter database
-			
-			if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
-			{
-				ddayCount++;
-				
-				try {
+			try {
+				if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
+				{
+					ddayCount++;
 					MarketIndexAnalysisDB.addDDayStatus(ps, rowsFromDB.get(i).getId(), true);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-			}
-			else
-			{
-				try {
+				else
+				{
 					MarketIndexAnalysisDB.addDDayStatus(ps, rowsFromDB.get(i).getId(), false);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
 		}
-		//Getting window length from parameter database
-		String keydDayWindow = "dDayWindow";
-		int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
-
-		countDDaysInWindow(dDayWindow);
-		int k = 5;
-		k++;
-
 	}
+	
+	private static void checkForChurningDays() {
+		// TODO Create the Churning Day finder
+		
+	}
+	
 	public static void countDDaysInWindow(int dDayWindow) {
+		System.out.println("          Looking at each day to see how many D-Dates at in the current window (" + dDayWindow + " days).");
+		
 		/* TODO START HERE TOMORROW
 		 * 		Done 1. Pull from d-days table and join them to the table with the date
 		 * 		Done 1b) Store this in a new type of class? New type could hold all the computational data needed
@@ -209,9 +221,24 @@ public class IndexAnalyzer {
 		 * 		4. Write the results to the database 
 		*/
 		try {
-			List<IndexAnalysisRow> AnalysisRows = MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
+			List<IndexAnalysisRow> analysisRows = MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
 			
+			int counter = 0;
+			String pizza; 
+			//This list starts with the newest date, which means the loop is goes back in time with each iteration 
+			for(int i=0; i<analysisRows.size(); i++) {
+
+				for(int j=i; j<i+dDayWindow && j<analysisRows.size(); j++) { //This loop starts at i and then goes back dDayWindow days adding up all the d days
+
+					if(analysisRows.get(j).isDDay())
+						analysisRows.get(i).addDDayCounter();
+				}
+				//insert row back into db
+				//how to do this with batch statements?
+				MarketIndexAnalysisDB.updateRow(m_con, m_index, analysisRows.get(i));
+			}
 			
+			int i =5;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

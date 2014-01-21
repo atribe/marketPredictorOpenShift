@@ -10,16 +10,23 @@ public class IndexAnalysisRow {
 	//add more stuff as needed here
 
 	public IndexAnalysisRow() {
-		// TODO Auto-generated constructor stub
+		dDayCounter=0;
 	}
 
+	@Override
+    public String toString() {
+		return "\nid: " + getId()
+				+ "\nDate: " + getDate().toString() 
+				+ "\nIs D-Day: " + isDDay()
+				+ "\nD-Day Count: " + getdDayCounter() + "\n";
+	}
+	
 	/**
 	 * @return the id
 	 */
 	public int getId() {
 		return id;
 	}
-
 	/**
 	 * @param id the id to set
 	 */
@@ -72,5 +79,7 @@ public class IndexAnalysisRow {
 	public void setdDayCounter(int dDayCounter) {
 		this.dDayCounter = dDayCounter;
 	}
-
+	public void addDDayCounter() {
+		dDayCounter++;
+	}
 }

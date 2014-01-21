@@ -1,13 +1,12 @@
 package ibd.web.model;
 
 import ibd.web.DBManagers.GenericDBSuperclass;
+import ibd.web.DBManagers.MarketIndexAnalysisDB;
 import ibd.web.DBManagers.MarketIndexDB;
 import ibd.web.DBManagers.MarketIndexParametersDB;
 import ibd.web.analyzer.IndexAnalyzer;
 
 import java.sql.Connection;
-
-import DBManagers.MarketIndexAnalysisDB;
 
 /**
  * This class is the highest level class that deals with all things market index.
