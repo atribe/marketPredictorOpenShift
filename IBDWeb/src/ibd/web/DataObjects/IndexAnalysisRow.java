@@ -3,8 +3,13 @@ package ibd.web.DataObjects;
 import org.joda.time.LocalDate;
 
 public class IndexAnalysisRow {
-	private int id;
+	private int PVD_id;
 	private LocalDate date;
+	private float Open;
+	private float High;
+	private float Low;
+	private float Close;
+	private long Volume;
 	private boolean isDDay;
 	private int dDayCounter;
 	//add more stuff as needed here
@@ -15,23 +20,23 @@ public class IndexAnalysisRow {
 
 	@Override
     public String toString() {
-		return "\nid: " + getId()
+		return "\nid: " + getPVD_id()
 				+ "\nDate: " + getDate().toString() 
 				+ "\nIs D-Day: " + isDDay()
 				+ "\nD-Day Count: " + getdDayCounter() + "\n";
 	}
 	
 	/**
-	 * @return the id
+	 * @return the PVD_id
 	 */
-	public int getId() {
-		return id;
+	public int getPVD_id() {
+		return PVD_id;
 	}
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
-		this.id = id;
+	public void setPVD_id(int PVD_id) {
+		this.PVD_id = PVD_id;
 	}
 	
 
@@ -54,6 +59,74 @@ public class IndexAnalysisRow {
 		this.date = new LocalDate(date);
 	}
 
+	/**
+	 *  @return the open
+	 */
+	public float getOpen() {
+		return Open;
+	}
+	/**
+	 * @param open the open to set
+	 */
+	public void setOpen(float open) {
+		Open = open;
+	}
+	
+	/**
+	 * @return the high
+	 */
+	public float getHigh() {
+		return High;
+	}
+	/**
+	 * @param high the high to set
+	 */
+	public void setHigh(float high) {
+		High = high;
+	}
+	
+	/**
+	 * @return the low
+	 */
+	public float getLow() {
+		return Low;
+	}
+	/**
+	 * @param low the low to set
+	 */
+	public void setLow(float low) {
+		Low = low;
+	}
+	
+	/**
+	 * @return the close
+	 */
+	public float getClose() {
+		return Close;
+	}
+	/**
+	 * @param close the close to set
+	 */
+	public void setClose(float close) {
+		Close = close;
+	}
+	
+	/**
+	 * @return the volume
+	 */
+	public long getVolume() {
+		return Volume;
+	}
+	/**
+	 * @param volume the volume to set
+	 */
+	public void setVolume(long volume) {
+		Volume = volume;
+	}
+	public void setVolume(float volume) {
+		Volume = Math.round(volume);
+	}
+			
 	/**
 	 * @return the isDDay
 	 */

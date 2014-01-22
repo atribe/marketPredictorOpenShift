@@ -9,6 +9,7 @@ import ibd.web.DataObjects.YahooDOHLCVARow;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -118,59 +119,45 @@ public class IndexAnalyzer {
 	private static void distributionDayAnalysis(){
 		System.out.println("     Starting D-Day Counting and recording");
 
-		//Check and record all d days in the DB
-		checkForDDays();
+		List<IndexAnalysisRow> analysisRows = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
 		
-		//TODO put the churning D Day finder here
-		checkForChurningDays();
+		String tableName = MarketIndexAnalysisDB.getTableName(m_index);
 		
+		try {
+			/* 
+			 * TODO there should probably be a table that has the timestamp of when the pricevolume tables have been updated
+			 * and when the parameter tables have been updated
+			 * and when the analysis tables have been updated
+			 * 
+			 * Then when this method is run it would first check to see if there have been any changes to either table since the last update
+			 */		
+
+			//Reset the table so that the data can be reanalyzed
+			MarketIndexAnalysisDB.resetTable(m_con, tableName);
+			
+			//Check and record all d days in the DB
+			analysisRows = checkForDDays(analysisRows);
+			
+			//TODO put the churning D Day finder here
+			analysisRows = checkForChurningDays(analysisRows);
+			
 			//Getting window length from parameter database
 			String keydDayWindow = "dDayWindow";
 			int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
 		
-		//Counting up d-day that have fallen in a given window is handled in the following function
-		countDDaysInWindow(dDayWindow);
+			//Counting up d-day that have fallen in a given window is handled in the following function
+			countDDaysInWindow(dDayWindow);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	public static void checkForDDays() {
-		String tableName = MarketIndexAnalysisDB.getTableName(m_index);
-		
-		/* 
-		 * TODO there should probably be a table that has the timestamp of when the pricevolume tables have been updated
-		 * and when the parameter tables have been updated
-		 * and when the analysis tables have been updated
-		 * 
-		 * Then when this method is run it would first check to see if there have been any changes to either table since the last update
-		 */
-		try {
-			//Reset the table so that the data can be reanalyzed
-			MarketIndexAnalysisDB.resetTable(m_con, tableName);
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		
+	public static List<IndexAnalysisRow> checkForDDays(List<IndexAnalysisRow> analysisRows) throws SQLException {
 		System.out.println("          Checking to see if each day is a D-Day");
 		
-		List<YahooDOHLCVARow> rowsFromDB = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
-		
-		int rowCount = rowsFromDB.size();
+		int rowCount = analysisRows.size();
 		int ddayCount=0;
-		
-		/*
-		 * PreparedStatement prep. This will speed up this loop by not requiring a compiling of the query
-		 * every iteration
-		 */		
-			String insertQuery = "INSERT INTO `" + tableName + "` "
-					+ "(PVD_id,isDDay) VALUES(?,?)";
-		
-			PreparedStatement ps = null;
-			try {
-				ps = m_con.prepareStatement(insertQuery);
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		
 		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
 		{
@@ -179,34 +166,82 @@ public class IndexAnalyzer {
 			 * 1. Volume Higher than the previous day
 			 * 2. Price drops by X% (IBD states .2%)
 			 */
-			long todaysVolume = rowsFromDB.get(i).getVolume();
-			long previousDaysVolume = rowsFromDB.get(i-1).getVolume();
+			long todaysVolume = analysisRows.get(i).getVolume();
+			long previousDaysVolume = analysisRows.get(i-1).getVolume();
 			
-			float todaysClose = rowsFromDB.get(i).getClose();
-			float previousDaysClose = rowsFromDB.get(i-1).getClose();
+			float todaysClose = analysisRows.get(i).getClose();
+			float previousDaysClose = analysisRows.get(i-1).getClose();
 
 			float closePercentChange = (todaysClose/previousDaysClose-1);
 			float closePercentRequiredDrop = (float) -0.002; //TODO make this come from the parameter database
-			try {
-				if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
-				{
-					ddayCount++;
-					MarketIndexAnalysisDB.addDDayStatus(ps, rowsFromDB.get(i).getId(), true);
-				}
-				else
-				{
-					MarketIndexAnalysisDB.addDDayStatus(ps, rowsFromDB.get(i).getId(), false);
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
+			{
+				ddayCount++;
+				analysisRows.get(i).setDDay(true);
+				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), true);
+			}
+			else
+			{
+				analysisRows.get(i).setDDay(false);
+				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), false);
 			}
 		}
+		
+		return analysisRows;
 	}
 	
-	private static void checkForChurningDays() {
-		// TODO Create the Churning Day finder
+	private static List<IndexAnalysisRow> checkForChurningDays(List<IndexAnalysisRow> analysisRows) {
+		System.out.println("          Checking to see if each day is a Churning Day");
 		
+		int rowCount = analysisRows.size();
+		int churningDayCount=0;
+		//Getting window length from parameter database
+		String keychurnVolRange = "churnVolRange";
+		float churnVolRange = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keychurnVolRange);
+		String keychurnPriceRange = "churnPriceRange";
+		float churnPriceRange = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keychurnPriceRange);
+		
+		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		{
+			/*
+			 * this part gets churning ddays
+			 * churning is defined as
+			 * 1. price must close in the bottom half of its range
+			 * 2. volume must be within 3% of the previous days volume
+			 * 3. priceClose must be less than 102% of the previous day
+			 * The next rules can be turned on or off from the parameter DB
+			 * 4. priceClose must be greater than or equal to previous day
+			 * 5. volume must be greater than avg daily
+			 * 6. price must be on upswing over  previous 35 days
+			 */
+			
+			float todaysHigh = analysisRows.get(i).getHigh();			
+			float previousDaysHigh = analysisRows.get(i-1).getHigh();
+			
+			float todaysLow = analysisRows.get(i).getLow();			
+			float previousDaysLow = analysisRows.get(i-1).getLow();
+			
+			float todaysClose = analysisRows.get(i).getClose();
+			float previousDaysClose = analysisRows.get(i-1).getClose();
+			
+			long todaysVolume = analysisRows.get(i).getVolume();
+			long previousDaysVolume = analysisRows.get(i-1).getVolume();
+
+			if( todaysClose < (todaysHigh + todaysLow)/2 /*rule 1*/ &&
+					todaysVolume >= previousDaysVolume*(1-churnVolRange) /*rule 2a*/ &&
+					todaysVolume <= previousDaysVolume*(1+churnVolRange) /*rule 2b*/ &&
+					todaysClose <= previousDaysClose*(1+churnPriceRange) /*rule 3*/)
+			{
+				churningDayCount++;
+				analysisRows.get(i).setDDay(true);
+				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), true);
+			}
+			//No else because they have all already been set to false by the d-day method.
+		}
+		
+		
+		return analysisRows;
 	}
 	
 	public static void countDDaysInWindow(int dDayWindow) {
@@ -221,6 +256,7 @@ public class IndexAnalyzer {
 		 * 		4. Write the results to the database 
 		*/
 		try {
+			//TODO This is all messed up because the analysisRows is messed up
 			List<IndexAnalysisRow> analysisRows = MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
 			
 			int counter = 0;

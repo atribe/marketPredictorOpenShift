@@ -1,5 +1,6 @@
 package ibd.web.DBManagers;
 
+import ibd.web.DataObjects.IndexAnalysisRow;
 import ibd.web.DataObjects.PriceVolumeData;
 import ibd.web.DataObjects.YahooDOHLCVARow;
 import ibd.web.classes.Data;
@@ -396,8 +397,8 @@ public class MarketIndexDB extends GenericDBSuperclass {
 		}
 	}
 	
-	public static List<YahooDOHLCVARow> getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
-		List<YahooDOHLCVARow> rowsFromDB = new ArrayList<YahooDOHLCVARow>();
+	public static List<IndexAnalysisRow> getDataBetweenIds(Connection connection, String tableName, int beginId, int endId) {
+		List<IndexAnalysisRow> rowsFromDB = new ArrayList<IndexAnalysisRow>();
 		
 		
 		String query = "SELECT * FROM `" + tableName + "`"
@@ -411,9 +412,9 @@ public class MarketIndexDB extends GenericDBSuperclass {
 			ResultSet rs = selectStatement.executeQuery();
 
 			while (rs.next()) {
-				YahooDOHLCVARow singleRow = new YahooDOHLCVARow();
-				singleRow.setId(rs.getInt("id"));
-				singleRow.setConvertedDate(rs.getDate("Date"));
+				IndexAnalysisRow singleRow = new IndexAnalysisRow();
+				singleRow.setPVD_id(rs.getInt("id"));
+				singleRow.setDate(rs.getDate("Date"));
 				singleRow.setOpen(rs.getFloat("Open"));
 				singleRow.setHigh(rs.getFloat("High"));
 				singleRow.setLow(rs.getFloat("Low"));

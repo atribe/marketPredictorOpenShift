@@ -186,10 +186,15 @@ public class MarketIndexParametersDB extends GenericDBSuperclass{
 		return dateValue;
 	}
 
-	
 	public static int getIntValue(Connection connection, String tableName, String key) {
 		String stringValue = getStringValue(connection,tableName,key);
 		int intValue = Integer.parseInt(stringValue);
 		return intValue;
+	}
+	
+	public static float getFloatValue(Connection connection, String tableName, String key) {
+		String stringValue = getStringValue(connection,tableName,key);
+		float floatValue = Float.parseFloat(stringValue);
+		return floatValue;
 	}
 }

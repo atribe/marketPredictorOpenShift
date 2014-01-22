@@ -79,7 +79,7 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		
 		while (rs.next()) {
 			IndexAnalysisRow singleResult = new IndexAnalysisRow();
-			singleResult.setId(rs.getInt("PVD_id"));
+			singleResult.setPVD_id(rs.getInt("PVD_id"));
 			singleResult.setDate(rs.getDate("Date"));
 			boolean isDDay;
 			if(rs.getInt("IsDDay")==1)
@@ -102,7 +102,7 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 				+ " WHERE PVD_id=?";
 		PreparedStatement ps = connection.prepareStatement(updateQuery);
 		ps.setInt(1, analysisRow.getdDayCounter());
-		ps.setInt(2, analysisRow.getId());
+		ps.setInt(2, analysisRow.getPVD_id());
 		int rowsUpdated = ps.executeUpdate();
 		rowsUpdated = rowsUpdated;//just something to stop the debugging
 	}
