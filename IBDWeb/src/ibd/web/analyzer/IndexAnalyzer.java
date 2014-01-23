@@ -70,7 +70,9 @@ public class IndexAnalyzer {
 		setLoopEndId();
 
 		//2. Calculate and store d-dates
-		distributionDayAnalysis();
+		List<IndexAnalysisRow> analysisRows = distributionDayAnalysis();
+		
+		analysisRows = followThruAnalysis(analysisRows);
 	}
 
 	private static void setBufferDays(){
@@ -116,7 +118,7 @@ public class IndexAnalyzer {
 		}
 	}
 
-	private static void distributionDayAnalysis(){
+	private static List<IndexAnalysisRow> distributionDayAnalysis(){
 		System.out.println("     Starting D-Day Counting and recording");
 
 		List<IndexAnalysisRow> analysisRows = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
@@ -146,11 +148,13 @@ public class IndexAnalyzer {
 			int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
 		
 			//Counting up d-day that have fallen in a given window is handled in the following function
-			countDDaysInWindow(dDayWindow);
+			analysisRows = countDDaysInWindow(analysisRows, dDayWindow);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return analysisRows;
 	}
 
 	public static List<IndexAnalysisRow> checkForDDays(List<IndexAnalysisRow> analysisRows) throws SQLException {
@@ -160,12 +164,14 @@ public class IndexAnalyzer {
 		int ddayCount=0;
 		
 		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
-		{
+		{ 
 			/*
 			 * D day rules
 			 * 1. Volume Higher than the previous day
 			 * 2. Price drops by X% (IBD states .2%)
 			 */
+			
+			// {{ pulling variables from List
 			long todaysVolume = analysisRows.get(i).getVolume();
 			long previousDaysVolume = analysisRows.get(i-1).getVolume();
 			
@@ -174,7 +180,8 @@ public class IndexAnalyzer {
 
 			float closePercentChange = (todaysClose/previousDaysClose-1);
 			float closePercentRequiredDrop = (float) -0.002; //TODO make this come from the parameter database
-
+			// }}
+			
 			if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
 			{
 				ddayCount++;
@@ -196,12 +203,21 @@ public class IndexAnalyzer {
 		
 		int rowCount = analysisRows.size();
 		int churningDayCount=0;
-		//Getting window length from parameter database
+		
+		// {{ Getting variables from the parameter database
 		String keychurnVolRange = "churnVolRange";
 		float churnVolRange = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keychurnVolRange);
 		String keychurnPriceRange = "churnPriceRange";
 		float churnPriceRange = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keychurnPriceRange);
-		
+		String keychurnPriceCloseHigherOn = "churnPriceCloseHigherOn";
+		boolean churnPriceCloseHigherOn = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keychurnPriceCloseHigherOn);
+		String keychurnAVG50On = "churnAVG50On";
+		boolean churnAVG50On = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keychurnAVG50On);
+		String keychurnPriceTrend35On = "churnPriceTrend35On";
+		boolean churnPriceTrend35On = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keychurnPriceTrend35On);
+		String keychurnPriceTrend35 = "churnPriceTrend35";
+		float churnPriceTrend35 = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keychurnPriceTrend35);
+		// }}
 		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
 		{
 			/*
@@ -216,6 +232,7 @@ public class IndexAnalyzer {
 			 * 6. price must be on upswing over  previous 35 days
 			 */
 			
+			// {{ pulling variables from List
 			float todaysHigh = analysisRows.get(i).getHigh();			
 			float previousDaysHigh = analysisRows.get(i-1).getHigh();
 			
@@ -227,24 +244,51 @@ public class IndexAnalyzer {
 			
 			long todaysVolume = analysisRows.get(i).getVolume();
 			long previousDaysVolume = analysisRows.get(i-1).getVolume();
-
+			// }}
+			
+			
 			if( todaysClose < (todaysHigh + todaysLow)/2 /*rule 1*/ &&
 					todaysVolume >= previousDaysVolume*(1-churnVolRange) /*rule 2a*/ &&
 					todaysVolume <= previousDaysVolume*(1+churnVolRange) /*rule 2b*/ &&
 					todaysClose <= previousDaysClose*(1+churnPriceRange) /*rule 3*/)
 			{
 				churningDayCount++;
-				analysisRows.get(i).setDDay(true);
+				analysisRows.get(i).setChurnDay(true);
 				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), true);
+			} else {
+				// {{ Churn day conditions set by the parameter db
+				int conditionsRequired = 0;
+				int conditionsMet = 0;
+				if (churnPriceCloseHigherOn)
+					conditionsRequired++;
+				if (churnAVG50On)
+					conditionsRequired++;
+				if (churnPriceTrend35On)
+					conditionsRequired++;
+				// }}
+				if(churnPriceCloseHigherOn && todaysClose >= previousDaysClose)
+					conditionsMet++;
+				/*
+				TODO calculate the volumeAverage
+				 
+				if(churnAVG50On && todaysVolume > todaysVolumeAverage50 )
+					conditionsMet++;
+				
+				TODO calculate the priceTrend35
+				if(churnPriceTrend35On && todaysPriceTrend35 > churnPriceTrend35)
+					conditionsMet++;
+				 */
+				if(conditionsRequired == conditionsMet)
+					analysisRows.get(i).setChurnDay(true);
 			}
-			//No else because they have all already been set to false by the d-day method.
+			//No need set to false because it was already done by the d-day method.
 		}
 		
 		
 		return analysisRows;
 	}
 	
-	public static void countDDaysInWindow(int dDayWindow) {
+	public static List<IndexAnalysisRow> countDDaysInWindow(List<IndexAnalysisRow> analysisRows, int dDayWindow) {
 		System.out.println("          Looking at each day to see how many D-Dates at in the current window (" + dDayWindow + " days).");
 		
 		/* TODO START HERE TOMORROW
@@ -255,29 +299,22 @@ public class IndexAnalyzer {
 		 * 			and see how many d-days there are
 		 * 		4. Write the results to the database 
 		*/
-		try {
-			//TODO This is all messed up because the analysisRows is messed up
-			List<IndexAnalysisRow> analysisRows = MarketIndexAnalysisDB.getAllDDayData(m_con, m_index);
-			
-			int counter = 0;
-			String pizza; 
+
 			//This list starts with the newest date, which means the loop is goes back in time with each iteration 
-			for(int i=0; i<analysisRows.size(); i++) {
+			for(int i=analysisRows.size()-1; i>0; i--) {
 
-				for(int j=i; j<i+dDayWindow && j<analysisRows.size(); j++) { //This loop starts at i and then goes back dDayWindow days adding up all the d days
+				for(int j=i; j>i-dDayWindow && j>0; j--) { //This loop starts at i and then goes back dDayWindow days adding up all the d days
 
-					if(analysisRows.get(j).isDDay())
+					if(analysisRows.get(j).isDDay() || analysisRows.get(j).isChurnDay())
 						analysisRows.get(i).addDDayCounter();
 				}
-				//insert row back into db
-				//how to do this with batch statements?
-				MarketIndexAnalysisDB.updateRow(m_con, m_index, analysisRows.get(i));
 			}
 			
-			int i =5;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			return analysisRows;
+	}
+
+	private static List<IndexAnalysisRow> followThruAnalysis(List<IndexAnalysisRow> analysisRows) {
+		// TODO Auto-generated method stub
+		return analysisRows;
 	}
 }

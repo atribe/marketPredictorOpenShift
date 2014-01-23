@@ -11,6 +11,7 @@ public class IndexAnalysisRow {
 	private float Close;
 	private long Volume;
 	private boolean isDDay;
+	private boolean isChurnDay;
 	private int dDayCounter;
 	//add more stuff as needed here
 
@@ -21,8 +22,13 @@ public class IndexAnalysisRow {
 	@Override
     public String toString() {
 		return "\nid: " + getPVD_id()
-				+ "\nDate: " + getDate().toString() 
+				+ "\nDate: " + getDate().toString()
+				+ "\nOpen: " + getOpen()
+				+ "\nHigh: " + getHigh()
+				+ "\nLow: " + getLow()
+				+ "\nClose: " + getClose()
 				+ "\nIs D-Day: " + isDDay()
+				+ "\nIs Churn Day: " + isChurnDay()
 				+ "\nD-Day Count: " + getdDayCounter() + "\n";
 	}
 	
@@ -138,6 +144,19 @@ public class IndexAnalysisRow {
 	 */
 	public void setDDay(boolean isDDay) {
 		this.isDDay = isDDay;
+	}
+
+	/**
+	 * @return the isChurnDay
+	 */
+	public boolean isChurnDay() {
+		return isChurnDay;
+	}
+	/**
+	 * @param isChurnDay the isChurnDay to set
+	 */
+	public void setChurnDay(boolean isChurnDay) {
+		this.isChurnDay = isChurnDay;
 	}
 
 	/**
