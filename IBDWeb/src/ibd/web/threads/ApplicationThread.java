@@ -30,6 +30,7 @@ public class ApplicationThread implements Runnable {
 	public static boolean _firstTimeRun = true;
 
 	public ApplicationThread() {
+		System.out.println("starting the ApplicationThread constructor.");
 	}
 
 	static {

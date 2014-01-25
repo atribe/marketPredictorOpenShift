@@ -311,7 +311,7 @@ public class MarketRetriever {
 
 		//Check if today is weekend, if so adjust the date back until it isn't a weekend
 		while(today.getDayOfWeek() > 5){
-			today.minusDays(1);
+			today = today.minusDays(1);
 		}
 		return Days.daysBetween(date, today).getDays();
 	}

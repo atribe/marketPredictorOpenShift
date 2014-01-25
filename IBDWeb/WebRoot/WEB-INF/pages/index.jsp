@@ -26,23 +26,26 @@
 </head>
 
 <body>
-<%
-System.out.println("Start of Body of index.jsp");
-
+	<div id="container">
+	<% System.out.println("Start of Body of index.jsp"); %>
+	<jsp:include page="mpHeader.jsp" />
+	
+	<% 
 	if(ibd.web.Constants.Constants.jobRunning){ %>
 		<font size="2" color="red"><spring:message code="label.jobRunning" /></font>
-	<%} %>
-		<h1><spring:message code="label.applicationTitle" /></h1>
-		<h2>${dateOut}</h2>
-		
-<%
-	    if (ibd.web.Constants.Constants.outputDow == null || ibd.web.Constants.Constants.outputNasdaq == null || ibd.web.Constants.Constants.outputSP500 == null) {
-%>
+	<%
+	} 
+	
+	if (ibd.web.Constants.Constants.outputDow == null 
+			|| ibd.web.Constants.Constants.outputNasdaq == null 
+			|| ibd.web.Constants.Constants.outputSP500 == null) 
+	{
+	%>
 
 		<h1><spring:message code="label.dataGeneratedError" /></h1>
 		<!-- Current Locale : ${pageContext.response.locale}  -->
 
-<%
+	<%
 		//return;
 	    }
 %>
@@ -64,6 +67,9 @@ System.out.println("Start of Body of index.jsp");
 	<br/>
 <%}%>
 	<jsp:include page="learningCenter.jsp" />
+	
+	<jsp:include page="mpFooter.jsp" />
+	</div> <!-- close div container -->
 </body>
 </html>
 

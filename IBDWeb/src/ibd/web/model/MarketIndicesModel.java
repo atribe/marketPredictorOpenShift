@@ -61,6 +61,8 @@ public class MarketIndicesModel {
 		IndexAnalyzer.runIndexAnalysis(connection, "^IXIC", "^IXICvars");
 		//Run model for Nasdaq
 		//Run model for SP500
+		
+		
 	}
 
 	/**
