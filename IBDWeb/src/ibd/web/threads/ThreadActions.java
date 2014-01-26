@@ -27,7 +27,7 @@ public class ThreadActions {
 
 
 		if (!hasProcessed || isItTime(updateAnalysis)) {
-			//ibd.web.Constants.Constants.jobRunning = true;
+			ibd.web.Constants.Constants.jobRunning = true;
 
 			System.out.println("");
 			System.out.println("ThreadAction has starting running jobs");
