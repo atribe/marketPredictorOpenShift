@@ -3,10 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@page import="ibd.web.Constants.Constants"%>
-<%@page import="java.util.Date"%>
 <%@page import="java.util.Locale"%>
-<%@page import="java.text.DateFormat"%>
-<%@page import="java.util.GregorianCalendar"%>
 
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -47,6 +44,7 @@
 		<div id="dataGeneratedError"><h1><spring:message code="label.dataGeneratedError" /></h1></div>		
 	</c:if>
 	
+	<h2>Oh, and by the way, nothing below here works at the moment.</h2>
 	<c:if test="${!ibd.web.Constants.Constants.jobRunning}">
 		<div id="top50Links">
 			<a href="showData50.do"><spring:message code="label.seeData50" /></a><br />
