@@ -33,6 +33,9 @@ public class IndexAnalyzer {
 	static private int m_bufferDays;
 	static private int m_loopBeginId;
 	static private int m_loopEndId;
+	
+	//member variable for holding all the information for analysis
+	static private List<IndexAnalysisRow> m_analysisRows;
 
 	public static void runIndexAnalysis(Connection connection, String index, String indexParametersDBName) {
 		/*
@@ -68,11 +71,16 @@ public class IndexAnalyzer {
 		setLoopBeginId();
 
 		setLoopEndId();
-
-		//2. Calculate and store d-dates
-		List<IndexAnalysisRow> analysisRows = distributionDayAnalysis();
 		
-		analysisRows = followThruAnalysis(analysisRows);
+		m_analysisRows = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
+
+		
+		calcIndexStatistics();
+		
+		//2. Calculate d-dates
+		distributionDayAnalysis();
+		
+		followThruAnalysis();
 	}
 
 	private static void setBufferDays(){
@@ -118,10 +126,80 @@ public class IndexAnalyzer {
 		}
 	}
 
-	private static List<IndexAnalysisRow> distributionDayAnalysis(){
-		System.out.println("     Starting D-Day Counting and recording");
+	private static void calcIndexStatistics() {
+		/*
+		 * Statistics calculated
+		 * 1. 50 day close price average
+		 * 2. 100 day close price average
+		 * 3. 200 day close price average
+		 * 4. 50 day volume average
+		 * 5. Price Trend for the last 35 days
+		 * 		This is the average percent gain over the last 35 days (excluding today)
+		 */
 
-		List<IndexAnalysisRow> analysisRows = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
+		//This lists starts with the newest date, which means the loop is goes back in time with each iteration
+		
+		for(int i=m_analysisRows.size()-1; i>0; i--) {
+			//loopDays is how far the current loop goes back
+			/*
+			 * Loop for 50 days
+			 * Calculates the 50 day moving average
+			 * and calculates the 50 day moving volume average
+			 */
+			int loopDays = 50;
+			float priceCloseSum = 0;
+			long volumeSum = 0;
+			for(int j=i; j>i-loopDays && j>0; j--) { //This loop starts at i and then goes back loopDays days adding up all the d days
+				//Summing up for closePriceAvg
+				priceCloseSum+=m_analysisRows.get(j).getClose();
+
+				//summing up for volumeAverage
+				volumeSum+=m_analysisRows.get(j).getVolume();
+			}
+			m_analysisRows.get(i).setCloseAvg50(priceCloseSum/loopDays);
+			m_analysisRows.get(i).setVolumeAvg50(volumeSum/loopDays);
+			
+			/*
+			 * Loop for 100 days
+			 * Calculates the 100 day moving average
+			 */
+			loopDays = 100;
+			priceCloseSum = 0;
+			for(int j=i; j>i-loopDays && j>0; j--) { //This loop starts at i and then goes back loopDays days adding up all the d days
+				//Summing up for closePriceAvg
+				priceCloseSum+=m_analysisRows.get(j).getClose();
+			}
+			m_analysisRows.get(i).setCloseAvg100(priceCloseSum/loopDays);
+			
+			/*
+			 * Loop for 200 days
+			 * Calculates the 200 day moving average
+			 */
+			loopDays = 200;
+			priceCloseSum = 0;
+			for(int j=i; j>i-loopDays && j>0; j--) { //This loop starts at i and then goes back loopDays days adding up all the d days
+				//Summing up for closePriceAvg
+				priceCloseSum+=m_analysisRows.get(j).getClose();
+			}
+			m_analysisRows.get(i).setCloseAvg200(priceCloseSum/loopDays);
+			
+			/*
+			 * Loop for 35 days
+			 * Calculates Price Trend of the previous 35 days'
+			 * 		This is the average percent gain over the last 35 days (excluding today)
+			 */
+			loopDays = 35;
+			float closePercentChange = 0;
+			for(int j=i; j>i-loopDays && j>2; j--) { //This loop starts at i and then goes back loopDays days adding up all the d days
+				closePercentChange+=(m_analysisRows.get(j-1).getClose() - m_analysisRows.get(j-2).getClose()) / m_analysisRows.get(j-2).getClose();
+			}
+			m_analysisRows.get(i).setPriceTrend35(closePercentChange/loopDays);
+			
+		}
+	}
+	
+	private static void distributionDayAnalysis(){
+		System.out.println("     Starting D-Day Counting and recording");
 		
 		String tableName = MarketIndexAnalysisDB.getTableName(m_index);
 		
@@ -138,29 +216,27 @@ public class IndexAnalyzer {
 			MarketIndexAnalysisDB.resetTable(m_con, tableName);
 			
 			//Check and record all d days in the DB
-			analysisRows = checkForDDays(analysisRows);
+			checkForDDays();
 			
-			//TODO put the churning D Day finder here
-			analysisRows = checkForChurningDays(analysisRows);
+			//churning D Day finder
+			checkForChurningDays();
 			
 			//Getting window length from parameter database
 			String keydDayWindow = "dDayWindow";
 			int dDayWindow = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keydDayWindow);
 		
 			//Counting up d-day that have fallen in a given window is handled in the following function
-			analysisRows = countDDaysInWindow(analysisRows, dDayWindow);
+			countDDaysInWindow(dDayWindow);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return analysisRows;
 	}
 
-	public static List<IndexAnalysisRow> checkForDDays(List<IndexAnalysisRow> analysisRows) throws SQLException {
+	public static void checkForDDays() throws SQLException {
 		System.out.println("          Checking to see if each day is a D-Day");
 		
-		int rowCount = analysisRows.size();
+		int rowCount = m_analysisRows.size();
 		int ddayCount=0;
 		
 		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
@@ -172,11 +248,11 @@ public class IndexAnalyzer {
 			 */
 			
 			// {{ pulling variables from List
-			long todaysVolume = analysisRows.get(i).getVolume();
-			long previousDaysVolume = analysisRows.get(i-1).getVolume();
+			long todaysVolume = m_analysisRows.get(i).getVolume();
+			long previousDaysVolume = m_analysisRows.get(i-1).getVolume();
 			
-			float todaysClose = analysisRows.get(i).getClose();
-			float previousDaysClose = analysisRows.get(i-1).getClose();
+			float todaysClose = m_analysisRows.get(i).getClose();
+			float previousDaysClose = m_analysisRows.get(i-1).getClose();
 
 			float closePercentChange = (todaysClose/previousDaysClose-1);
 			float closePercentRequiredDrop = (float) -0.002; //TODO make this come from the parameter database
@@ -185,23 +261,21 @@ public class IndexAnalyzer {
 			if( todaysVolume > previousDaysVolume /*This is rule #1*/ && closePercentChange < closePercentRequiredDrop /*This is rule #1*/)
 			{
 				ddayCount++;
-				analysisRows.get(i).setDDay(true);
-				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), true);
+				m_analysisRows.get(i).setDDay(true);
+				//MarketIndexAnalysisDB.addDDayStatus(ps, m_analysisRows.get(i).getPVD_id(), true);
 			}
 			else
 			{
-				analysisRows.get(i).setDDay(false);
-				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), false);
+				m_analysisRows.get(i).setDDay(false);
+				//MarketIndexAnalysisDB.addDDayStatus(ps, m_analysisRows.get(i).getPVD_id(), false);
 			}
 		}
-		
-		return analysisRows;
 	}
 	
-	private static List<IndexAnalysisRow> checkForChurningDays(List<IndexAnalysisRow> analysisRows) {
+	private static void checkForChurningDays() {
 		System.out.println("          Checking to see if each day is a Churning Day");
 		
-		int rowCount = analysisRows.size();
+		int rowCount = m_analysisRows.size();
 		int churningDayCount=0;
 		
 		// {{ Getting variables from the parameter database
@@ -232,18 +306,18 @@ public class IndexAnalyzer {
 			 * 6. price must be on upswing over  previous 35 days
 			 */
 			
-			// {{ pulling variables from List
-			float todaysHigh = analysisRows.get(i).getHigh();			
-			float previousDaysHigh = analysisRows.get(i-1).getHigh();
+			// {{ pulling variables from List, just to make the code below prettier
+			float todaysHigh = m_analysisRows.get(i).getHigh();			
+			float previousDaysHigh = m_analysisRows.get(i-1).getHigh();
 			
-			float todaysLow = analysisRows.get(i).getLow();			
-			float previousDaysLow = analysisRows.get(i-1).getLow();
+			float todaysLow = m_analysisRows.get(i).getLow();			
+			float previousDaysLow = m_analysisRows.get(i-1).getLow();
 			
-			float todaysClose = analysisRows.get(i).getClose();
-			float previousDaysClose = analysisRows.get(i-1).getClose();
+			float todaysClose = m_analysisRows.get(i).getClose();
+			float previousDaysClose = m_analysisRows.get(i-1).getClose();
 			
-			long todaysVolume = analysisRows.get(i).getVolume();
-			long previousDaysVolume = analysisRows.get(i-1).getVolume();
+			long todaysVolume = m_analysisRows.get(i).getVolume();
+			long previousDaysVolume = m_analysisRows.get(i-1).getVolume();
 			// }}
 			
 			
@@ -253,8 +327,8 @@ public class IndexAnalyzer {
 					todaysClose <= previousDaysClose*(1+churnPriceRange) /*rule 3*/)
 			{
 				churningDayCount++;
-				analysisRows.get(i).setChurnDay(true);
-				//MarketIndexAnalysisDB.addDDayStatus(ps, analysisRows.get(i).getPVD_id(), true);
+				m_analysisRows.get(i).setChurnDay(true);
+				//MarketIndexAnalysisDB.addDDayStatus(ps, m_analysisRows.get(i).getPVD_id(), true);
 			} else {
 				// {{ Churn day conditions set by the parameter db
 				int conditionsRequired = 0;
@@ -266,29 +340,27 @@ public class IndexAnalyzer {
 				if (churnPriceTrend35On)
 					conditionsRequired++;
 				// }}
-				if(churnPriceCloseHigherOn && todaysClose >= previousDaysClose)
+				
+				if(churnPriceCloseHigherOn && todaysClose >= previousDaysClose) //rule 4
 					conditionsMet++;
 				/*
 				TODO calculate the volumeAverage
 				 
-				if(churnAVG50On && todaysVolume > todaysVolumeAverage50 )
+				if(churnAVG50On && todaysVolume > todaysVolumeAverage50 ) //rule 5
 					conditionsMet++;
 				
 				TODO calculate the priceTrend35
-				if(churnPriceTrend35On && todaysPriceTrend35 > churnPriceTrend35)
+				if(churnPriceTrend35On && todaysPriceTrend35 > churnPriceTrend35) //rule 6
 					conditionsMet++;
 				 */
 				if(conditionsRequired == conditionsMet)
-					analysisRows.get(i).setChurnDay(true);
+					m_analysisRows.get(i).setChurnDay(true);
 			}
 			//No need set to false because it was already done by the d-day method.
 		}
-		
-		
-		return analysisRows;
 	}
 	
-	public static List<IndexAnalysisRow> countDDaysInWindow(List<IndexAnalysisRow> analysisRows, int dDayWindow) {
+	public static void countDDaysInWindow(int dDayWindow) {
 		System.out.println("          Looking at each day to see how many D-Dates at in the current window (" + dDayWindow + " days).");
 		
 		/* TODO START HERE TOMORROW
@@ -300,21 +372,40 @@ public class IndexAnalyzer {
 		 * 		4. Write the results to the database 
 		*/
 
-			//This list starts with the newest date, which means the loop is goes back in time with each iteration 
-			for(int i=analysisRows.size()-1; i>0; i--) {
+		//This list starts with the newest date, which means the loop is goes back in time with each iteration 
+		for(int i=m_analysisRows.size()-1; i>0; i--) {
 
-				for(int j=i; j>i-dDayWindow && j>0; j--) { //This loop starts at i and then goes back dDayWindow days adding up all the d days
+			for(int j=i; j>i-dDayWindow && j>0; j--) { //This loop starts at i and then goes back dDayWindow days adding up all the d days
 
-					if(analysisRows.get(j).isDDay() || analysisRows.get(j).isChurnDay())
-						analysisRows.get(i).addDDayCounter();
-				}
+				if(m_analysisRows.get(j).isDDay() || m_analysisRows.get(j).isChurnDay())
+					m_analysisRows.get(i).addDDayCounter();
 			}
-			
-			return analysisRows;
+		}
 	}
 
-	private static List<IndexAnalysisRow> followThruAnalysis(List<IndexAnalysisRow> analysisRows) {
-		// TODO Auto-generated method stub
-		return analysisRows;
+	private static void followThruAnalysis() {
+		System.out.println("          Checking to see if each day is a Follow Through Day");
+		
+		int rowCount = m_analysisRows.size();
+		int followThroughDayCount=0;
+		
+		// {{ Getting variables from the parameter database
+		String keyrDaysMax = "rDaysMax";
+		int rDaysMax = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keyrDaysMax);
+		String keypivotTrend35On = "pivotTrend35On";
+		boolean churnpivotTrend35On = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keypivotTrend35On);
+		String keypivotTrend35 = "pivotTrend35";
+		float pivotTrend35 = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keypivotTrend35);
+		// }}
+		
+		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		{
+			/*
+			 * this part gets followthrough days
+			 * 
+			 */
+			float rallyPriceHigh = 0;
+			
+		}
 	}
 }

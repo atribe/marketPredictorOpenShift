@@ -10,6 +10,15 @@ public class IndexAnalysisRow {
 	private float Low;
 	private float Close;
 	private long Volume;
+	
+	//Statistic variables
+	private float closeAvg50;
+	private float closeAvg100;
+	private float closeAvg200;
+	private long volumeAvg50;
+	private float priceTrend35;
+	
+	//Analysis variables
 	private boolean isDDay;
 	private boolean isChurnDay;
 	private int dDayCounter;
@@ -133,6 +142,71 @@ public class IndexAnalysisRow {
 		Volume = Math.round(volume);
 	}
 			
+	/**
+	 * @return the closeAvg50
+	 */
+	public float getCloseAvg50() {
+		return closeAvg50;
+	}
+	/**
+	 * @param closeAvg50 the closeAvg50 to set
+	 */
+	public void setCloseAvg50(float closeAvg50) {
+		this.closeAvg50 = closeAvg50;
+	}
+
+	/**
+	 * @return the closeAvg100
+	 */
+	public float getCloseAvg100() {
+		return closeAvg100;
+	}
+	/**
+	 * @param closeAvg100 the closeAvg100 to set
+	 */
+	public void setCloseAvg100(float closeAvg100) {
+		this.closeAvg100 = closeAvg100;
+	}
+
+	/**
+	 * @return the closeAvg200
+	 */
+	public float getCloseAvg200() {
+		return closeAvg200;
+	}
+	/**
+	 * @param closeAvg200 the closeAvg200 to set
+	 */
+	public void setCloseAvg200(float closeAvg200) {
+		this.closeAvg200 = closeAvg200;
+	}
+
+	/**
+	 * @return the volumeAvg50
+	 */
+	public long getVolumeAvg50() {
+		return volumeAvg50;
+	}
+	/**
+	 * @param volumeAvg50 the volumeAvg50 to set
+	 */
+	public void setVolumeAvg50(long volumeAvg50) {
+		this.volumeAvg50 = volumeAvg50;
+	}
+
+	/**
+	 * @return the priceTrend35
+	 */
+	public float getPriceTrend35() {
+		return priceTrend35;
+	}
+	/**
+	 * @param priceTrend35 the priceTrend35 to set
+	 */
+	public void setPriceTrend35(float priceTrend35) {
+		this.priceTrend35 = priceTrend35;
+	}
+
 	/**
 	 * @return the isDDay
 	 */
