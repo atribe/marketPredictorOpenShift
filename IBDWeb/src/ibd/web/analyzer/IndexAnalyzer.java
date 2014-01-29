@@ -81,6 +81,8 @@ public class IndexAnalyzer {
 		distributionDayAnalysis();
 		
 		followThruAnalysis();
+		
+		MarketIndexAnalysisDB.addAllRowsToDB(m_con, m_index, m_analysisRows);
 	}
 
 	private static void setBufferDays(){
@@ -318,6 +320,11 @@ public class IndexAnalyzer {
 			
 			long todaysVolume = m_analysisRows.get(i).getVolume();
 			long previousDaysVolume = m_analysisRows.get(i-1).getVolume();
+			
+			long todaysVolumeAvg50 = m_analysisRows.get(i).getVolumeAvg50();
+			
+			float todaysPriceTrend35 = m_analysisRows.get(i).getPriceTrend35();
+			
 			// }}
 			
 			
@@ -343,16 +350,13 @@ public class IndexAnalyzer {
 				
 				if(churnPriceCloseHigherOn && todaysClose >= previousDaysClose) //rule 4
 					conditionsMet++;
-				/*
-				TODO calculate the volumeAverage
-				 
-				if(churnAVG50On && todaysVolume > todaysVolumeAverage50 ) //rule 5
+								 
+				if(churnAVG50On && todaysVolume > todaysVolumeAvg50 ) //rule 5
 					conditionsMet++;
 				
-				TODO calculate the priceTrend35
 				if(churnPriceTrend35On && todaysPriceTrend35 > churnPriceTrend35) //rule 6
 					conditionsMet++;
-				 */
+				
 				if(conditionsRequired == conditionsMet)
 					m_analysisRows.get(i).setChurnDay(true);
 			}
@@ -363,9 +367,7 @@ public class IndexAnalyzer {
 	public static void countDDaysInWindow(int dDayWindow) {
 		System.out.println("          Looking at each day to see how many D-Dates at in the current window (" + dDayWindow + " days).");
 		
-		/* TODO START HERE TOMORROW
-		 * 		Done 1. Pull from d-days table and join them to the table with the date
-		 * 		Done 1b) Store this in a new type of class? New type could hold all the computational data needed
+		/* 
 		 * 		2. For each loop of all the data
 		 * 		3. As the loop progresses through each row, look back in the data the number of days in the window
 		 * 			and see how many d-days there are
