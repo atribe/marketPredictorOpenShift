@@ -30,16 +30,17 @@ public class GenericDBSuperclass {
 			Class.forName("com.mysql.jdbc.Driver");
 
 			// ************For Open Shift Account************	  
-			if(LoadProperties.environment.trim().equalsIgnoreCase("production")){
-				DBName = "teedixindices";
-				host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
-				port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+			//if(LoadProperties.environment.trim().equalsIgnoreCase("production")){
+			if(System.getenv("OPENSHIFT_APP_NAME")!=null) {	
+				DBName = "marketpred";
+				host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");//$OPENSHIFT_MYSQL_DB_HOST is a OpenShift system variable
+				port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");//$OPENSHIFT_MYSQL_DB_PORT is also an OpenShift variable
 				dbURL = "jdbc:mysql://"+host+":"+port+"/" + DBName;
-				username = "adminQRungBu";
-				password = "BdaTdanJuw9n";
+				username = "adminKBTpatt";
+				password = "1ykuE62i5IFI";
 			}else{
 				// ************For Local Account************
-				DBName = "moneytreeindices";
+				DBName = "marketpred";
 				host = "localhost";
 				port="3306";
 				dbURL = "jdbc:mysql://"+host+":"+port+"/" + DBName;

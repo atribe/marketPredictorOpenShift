@@ -1,6 +1,7 @@
 package ibd.web.DBManagers;
 
 import ibd.web.DataObjects.IndexAnalysisRow;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,16 +24,11 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		put("closeAvg100", "FLOAT");
 		put("closeAvg200", "FLOAT");
 		put("volumeAvg50", "BIGINT(50)");
-		put("IsDDay", "TINYINT(1)");
-		put("DDayCounter", "INT");
-		
+		put("priceTrend35", "FLOAT");
+		put("isDDay", "TINYINT(1)");
+		put("isChurnDay", "TINYINT(1)");
+		put("DDayCounter", "INT");		
 	}};
-	/*	
-		for (Map.Entry<String, String> entry : map.entrySet())
-		{
-		    System.out.println(entry.getKey() + "/" + entry.getValue());
-		}
-	*/
 			
 	public static void IndexAnalysisTableInitialization(Connection connection,	String[] indexList) {
 		System.out.println("");
@@ -141,7 +137,7 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 	public static void addAllRowsToDB(Connection connection, String indexTableName, List<IndexAnalysisRow> analysisRows) {
 		String tableName = getTableName(indexTableName);
 		
-		//Add String
+		//******Start add string builder******
 		String insertQuery = "INSERT IGNORE INTO `" + tableName + "` "
 				+ "(";
 		for(Map.Entry<String, String> entry : m_mySQLColumnList.entrySet()) {
@@ -160,8 +156,53 @@ public class MarketIndexAnalysisDB extends GenericDBSuperclass{
 		insertQuery = insertQuery.substring(0, insertQuery.length()-1);
 		
 		insertQuery += ")";
+		//******End add string builder******
 		
 		//Batch add
 		//Follow the initalAddRecordsFromData method in the MarketIndexDB class
+		PreparedStatement ps=null;
+		int batchSize = 200;
+		
+		try {
+			ps = connection.prepareStatement(insertQuery);
+			
+			//Iterate through the list backwards. I want the oldest date in first and this achieves that
+			for (int i = 0; i < analysisRows.size() ; i++) {
+				//if the row is not in the DB prepare it for insertion
+				ps.setInt(1, analysisRows.get(i).getPVD_id());
+				ps.setDouble(2,  analysisRows.get(i).getCloseAvg50());
+				ps.setDouble(3,  analysisRows.get(i).getCloseAvg100());
+				ps.setDouble(4,  analysisRows.get(i).getCloseAvg200());
+				ps.setLong(5,  analysisRows.get(i).getVolumeAvg50());
+				ps.setDouble(6, analysisRows.get(i).getPriceTrend35());
+				ps.setBoolean(7,  analysisRows.get(i).isDDay());
+				ps.setBoolean(8,  analysisRows.get(i).isChurnDay());
+				ps.setInt(9, analysisRows.get(i).getdDayCounter());
+				ps.addBatch();
+				
+				if (i % batchSize == 0) //if i/batch size remainder == 0 execute batch
+				{
+					ps.executeBatch();
+					System.out.println("Executed at i="+i);
+				}
+			}
+			
+			ps.executeBatch();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
+			System.out.println(e);
+		} finally {
+			if (ps != null) {
+				try {
+					ps.close();
+				} catch (SQLException sqlEx) { } // ignore
+
+				ps = null;
+			}
+		}
+
 	}
 }

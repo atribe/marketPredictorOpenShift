@@ -74,7 +74,6 @@ public class IndexAnalyzer {
 		
 		m_analysisRows = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
 
-		
 		calcIndexStatistics();
 		
 		//2. Calculate d-dates
