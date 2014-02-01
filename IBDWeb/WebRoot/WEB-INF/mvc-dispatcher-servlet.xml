@@ -24,7 +24,7 @@
 		</property>
 	</bean>
 	
-	<!-- Internationalization Properties Settings 
+	<!-- Internationalization Properties Settings -->
 	<bean id="localeResolver"
 		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="en" />
@@ -34,17 +34,17 @@
 		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
 		<property name="paramName" value="lang" />
 	</bean>
-	
  
-	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-	    <property name="interceptors">
-	        <ref bean="localeChangeInterceptor" />
-	    </property>
-	</bean>
-	-->
+	<bean id="handlerMapping"
+    class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+    <property name="interceptors">
+        <ref bean="localeChangeInterceptor" />
+    </property>
+</bean>
 	
 	<!-- Register the application properties file -->
-	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages" />
 	</bean>
  

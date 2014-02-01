@@ -110,6 +110,7 @@
     
   </dependencies>
   <build>
+  	<finalName>ROOT</finalName>
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <outputDirectory>${basedir}/WebRoot/WEB-INF/classes</outputDirectory>
     <resources>
