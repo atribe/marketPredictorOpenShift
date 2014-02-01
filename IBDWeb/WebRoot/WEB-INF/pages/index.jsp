@@ -17,7 +17,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 	
-	<link href="mpTheme/css/style.css" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="<c:url value="mpTheme/css/style.css"/>" />
 	
 	<script src="http://code.createjs.com/easeljs-0.5.0.min.js"></script> 
 	<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
