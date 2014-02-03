@@ -111,7 +111,7 @@
   </dependencies>
   <build>
   	<finalName>ROOT</finalName>
-    <sourceDirectory>${basedir}/src</sourceDirectory>
+    <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     <outputDirectory>${basedir}/WebRoot/WEB-INF/classes</outputDirectory>
     <resources>
       <resource>

@@ -81,7 +81,7 @@ public class IndexAnalyzer {
 		
 		followThruAnalysis();
 		
-		MarketIndexAnalysisDB.addAllRowsToDB(m_con, m_index, m_analysisRows);
+		//MarketIndexAnalysisDB.addAllRowsToDB(m_con, m_index, m_analysisRows);
 	}
 
 	private static void setBufferDays(){

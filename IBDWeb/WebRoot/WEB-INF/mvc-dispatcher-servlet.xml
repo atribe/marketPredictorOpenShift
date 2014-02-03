@@ -40,12 +40,12 @@
     <property name="interceptors">
         <ref bean="localeChangeInterceptor" />
     </property>
-</bean>
+	</bean>
 	
 	<!-- Register the application properties file -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages" />
 	</bean>
- 
+
 </beans>
