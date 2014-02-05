@@ -397,23 +397,29 @@ public class MarketAnalyzer {
 		//	}
 
 		//this part counts market rally days
-		int rallyDay = 0;
-		int rallyDaysToday = 0;
-		boolean rallyCheck = true;
-		boolean followThrough = false;
-		boolean followThroughToday = false;
+		int rallyDays = 0;//The number of days after the pivotDay where the priceLow > priceLow of pivotDay, up to rDaysMax
+		int rallyDaysToday = 0;//How many days ago is the pivotDay from today
+		boolean rallyCheck = true;//Variable to determine if rallyDays should increase (if so, k increases)
+		boolean followThrough = false;//way later
+		boolean followThroughToday = false;//way later
 		ArrayList<Date> followThroughDates = new ArrayList<Date>();
 		//	ArrayList<Integer> rallyDays = new ArrayList<Integer>();
-
+/*
+ * A rally is defined as series of days after a pivot day where the priceLow is > priceLow of the pivotDay.
+ * There are 3 looping variables to determine the number of days in a rally
+ * 1) c loops through the entire data set starting with today, i.e. c=0 is today
+ * 2) j loops through the possible number of rallyDays, from 1 to rDaysMax days ago (from c) 
+ * 3) k loops from c back to j.  k establishes the criteria for j being a pivot day
+ */
 		for (int c = 0; c < loopDays; ++c) {//if c=0 it is today
-			int j = 1;//j is the potential pivot day and counts backwards in time to rDays ago
-			rallyDay = 0;
+			int j = 1;//j is the potential pivot day and counts backwards in time to rDaysMax ago
+			rallyDays = 0;//k is the counting variable to determine rallyDays
 			float rallyPriceHigh = 0;
 			while (j < var.rDaysMax) {// & priceTrend35[j + c] < pivotTrend35) {//j loops from 1 to rDays, j is the potential pivot day,
 				//priceTrend35 makes sure price trend is down -0.1% on average before pivot day for 35 days
 				int n = 0;
 				switch (n) {
-				case 0:
+				case 0: //this is false...don't code this
 					if (var.pivotTrend35On == true) {
 						if (priceTrend35[j + c] < var.pivotTrend35) {
 						} else {
@@ -421,7 +427,7 @@ public class MarketAnalyzer {
 						}
 					}
 				case 1:
-					int k = 0;//k is the variable that loops from j=1 to j=10
+					int k = 0;//k is the variable that loops from j=1 to j=18 (rDaysMAx)
 					rallyCheck = true;
 					//			System.out.println(pricesHigh.length);
 					rallyPriceHigh = pricesHigh[c + j];//sets the rallyPriceHigh to the high of the pivot day
@@ -435,7 +441,7 @@ public class MarketAnalyzer {
 							rallyCheck = false;
 						}
 						if (k == j - 1 & rallyCheck == true) {//if k doesn't get kicked out of the while loop before k=j-1 then the rallyDay is true
-							rallyDay = j;
+							rallyDays = j;
 						}
 						//                        System.out.println("k loop c="+c+" j="+j+" k="+k+" rallyCheck="+rallyCheck+
 						//                                " rallyDay="+rallyDay+"\npricesLow="+pricesLow[c+k]
@@ -455,7 +461,7 @@ public class MarketAnalyzer {
 			//volumes must be greater than the volume of day before*volumeMult
 			//followthrough day volumes must be greater than the 50 day avg volume,  this needs to be turned on/off
 			//the closing price of followthrough day must be the high of the rally,  this needs to be turned on/off
-			if (rallyDay > var.rDaysMin & rallyDay < var.rDaysMax) {
+			if (rallyDays > var.rDaysMin & rallyDays < var.rDaysMax) {
 				int g = 0;
 				switch (g) {
 				case 0://this determines if priceMult are dependent on volatility
@@ -505,7 +511,7 @@ public class MarketAnalyzer {
 				}
 			}
 			if (c == 0) {//this sets rallyday and followthrough for today
-				rallyDaysToday = rallyDay;
+				rallyDaysToday = rallyDays;
 				//		System.out.println("dddddddddd" + rallyDaysToday);
 				//		followThroughToday = followThrough;
 			}

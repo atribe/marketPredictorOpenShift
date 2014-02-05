@@ -36,6 +36,7 @@ public class IndexAnalyzer {
 	
 	//member variable for holding all the information for analysis
 	static private List<IndexAnalysisRow> m_analysisRows;
+	static private int m_analysisRowsSize;
 
 	public static void runIndexAnalysis(Connection connection, String index, String indexParametersDBName) {
 		/*
@@ -73,7 +74,8 @@ public class IndexAnalyzer {
 		setLoopEndId();
 		
 		m_analysisRows = MarketIndexDB.getDataBetweenIds(m_con, m_index, m_loopBeginId, m_loopEndId);
-
+		m_analysisRowsSize = m_analysisRows.size();
+		
 		calcIndexStatistics();
 		
 		//2. Calculate d-dates
@@ -140,7 +142,7 @@ public class IndexAnalyzer {
 
 		//This lists starts with the newest date, which means the loop is goes back in time with each iteration
 		
-		for(int i=m_analysisRows.size()-1; i>0; i--) {
+		for(int i=m_analysisRowsSize-1; i>0; i--) {
 			//loopDays is how far the current loop goes back
 			/*
 			 * Loop for 50 days
@@ -237,10 +239,9 @@ public class IndexAnalyzer {
 	public static void checkForDDays() throws SQLException {
 		System.out.println("          Checking to see if each day is a D-Day");
 		
-		int rowCount = m_analysisRows.size();
 		int ddayCount=0;
 		
-		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		for(int i = 1; i < m_analysisRowsSize; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
 		{ 
 			/*
 			 * D day rules
@@ -276,7 +277,6 @@ public class IndexAnalyzer {
 	private static void checkForChurningDays() {
 		System.out.println("          Checking to see if each day is a Churning Day");
 		
-		int rowCount = m_analysisRows.size();
 		int churningDayCount=0;
 		
 		// {{ Getting variables from the parameter database
@@ -293,7 +293,7 @@ public class IndexAnalyzer {
 		String keychurnPriceTrend35 = "churnPriceTrend35";
 		float churnPriceTrend35 = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keychurnPriceTrend35);
 		// }}
-		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		for(int i = 1; i < m_analysisRowsSize; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
 		{
 			/*
 			 * this part gets churning ddays
@@ -374,7 +374,7 @@ public class IndexAnalyzer {
 		*/
 
 		//This list starts with the newest date, which means the loop is goes back in time with each iteration 
-		for(int i=m_analysisRows.size()-1; i>0; i--) {
+		for(int i=m_analysisRowsSize-1; i>0; i--) {
 
 			for(int j=i; j>i-dDayWindow && j>0; j--) { //This loop starts at i and then goes back dDayWindow days adding up all the d days
 
@@ -387,26 +387,69 @@ public class IndexAnalyzer {
 	private static void followThruAnalysis() {
 		System.out.println("          Checking to see if each day is a Follow Through Day");
 		
-		int rowCount = m_analysisRows.size();
+		checkForPivotDays();
+
 		int followThroughDayCount=0;
 		
 		// {{ Getting variables from the parameter database
 		String keyrDaysMax = "rDaysMax";
 		int rDaysMax = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keyrDaysMax);
-		String keypivotTrend35On = "pivotTrend35On";
-		boolean churnpivotTrend35On = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keypivotTrend35On);
-		String keypivotTrend35 = "pivotTrend35";
-		float pivotTrend35 = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keypivotTrend35);
 		// }}
 		
-		for(int i = 1; i < rowCount; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		boolean rallyLive=false;//this gets set to true at a pivot day, gets set false when a rall dies (aka price drops below the the low of the pivot
+		float previousLow=0;//this is for comparing low of the pivot (day 1) to the next day (day 2), then day 2 to day 3, etc
+		float rallyPriceHigh = 0;
+		
+		for(int i = 1; i < m_analysisRowsSize; i++) //Starting at i=1 so that i can use i-1 in the first calculation
 		{
-			/*
+			/* TODO fix this piece of crap
 			 * this part gets followthrough days
+			 * 1. Determine if day is a pivot day
+			 * 2. 
+			 * 
+			 * find pivot days
+			 * go forward from pivot days and make sure the rally keeps going up until the
+			 *  	1. rally dies (price goes below pivot)
+			 *  	2. find follow through
+			 *  if another pivot happens in between a pivot and followthrough, ignore the middle pivot
 			 * 
 			 */
-			float rallyPriceHigh = 0;
+			if(rallyLive)
+			{
+				if( previousLow < m_analysisRows.get(i).getLow() ) {
+					rallyLive = false;
+					rallyPriceHigh = 0;
+				} else {
+					if( m_analysisRows.get(i).getHigh() > rallyPriceHigh )
+						rallyPriceHigh = m_analysisRows.get(i).getHigh();
+				}
+			}
+			
+			
+			if( m_analysisRows.get(i).isLowPivot() ) {
+				rallyLive = true;
+				previousLow = m_analysisRows.get(i).getLow();
+			}
 			
 		}
+	}
+
+	private static void checkForPivotDays() {
+		
+		for(int i = 1; i < m_analysisRowsSize-1; i++) //Starting at i=1 so that i can use i-1 in the first calculation 
+		{
+			/*
+			 * Pivot day is a local min or local max
+			 * Find a pivot day by looking at three consecutive days: day 1, day 2, day 3
+			 * if the close of day 2 < day 1 && day 2 < day 3 then it is a pivot day
+			 * 
+			 * We may want to add additional criteria like the pivot must break the 10 day average or something.
+			 * Or maybe do the full techincal pivot formulas with support and resistance levels
+			 */
+			
+			if( (m_analysisRows.get(i).getClose() < m_analysisRows.get(i-1).getClose() ) && ( m_analysisRows.get(i).getClose() < m_analysisRows.get(i+1).getClose() ) ) 
+				m_analysisRows.get(i).setLowPivot(true);
+		}
+		
 	}
 }

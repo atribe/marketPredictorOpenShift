@@ -19,9 +19,13 @@ public class IndexAnalysisRow {
 	private float priceTrend35;
 	
 	//Analysis variables
+		//D day variables
 	private boolean isDDay;
 	private boolean isChurnDay;
 	private int dDayCounter;
+	
+		//Follow through variables
+	private boolean isLowPivot;
 	//add more stuff as needed here
 
 	public IndexAnalysisRow() {
@@ -247,5 +251,12 @@ public class IndexAnalysisRow {
 	}
 	public void addDDayCounter() {
 		dDayCounter++;
+	}
+
+	public boolean isLowPivot() {
+		return isLowPivot;
+	}
+	public void setLowPivot(boolean isLowPivot) {
+		this.isLowPivot = isLowPivot;
 	}
 }
