@@ -394,14 +394,41 @@ public class IndexAnalyzer {
 		// {{ Getting variables from the parameter database
 		String keyrDaysMax = "rDaysMax";
 		int rDaysMax = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keyrDaysMax);
+		String keyrDaysMin = "rDaysMin";
+		int rDaysMin = MarketIndexParametersDB.getIntValue(m_con, m_indexParametersDBName, keyrDaysMin);
+		String keypriceVolatilityOn = "priceVolatilityOn";
+		boolean priceVolatilityOn = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keypriceVolatilityOn);
+		String keypriceMult = "priceMult";
+		float originalPriceMult = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keypriceVolatilityOn);
+		String keypriceMultBot = "priceMultBot";
+		float priceMultBot = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keypriceMultBot);
+		String keypriceMultTop = "priceMultTop";
+		float priceMultTop = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keypriceMultTop);
+		String keyvolumeVolatilityOn = "volumeVolatilityOn";
+		boolean volumeVolatilityOn = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keyvolumeVolatilityOn);
+		String keyvolumeMult = "volumeMult";
+		float orginalVolumeMult = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keyvolumeVolatilityOn);
+		String keyvolumeMultBot = "volumeMultBot";
+		float volumeMultBot = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keyvolumeMultBot);
+		String keyvolumeMultTop = "volumeMultTop";
+		float volumeMultTop = MarketIndexParametersDB.getFloatValue(m_con, m_indexParametersDBName, keyvolumeMultTop);
+		String keyrallyVolAVG50On = "rallyVolAVG50On";
+		boolean rallyVolAVG50On = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keyrallyVolAVG50On);
+		String keyrallyPriceHighOn = "rallyPriceHighOn";
+		boolean rallyPriceHighOn = MarketIndexParametersDB.getBooleanValue(m_con, m_indexParametersDBName, keyrallyPriceHighOn);
 		// }}
 		
-		boolean rallyLive=false;//this gets set to true at a pivot day, gets set false when a rall dies (aka price drops below the the low of the pivot
-		float previousLow=0;//this is for comparing low of the pivot (day 1) to the next day (day 2), then day 2 to day 3, etc
+		//initializing variables used in the loop
+		boolean rallyLive = false;//this gets set to true at a pivot day, gets set false when a rall dies (aka price drops below the the low of the pivot
+		float pivotDayLow = 0;//this is for comparing low of the pivot (day 1) to the next day (day 2), then day 2 to day 3, etc
 		float rallyPriceHigh = 0;
+		int daysFromPivot = 0;
+		float priceMult = originalPriceMult;
+		float volumeMult = orginalVolumeMult;
 		
 		for(int i = 1; i < m_analysisRowsSize; i++) //Starting at i=1 so that i can use i-1 in the first calculation
 		{
+			float todaysLow = m_analysisRows.get(i).getLow();
 			/* TODO fix this piece of crap
 			 * this part gets followthrough days
 			 * 1. Determine if day is a pivot day
@@ -413,22 +440,73 @@ public class IndexAnalyzer {
 			 *  	2. find follow through
 			 *  if another pivot happens in between a pivot and followthrough, ignore the middle pivot
 			 * 
+			 *Conditions for a follow through day
+			 *	1. Must begin after a rally day (rallys start at pivot days)
+			 *	2. For the rally to continue the low of days following the pivot day cannot fall below the low of the pivot.
+			 *  3. follow through day must happen a min of 4 days after a pivot
+			 *  4. follow through day must happen a max of 18 days after a pivot
+			 *  5. follow through day must have close of 1.xx higher than the close of the preceeding day
+			 *  	5b. xx maybe be conditional on priceCV50 and priceCV50AveragePerDay
+			 *  6. follow through day must have a volume 1.xx higher than the volume of the preceeding day
+			 *  	6b. xx maybe 
+			 *  7. Conditionally, follow through day close must be the highest close of the rally
+			 *  8. Conditionally, follow through day must have volume above the 50 day average volume
 			 */
 			if(rallyLive)
 			{
-				if( previousLow < m_analysisRows.get(i).getLow() ) {
-					rallyLive = false;
+				if( todaysLow < previousLow && //if todays low is lower than yesterdays low the rally is dead
+						daysFromPivot < 18 ) //follow through day must be less than 18 days from the pivot
+				{
+					rallyLive = false;//kill the rally
+					//reset rally tracking variables
 					rallyPriceHigh = 0;
-				} else {
-					if( m_analysisRows.get(i).getHigh() > rallyPriceHigh )
+					previousLow = 0;
+					daysFromPivot = 0;
+				} 
+				else 
+				{
+					if(priceVolatilityOn) { //if this rule is active it modifies the priceMult used below
+						//TODO Calc priceCV50 and priceCV50AVGpDay
+						//priceMult = originalPriceMult * priceCV50[c] / priceCV50AVGpDay;//.000509 is the average priceCV50 over the last 50 years
+						if (priceMult < priceMultBot) {
+							priceMult = priceMultBot;
+						} else if (priceMult > priceMultTop) {
+							priceMult = priceMultTop;
+						}
+					}
+					if(volumeVolatilityOn) { //if this rule is active it modifies the volumeMult used below
+						//TODO Calc volumeCV50 and volumeCV50AVGpDay
+						//volumeMult = originalVolumeMult * volumeCV50[c] / volumeCV50AVGpDay;//.000509 is the average volumeCV50 over the last 50 years
+						if (volumeMult < volumeMultBot) {
+							volumeMult = volumeMultBot;
+						} else if (volumeMult > volumeMultTop) {
+							volumeMult = volumeMultTop;
+						}
+					}
+					
+					daysFromPivot++;//adding a day to the days from the pivot
+					if(4 < daysFromPivot ) //follow through day must be more than 4 days from the pivot)
+							
+					{
+						
+					}
+					
+					if( m_analysisRows.get(i).getHigh() > rallyPriceHigh ) // if today is higher than the rally high make it the rally high
 						rallyPriceHigh = m_analysisRows.get(i).getHigh();
 				}
 			}
 			
-			
-			if( m_analysisRows.get(i).isLowPivot() ) {
+			/*
+			 * reseting the rally low at every rally day is problematic
+			 * because if you do what is done below and don't set it, then you are ignore potential starts to the rally
+			 * but if you include you overwrite a running rally
+			 * 
+			 * So we need a way to handle multiple concurrent rallys
+			 */
+			if( !rallyLive && m_analysisRows.get(i).isLowPivot() ) //if a rally already live don't reset the low 
+			{
 				rallyLive = true;
-				previousLow = m_analysisRows.get(i).getLow();
+				pivotDayLow = m_analysisRows.get(i).getLow();
 			}
 			
 		}
@@ -447,6 +525,7 @@ public class IndexAnalyzer {
 			 * Or maybe do the full techincal pivot formulas with support and resistance levels
 			 */
 			
+			//    				day 1.close 		< 		day 0.close										day 1.close			<		day 2.close
 			if( (m_analysisRows.get(i).getClose() < m_analysisRows.get(i-1).getClose() ) && ( m_analysisRows.get(i).getClose() < m_analysisRows.get(i+1).getClose() ) ) 
 				m_analysisRows.get(i).setLowPivot(true);
 		}
