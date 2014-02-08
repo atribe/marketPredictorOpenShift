@@ -421,6 +421,7 @@ public class IndexAnalyzer {
 		//initializing variables used in the loop
 		boolean rallyLive = false;//this gets set to true at a pivot day, gets set false when a rall dies (aka price drops below the the low of the pivot
 		float pivotDayLow = 0;//this is for comparing low of the pivot (day 1) to the next day (day 2), then day 2 to day 3, etc
+		float previousLow = 0;
 		float rallyPriceHigh = 0;
 		int daysFromPivot = 0;
 		float priceMult = originalPriceMult;
