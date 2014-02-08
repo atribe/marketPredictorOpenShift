@@ -1,8 +1,16 @@
 package ibd.web.DataObjects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.joda.time.LocalDate;
 
+@Entity
+@Table(name = "IndexAnalysisRow")
 public class IndexAnalysisRow {
+	@Id @GeneratedValue private int id;
 	private int PVD_id;
 	private LocalDate date;
 	private float Open;
@@ -40,6 +48,12 @@ public class IndexAnalysisRow {
 				+ "\nIs Churn Day: " + isChurnDay()
 				+ "\nD-Day Count: " + getdDayCounter() + "\n";
 	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	/**
 	 * @return the PVD_id
@@ -54,7 +68,6 @@ public class IndexAnalysisRow {
 		this.PVD_id = PVD_id;
 	}
 	
-
 	/**
 	 * @return the date
 	 */
@@ -70,6 +83,8 @@ public class IndexAnalysisRow {
 	public void setDate(java.sql.Date date) {
 		this.date = new LocalDate(date);
 	}
+
+
 	public void setDate(String date) {
 		this.date = new LocalDate(date);
 	}

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/tempDisplay")
 public class tempDisplayController {
 
-@Autowired private IndexAnalysisRowDAO indexAnalyaisRowDAO;
+	@Autowired private IndexAnalysisRowDAO indexAnalyaisRowDAO;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String list(Model model) {
