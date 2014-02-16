@@ -4,7 +4,7 @@
   <artifactId>IBDWeb</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name/>
+  
   <description/>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -110,7 +110,7 @@
     
   </dependencies>
   <build>
-  	<finalName>ROOT</finalName>
+  	<finalName>marketpred</finalName>
     <sourceDirectory>${basedir}/src</sourceDirectory>
     <outputDirectory>${basedir}/WebRoot/WEB-INF/classes</outputDirectory>
     <resources>
@@ -124,6 +124,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
+        <version>2.4</version>
         <configuration>
           <webappDirectory>${basedir}/WebRoot</webappDirectory>
           <warSourceDirectory>${basedir}/WebRoot</warSourceDirectory>
@@ -131,11 +132,18 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
         <configuration>
           <source>1.5</source>
           <target>1.5</target>
         </configuration>
       </plugin>
+    <!-- Tomcat 7 Plugin -->
+	<plugin>
+		<groupId>com.googlecode.t7mp</groupId>
+		<artifactId>maven-t7-plugin</artifactId>
+		<version>0.9.9.M1</version>
+	</plugin>
     </plugins>
   </build>
 </project>

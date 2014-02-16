@@ -81,7 +81,7 @@ public class IndexAnalyzer {
 		//2. Calculate d-dates
 		distributionDayAnalysis();
 		
-		followThruAnalysis();
+		//followThruAnalysis();
 		
 		MarketIndexAnalysisDB.addAllRowsToDB(m_con, m_index, m_analysisRows);
 	}
